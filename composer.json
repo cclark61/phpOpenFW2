@@ -1,0 +1,24 @@
+{
+    "name": "cclark61/phpOpen",
+    "version": "0.5.0",
+    "require": {},
+	"require-dev": {},
+	"repositories": [],
+    "dist": {
+        "url": "https://github.com/cclark61/phpOpen/archive/master.zip",
+        "type": "zip"
+    },
+    "autoload": {
+		"psr-4": {
+			"phpOpen\\": ""
+		}
+	},
+	"scripts-dev": {
+		"post-install-cmd": [
+			"vendor/bin/security-checker security:check"
+		],
+		"post-update-cmd": [
+			"vendor/bin/security-checker security:check"
+		]
+	}
+}

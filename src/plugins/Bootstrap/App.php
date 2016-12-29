@@ -9,10 +9,12 @@
 * @author 		Christian J. Clark
 * @copyright	Copyright (c) Christian J. Clark
 * @license		http://www.gnu.org/licenses/gpl-2.0.txt
-* @version 		Started: 12/23/2016, Updated: 12/23/2016
+* @version 		Started: 12/23/2016, Updated: 12/28/2016
 */
 //**************************************************************************************
 //**************************************************************************************
+
+namespace phpOpen\Bootstrap;
 
 //**************************************************************************************
 /**
@@ -28,8 +30,16 @@ class App {
 	* Run Method
 	**/
 	//*************************************************************************
-	public static function Run()
+	public static function Run($file_path)
 	{
+		//============================================================
+		// Is File Path Valid?
+		//============================================================
+		if (is_dir($file_path)) {
+			trgger_error('Invalid file path given to bootsrap run method.');
+			return false;
+		}
+
 		//============================================================
 		// Include phpOpenFW Core
 		//============================================================

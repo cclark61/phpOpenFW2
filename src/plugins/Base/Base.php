@@ -81,11 +81,11 @@ abstract class Base
     	return true;
     }
 
-	//*************************************************************************
+	//========================================================================
 	/**
 	* Function to display a "Not Available" Message
 	**/
-	//*************************************************************************
+	//========================================================================
 	protected function not_available($function)
 	{
 		$class = __CLASS__;
@@ -94,7 +94,9 @@ abstract class Base
 	}
 
 	//========================================================================
+	/**
 	// Status / Value Functions
+	**/
 	//========================================================================
     public function success() { return $this->success; }
     public function error() { return $this->error; }
@@ -102,4 +104,3 @@ abstract class Base
     public function loaded() { return $this->loaded; }
 
 }
-

@@ -410,7 +410,7 @@ class Module extends Page
 			
 			$tmp_content = ob_get_clean();
 			
-			$content_node->add_child(new GenElement('content_data', Format::XMLEscape($tmp_content)));
+			$content_node->add_child(new GenElement('content_data', Format::xml_escape($tmp_content)));
 			$this->content_xml[] = $content_node;
 		}
 		//============================================================

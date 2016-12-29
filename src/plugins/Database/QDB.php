@@ -38,7 +38,7 @@ class QDB
 	* @return object A "data_result" object which can be used to get the records.
 	*/
 	//**************************************************************************************
-	public static function result($db_config, $strsql, $bind_params=false, $opts=false)
+	public static function qdb_result($db_config, $strsql, $bind_params=false, $opts=false)
 	{
 		// Use Bind Parameters?
 		$use_bind_params = (is_array($bind_params) && count($bind_params)) ? (true) : (false);
@@ -73,7 +73,7 @@ class QDB
 	* @return mixed An array representing the first row or FALSE if that row does not exist.
 	*/
 	//**************************************************************************************
-	public static function first_row($db_config, $strsql, $bind_params=false, $opts=false)
+	public static function qdb_first_row($db_config, $strsql, $bind_params=false, $opts=false)
 	{
 		// Use Bind Parameters?
 		$use_bind_params = (is_array($bind_params) && count($bind_params)) ? (true) : (false);
@@ -116,7 +116,7 @@ class QDB
 	* @return Mixed Either a record or a value
 	*/
 	//**************************************************************************************
-	public static function row($db_config, $strsql, $row_index=0, $data_format=false, $bind_params=false, $opts=false)
+	public static function qdb_row($db_config, $strsql, $row_index=0, $data_format=false, $bind_params=false, $opts=false)
 	{
 		// Use Bind Parameters?
 		$use_bind_params = (is_array($bind_params) && count($bind_params)) ? (true) : (false);
@@ -182,7 +182,7 @@ class QDB
 	* @return Array Record Set
 	*/
 	//**************************************************************************************
-	public static function exec($db_config, $strsql, $bind_params, $return_format='', $opts=false)
+	public static function qdb_exec($db_config, $strsql, $bind_params, $return_format='', $opts=false)
 	{
 		// New Data Transaction
 		$data1 = new DataTrans($db_config);
@@ -262,7 +262,7 @@ class QDB
 	* @return Array Record Set
 	*/
 	//**************************************************************************************
-	public static function delete($db_config, $db_table, $where='', $opts=false)
+	public static function qdb_delete($db_config, $db_table, $where='', $opts=false)
 	{
 		if ($where == '') {
 			trigger_error('Error: QDB::delete(): No where clause specified!');
@@ -302,7 +302,7 @@ class QDB
 	* @return mixed The value at the field index or false if it did not exist.
 	*/
 	//**************************************************************************************
-	public static function lookup($data_source, $sql, $fields='', $bind_params=false, $opts=false)
+	public static function qdb_lookup($data_source, $sql, $fields='', $bind_params=false, $opts=false)
 	{
 		// Check if fields are not specified
 		if ($fields == '') {

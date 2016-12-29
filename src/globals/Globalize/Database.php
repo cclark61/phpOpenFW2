@@ -23,22 +23,22 @@ if (!isset($excluded)) {
 // Function Declarations
 //=============================================================================
 if (!in_array('qdb_exec', $excluded)) {
-	function xml_escape() { return call_user_func_array('\phpOpen\Database\QDB::exec', func_get_args()); }
+	function qdb_exec() { return call_user_func_array('\phpOpen\Database\QDB::qdb_exec', func_get_args()); }
 }
 if (!in_array('qdb_result', $excluded)) {
-	function xml_escape() { return call_user_func_array('\phpOpen\Database\QDB::result', func_get_args()); }
+	function qdb_result() { return call_user_func_array('\phpOpen\Database\QDB::qdb_result', func_get_args()); }
 }
 if (!in_array('qdb_list', $excluded)) {
-	function xml_escape() { return call_user_func_array('\phpOpen\Database\QDB::qdb_list', func_get_args()); }
+	function qdb_list() { return call_user_func_array('\phpOpen\Database\QDB::qdb_list', func_get_args()); }
 }
 if (!in_array('qdb_lookup', $excluded)) {
-	function xml_escape() { return call_user_func_array('\phpOpen\Database\QDB::lookup', func_get_args()); }
+	function qdb_lookup() { return call_user_func_array('\phpOpen\Database\QDB::qdb_lookup', func_get_args()); }
 }
 if (!in_array('qdb_first_row', $excluded)) {
-	function xml_escape() { return call_user_func_array('\phpOpen\Database\QDB::first_row', func_get_args()); }
+	function qdb_first_row() { return call_user_func_array('\phpOpen\Database\QDB::qdb_first_row', func_get_args()); }
 }
 if (!in_array('qdb_row', $excluded)) {
-	function xml_escape() { return call_user_func_array('\phpOpen\Database\QDB::row', func_get_args()); }
+	function qdb_row() { return call_user_func_array('\phpOpen\Database\QDB::qdb_row', func_get_args()); }
 }
 
 //=============================================================================

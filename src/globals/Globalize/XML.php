@@ -23,19 +23,19 @@ if (!isset($excluded)) {
 // Function Declarations
 //=============================================================================
 if (!in_array('xml_escape', $excluded)) {
-	function xml_escape() { return call_user_func_array('\phpOpen\XML\Format::XMLEscape', func_get_args()); }
+	function xml_escape() { return call_user_func_array('\phpOpen\XML\Format::xml_escape', func_get_args()); }
 }
 if (!in_array('xml_escape_array', $excluded)) {
-	function xml_escape_array() { return call_user_func_array('\phpOpen\XML\Format::XMLEscapeArray', func_get_args()); }
+	function xml_escape_array() { return call_user_func_array('\phpOpen\XML\Format::xml_escapeArray', func_get_args()); }
 }
 if (!in_array('strip_cdata_tags', $excluded)) {
-	function strip_cdata_tags() { return call_user_func_array('\phpOpen\XML\Format::StripCDATATags', func_get_args()); }
+	function strip_cdata_tags() { return call_user_func_array('\phpOpen\XML\Format::strip_cdata_tags', func_get_args()); }
 }
 if (!in_array('array2xml', $excluded)) {
-	function array2xml() { return call_user_func_array('\phpOpen\XML\Format::Array2XML', func_get_args()); }
+	function array2xml() { return call_user_func_array('\phpOpen\XML\Format::array2xml', func_get_args()); }
 }
 if (!in_array('xhe', $excluded)) {
-	function xhe() { return call_user_func_array('\phpOpen\XML\Format::XHE', func_get_args()); }
+	function xhe() { return call_user_func_array('\phpOpen\XML\Format::xhe', func_get_args()); }
 }
 
 //=============================================================================

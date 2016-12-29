@@ -9,7 +9,7 @@
  * @author 		Christian J. Clark
  * @copyright	Copyright (c) Christian J. Clark
  * @license		http://www.gnu.org/licenses/gpl-2.0.txt
- * @version 	Started: 3-15-2006, Last updated: 12-23-2016
+ * @version 	Started: 3-15-2006, Last updated: 12-29-2016
  **/
 //**************************************************************************************
 //**************************************************************************************
@@ -35,7 +35,7 @@ class Format
 	 * @param string Prefix to use for numeric element names
 	 */
 	//*****************************************************************************
-	public static function Array2XML($element, $data, $num_prefix='data_', $depth=0, $count=0)
+	public static function array2xml($element, $data, $num_prefix='data_', $depth=0, $count=0)
 	{
 		//--------------------------------------------------------------
 		// Prefix numeric elements
@@ -59,7 +59,7 @@ class Format
 			$xml = "{$indent}<{$element}>\n";
 			$count = 0;
 			foreach ($data as $key => $row_data) {
-				$xml .= array2xml($key, $row_data, $num_prefix, $depth+1, $count);
+				$xml .= self::array2xml($key, $row_data, $num_prefix, $depth+1, $count);
 				$count++;	
 			}
 			$xml .= "{$indent}</{$element}>\n";	
@@ -79,10 +79,10 @@ class Format
 	 * @return string Escaped data
 	 */
 	//*****************************************************************************
-	public static function XMLEscape($str_data)
+	public static function xml_escape($str_data)
 	{
 		if ($str_data !== '') {
-			return '<![CDATA[' . strip_cdata_tags($str_data) . ']]>';
+			return '<![CDATA[' . self::strip_cdata_tags($str_data) . ']]>';
 		}
 		else { return false; }
 	}
@@ -95,16 +95,16 @@ class Format
 	 * @return array Escaped data
 	 */
 	//*****************************************************************************
-	public static function XMLEscapeArray($in_data)
+	public static function xml_escape_array($in_data)
 	{
 		if (is_array($in_data)) {
 			foreach ($in_data as $key => $item) {
-				$in_data[$key] = xml_escape_array($item);
+				$in_data[$key] = self::xml_escape_array($item);
 			}
 			return $in_data;
 		}
 		else if ($in_data !== '' && !is_numeric($in_data)) {
-			return '<![CDATA[' . strip_cdata_tags($in_data) . ']]>';
+			return '<![CDATA[' . self::strip_cdata_tags($in_data) . ']]>';
 		}
 		else if (is_numeric($in_data))
 		{
@@ -121,7 +121,7 @@ class Format
 	 * @return string Cleaned string
 	 */
 	//*****************************************************************************
-	public static function StripCDATATags($str_data)
+	public static function strip_cdata_tags($str_data)
 	{
 		settype($str_data, 'string');
 		$str_data = str_replace('<![CDATA[', '', $str_data);
@@ -140,7 +140,7 @@ class Format
 	        ob_start(); 
 	        $c = new gen_element($elm, $content, $attrs);
 	        $c->render();
-	        return ($escape) ? (xml_escape(ob_get_clean())) : (ob_get_clean());
+	        return ($escape) ? (self::xml_escape(ob_get_clean())) : (ob_get_clean());
 	    }
 	    return false;
 	}

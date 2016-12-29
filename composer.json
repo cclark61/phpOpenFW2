@@ -1,11 +1,11 @@
 {
-    "name": "cclark61/phpOpen",
-    "version": "0.5.0",
+    "name": "cclark61/phpOpenFW2",
+    "version": "2.0",
     "require": {},
 	"require-dev": {},
 	"repositories": [],
     "dist": {
-        "url": "https://github.com/cclark61/phpOpen/archive/master.zip",
+        "url": "https://github.com/cclark61/phpOpenFW2/archive/master.zip",
         "type": "zip"
     },
     "autoload": {

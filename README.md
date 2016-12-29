@@ -1,9 +1,9 @@
 -----------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------
-# phpOpen
+# phpOpenFW
 -----------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------
-phpOpen is an open source MVC PHP web development framework released under the GNU Public License (GPL) version 2.
+phpOpenFW is an open source MVC PHP web development framework released under the GNU Public License (GPL) version 3.
 
 -----------------------------------------------------------------------------------------------------------
 ## Author
@@ -23,12 +23,12 @@ GNU Public License (GPL) version 3 ( https://www.gnu.org/licenses/gpl-3.0.txt )
 -----------------------------------------------------------------------------------------------------------
 ## Version
 -----------------------------------------------------------------------------------------------------------
-1.0
+2.0
 
 -----------------------------------------------------------------------------------------------------------
 ## Requirements
 -----------------------------------------------------------------------------------------------------------
-phpOpen requires PHP >= 5.3, libxslt, libxml, php-xsl, and php-xml.
+phpOpen requires PHP >= 5.4, libxslt, libxml, php-xsl, and php-xml.
 
 -----------------------------------------------------------------------------------------------------------
 ## Support
@@ -84,6 +84,6 @@ RewriteEngine On
 RewriteBase /
 RewriteRule ^([^/\.]+).html$ index.php?page=$1 [L]
 RewriteRule ^(themes|css|img|javascript) - [L]
-RewriteRule Ê.*favicon\.ico$ - [L]
+RewriteRule ^.*favicon\.ico$ - [L]
 RewriteRule ^.*$ index.php [L,qsa]
 

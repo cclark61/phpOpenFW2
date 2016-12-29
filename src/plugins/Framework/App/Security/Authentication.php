@@ -15,6 +15,8 @@
 //**************************************************************************************
 //**************************************************************************************
 
+namespace phpOpen\Framework\App\Security;
+
 //**************************************************************************************
 /**
  * Authentication Class
@@ -93,14 +95,18 @@ class Authentication {
 			$this->user_field = $_SESSION['auth_user_field'];
 			$this->add_to_where = (isset($_SESSION['auth_add_to_where'])) ? ($_SESSION['auth_add_to_where']) : ('');
 
+			//-----------------------------------------------------
 			// Password Security
+			//-----------------------------------------------------
 			$valid_pass_sec_types = array('clear' => 'clear', 'md5' => 'md5', 'sha1' => 'sha1');
 			$this->auth_pass_security = (isset($_SESSION['auth_pass_security'])) ? (strtolower($_SESSION['auth_pass_security'])) : ('clear');
 			if (!isset($valid_pass_sec_types[$this->auth_pass_security])) {
 				$this->auth_pass_security = 'clear';
 			}
-		
+
+			//-----------------------------------------------------
 			// Set User ID and Password
+			//-----------------------------------------------------
 			if (isset($_POST['user']) && isset($_POST['pass'])) {
 				$this->user = addslashes($_POST['user']);
 				switch ($this->auth_pass_security) {
@@ -121,14 +127,8 @@ class Authentication {
 						break;
 				}
 			}
-
-			// Load Data Transaction Class
-			require_once($_SESSION['frame_path'] . '/core/data_access/data_trans.class.php');
 		}
 		else if ($this->data_src == 'custom') {
-			// Load Database Engine
-			require_once($_SESSION['frame_path'] . '/core/data_access/data_trans.class.php');
-			require_once($_SESSION['frame_path'] . '/plugins/qdba.inc.php');
 			$this->data_type = 'custom';
 		}
 		else {
@@ -162,15 +162,21 @@ class Authentication {
 				break;
 
 			default:
-				// Kerberos or other SSO Authentication				
+				//-----------------------------------------------------
+				// Kerberos or other SSO Authentication
+				//-----------------------------------------------------
 				if (isset($_SERVER['REMOTE_USER']) && !empty($_SERVER['REMOTE_USER'])) {
 					$_SESSION['userid'] = $_SERVER['REMOTE_USER'];
 				}
+				//-----------------------------------------------------
 				// HTTP Basic Authentication
+				//-----------------------------------------------------
 				else if (isset($_SERVER['PHP_AUTH_USER']) && !empty($_SERVER['PHP_AUTH_USER'])) {
 					$_SESSION['userid'] = $_SERVER['PHP_AUTH_USER'];
 				}
+				//-----------------------------------------------------
 				// No Authentication
+				//-----------------------------------------------------
 				else {
 					$_SESSION['userid'] = 'none';
 				}
@@ -195,7 +201,9 @@ class Authentication {
 				$_SESSION['userid'] = $this->user;
 				$_SESSION['passwd'] = $this->pass;
 				
+				//-----------------------------------------------------
 				// Set Name of User
+				//-----------------------------------------------------
 				switch ($this->data_type) {
 					case 'ldap':
 						$_SESSION['ldap_userid'] = $user_info[0]['dn'];
@@ -248,4 +256,3 @@ class Authentication {
 	public function status() { return $this->status; }
 
 }
-

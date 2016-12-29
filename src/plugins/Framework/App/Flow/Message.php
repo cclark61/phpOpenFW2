@@ -2,7 +2,7 @@
 //**************************************************************************************
 //**************************************************************************************
 /**
-* A simple core class to construct the message page framework
+* A class to construct a message page
 *
 * @package		phpOpenFW
 * @subpackage	Framework\App\Flow
@@ -13,6 +13,9 @@
 **/
 //**************************************************************************************
 //**************************************************************************************
+
+namespace phpOpen\Framework\App\Flow;
+use phpOpen\XML\GenElement;
 
 //**************************************************************************************
 /**
@@ -76,10 +79,10 @@ class Message extends Page
 		//----------------------------------------------------------
 		// Start building message page
 		//----------------------------------------------------------
-		$tmp = new gen_element('message');
-		$tmp->add_child(new gen_element('code', $this->msg_code));
-		$tmp->add_child(new gen_element('login_link', $this->html_path . '/'));
-		$tmp->add_child(new gen_element('back_link', 'javascript: history.go(-1)'));
+		$tmp = new GenElement('message');
+		$tmp->add_child(new GenElement('code', $this->msg_code));
+		$tmp->add_child(new GenElement('login_link', $this->html_path . '/'));
+		$tmp->add_child(new GenElement('back_link', 'javascript: history.go(-1)'));
 		ob_start();
 		include("{$this->templates_dir}/messages.xml");
 		$tmp->add_child(ob_get_clean());
@@ -94,11 +97,12 @@ class Message extends Page
 			case 8:
 			case 'login':
 				if (isset($_SESSION['login_url'])) { $tmp_login_url = $_SESSION['login_url']; }
-				
 				session_unset();
 				session_destroy();
 
+				//--------------------------------------------------------
 				// Login URL
+				//--------------------------------------------------------
 				if (isset($tmp_login_url)) {
 					session_start();
 					$_SESSION['login_url'] = $tmp_login_url;

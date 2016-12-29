@@ -14,6 +14,8 @@
 //**************************************************************************************
 //**************************************************************************************
 
+namespace phpOpen\XML;
+
 //**************************************************************************************
 /**
  * XML Transform Class
@@ -49,7 +51,7 @@ class Transform
 			//--------------------------------------------------------------
 			// Load the XML source
 			//--------------------------------------------------------------
-			$xml = new DOMDocument();
+			$xml = new \DOMDocument();
 			$xml_load_status = $xml->loadXML($xml_data);
 			if (!$xml_load_status) {
 				trigger_error('Error: Malformed XML data given!!'); 
@@ -60,8 +62,8 @@ class Transform
 			// Load the XSL Source
 			//--------------------------------------------------------------
 			if (file_exists($xsl_template)) {
-				set_error_handler('HandleXSLError');
-				$xsl = new DOMDocument;
+				set_error_handler('\phpOpen\XML\Transform::HandleXSLError');
+				$xsl = new \DOMDocument;
 				$xsl_load_status = $xsl->load($xsl_template, LIBXML_NOCDATA);
 				restore_error_handler();
 			}
@@ -74,10 +76,10 @@ class Transform
 			// XSLT Processor (or XSLTCache) Object
 			//--------------------------------------------------------------
 			if (extension_loaded('xslcache') && $use_cache) {
-				if ($xsl_load_status && $xml_load_status) { $proc = new xsltCache; }
-				else { $proc = new XSLTProcessor; }
+				if ($xsl_load_status && $xml_load_status) { $proc = new \xsltCache; }
+				else { $proc = new \XSLTProcessor; }
 			}
-			else { $proc = new XSLTProcessor; }
+			else { $proc = new \XSLTProcessor; }
 			$proc->registerPHPFunctions();
 	
 			//--------------------------------------------------------------

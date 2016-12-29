@@ -14,7 +14,8 @@
 //**************************************************************************************
 //**************************************************************************************
 
-namespace Database;
+namespace phpOpen\Database;
+use phpOpen\Database\DataTrans;
 
 //**************************************************************************************
 /**
@@ -43,7 +44,7 @@ class QDB
 		$use_bind_params = (is_array($bind_params) && count($bind_params)) ? (true) : (false);
 
 		// New Data Transaction
-		$data1 = new data_trans($db_config);
+		$data1 = new DataTrans($db_config);
 		if (!empty($opts['debug'])) { $data1->data_debug(true); }
 		$data1->set_opt('make_bind_params_refs', 1);
 
@@ -78,7 +79,7 @@ class QDB
 		$use_bind_params = (is_array($bind_params) && count($bind_params)) ? (true) : (false);
 
 		// New Data Transaction
-		$data1 = new data_trans($db_config);
+		$data1 = new DataTrans($db_config);
 		if (!empty($opts['debug'])) { $data1->data_debug(true); }
 		$data1->set_opt('make_bind_params_refs', 1);
 
@@ -128,7 +129,7 @@ class QDB
 		}
 
 		// New Data Transaction
-		$data1 = new data_trans($db_config);
+		$data1 = new DataTrans($db_config);
 		if (!empty($opts['debug'])) { $data1->data_debug(true); }
 		$data1->set_opt('make_bind_params_refs', 1);
 
@@ -184,7 +185,7 @@ class QDB
 	public static function exec($db_config, $strsql, $bind_params, $return_format='', $opts=false)
 	{
 		// New Data Transaction
-		$data1 = new data_trans($db_config);
+		$data1 = new DataTrans($db_config);
 		if (!empty($opts['debug'])) { $data1->data_debug(true); }
 		$data1->set_opt('make_bind_params_refs', 1);
 
@@ -223,10 +224,10 @@ class QDB
 	* @return Array Record Set
 	*/
 	//**************************************************************************************
-	public static function list($db_config, $strsql, $return_format='', $opts=false)
+	public static function qdb_list($db_config, $strsql, $return_format='', $opts=false)
 	{
 		// New Data Transaction
-		$data1 = new data_trans($db_config);
+		$data1 = new DataTrans($db_config);
 		if (!empty($opts['debug'])) { $data1->data_debug(true); }
 
 		if (!empty($opts['charset'])) {
@@ -269,7 +270,7 @@ class QDB
 		}
 
 		// New Data Transaction
-		$data1 = new data_trans($db_config);
+		$data1 = new DataTrans($db_config);
 		if (!empty($opts['debug'])) { $data1->data_debug(true); }
 		$data1->set_opt('make_bind_params_refs', 1);
 		if (!empty($opts['charset'])) {
@@ -309,7 +310,7 @@ class QDB
 		}
 
 		// New Data Transaction
-		$data1 = new data_trans($data_source);
+		$data1 = new DataTrans($data_source);
 		if (!empty($opts['debug'])) { $data1->data_debug(true); }
 		$data1->set_opt('make_bind_params_refs', 1);
 

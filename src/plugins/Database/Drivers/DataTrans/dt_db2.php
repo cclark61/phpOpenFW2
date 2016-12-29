@@ -1,5 +1,5 @@
 <?php
-
+//*************************************************************************
 /**
 * Data Transaction / IBM DB2 Plugin
 * A IBM DB2 plugin to the (data_trans) class
@@ -12,15 +12,19 @@
 * @access		private
 * @version 		Started: 9-21-2011 updated: 11-22-2012
 */
+//*************************************************************************
 
-//***************************************************************
+namespace phpOpen\Database\Drivers\DataTrans;
+use phpOpen\Database\DataResult;
+
+//*************************************************************************
 /**
  * dt_db2 Class
  * @package		phpOpenFW
  * @subpackage	Database_Tools
  * @access		private
  */
-//***************************************************************
+//*************************************************************************
 class dt_db2 extends dt_structure
 {
     
@@ -175,7 +179,7 @@ class dt_db2 extends dt_structure
 			//----------------------------------------------
 	    	// Create Data Result Object
 			//----------------------------------------------
-        	$this->data_result = new data_result($this->stmt, $this->data_src);
+        	$this->data_result = new DataResult($this->stmt, $this->data_src);
 
 			//----------------------------------------------
 	        // Last Insert ID

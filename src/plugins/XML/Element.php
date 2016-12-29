@@ -1,6 +1,6 @@
 <?php
-//***************************************************************
-//***************************************************************
+//*************************************************************************
+//*************************************************************************
 /**
 * A class for generating XML elements
 *
@@ -12,16 +12,19 @@
 * @version 		Started: 1-24-2006 Updated: 2-1-2013
 * @internal
 **/
-//***************************************************************
-//***************************************************************
+//*************************************************************************
+//*************************************************************************
 
-//***************************************************************
+namespace phpOpen\XML;
+use phpOpen\XML\Transform;
+
+//*************************************************************************
 /**
  * (XML) Element Class
  * @package		phpOpenFW
  * @subpackage	XML
  */
-//***************************************************************
+//*************************************************************************
 abstract class Element
 {
 	/**
@@ -142,7 +145,7 @@ abstract class Element
 		// Perform XML Transformation
 		//***************************************
 		$sxoe = (isset($_SESSION['show_xml_on_error']) && $_SESSION['show_xml_on_error'] == 1) ? (true) : (false);
-		xml_transform($this->element_xml, $this->xsl_template, $sxoe);
+		Transform::XSL($this->element_xml, $this->xsl_template, $sxoe);
 		if ($buffer) { return ob_get_clean(); }
 	}
 
@@ -311,44 +314,3 @@ abstract class Element
 	//*************************************************************************
 	public function __destruct() {}
 }
-
-//*****************************************************************************
-/**
-* Creates a generic xml element with content
-* @package		phpOpenFW
-* @subpackage	Objects
-* @param string Element Name (ie. "div", "data", "p", etc.) Can be XML or XHTML
-* @param string Content inside of element
-* @param array An array, in the form of [key] => [value], of attributes
-*/
-//*****************************************************************************
-class gen_element extends element
-{
-	public function __construct($element, $content=false, $attrs=false)
-	{
-		$this->element = $element;
-		$this->tabs = 0;
-		if ($content !== false && $content !== '') { $this->inset_val = $content; }
-		if (is_array($attrs)) {
-			foreach ($attrs as $key => $val) { $this->set_attribute($key, $val); }
-		}
-	}
-}
-
-//***************************************************************************
-//***************************************************************************
-// Generate an XHTML Element
-// Contributed by: Jesse Vista, 6-23-2008
-// Renamed by: Christian J. Clark, 8/31/2011
-//***************************************************************************
-//***************************************************************************
-function xhe($elm=false, $content='', $attrs=array(), $escape=false) {
-    if ($elm) {
-        ob_start(); 
-        $c = new gen_element($elm, $content, $attrs);
-        $c->render();
-        return ($escape) ? (xml_escape(ob_get_clean())) : (ob_get_clean());
-    }
-    return false;
-}
-

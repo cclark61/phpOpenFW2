@@ -2,7 +2,7 @@
 //**************************************************************************************
 //**************************************************************************************
 /**
-* A simple core class to construct the module page framework
+* A class to construct a module page
 *
 * @package		phpOpenFW
 * @subpackage	Framework\App\Flow
@@ -13,6 +13,11 @@
 **/
 //**************************************************************************************
 //**************************************************************************************
+
+namespace phpOpen\Framework\App\Flow;
+use phpOpen\XML\GenElement;
+use phpOpen\XML\Format;
+use phpOpen\XML\Transform;
 
 //**************************************************************************************
 /**
@@ -254,7 +259,6 @@ class Module extends Page
 		if (isset($_POST['action'])) { $this->action = $_POST['action']; }
 		else if (isset($_GET['action'])) { $this->action = $_GET['action']; }
 		else { $this->action = '-1'; }
-
 	}
 	
 	/**
@@ -322,12 +326,12 @@ class Module extends Page
         //============================================================
 		// Was the intended module controller found?
 		//============================================================
-		$this->content_xml[] = new gen_element('mod_controller_found', $this->mod_controller_found);
+		$this->content_xml[] = new GenElement('mod_controller_found', $this->mod_controller_found);
 
         //============================================================
 		// Current Module Parameters
 		//============================================================
-		$this->content_xml[] = new gen_element('current_module', $this->mod);
+		$this->content_xml[] = new GenElement('current_module', $this->mod);
 		if ($this->mod == '-1') { $tmp_mod_args = array('-1'); }
 		else {
 			$ex_chr = ($this->nav_xml_format == 'rewrite') ? ('/') : ('-');
@@ -338,23 +342,23 @@ class Module extends Page
 		// Current Module Depth
 		//============================================================
 		$curr_mod_depth  = count($tmp_mod_args);
-		$this->content_xml[] = new gen_element('current_module_depth', $curr_mod_depth);
+		$this->content_xml[] = new GenElement('current_module_depth', $curr_mod_depth);
 
         //============================================================
 		// Current Module Arguments
 		//============================================================
-		$tmp = new gen_element('current_module_args');
+		$tmp = new GenElement('current_module_args');
 		$tmp->display_tree();
 		foreach ($tmp_mod_args as $key => $arg) {
 			$index_key = $key + 1;
-			$tmp->add_child(new gen_element('module_arg', $arg, array('index' => $index_key)));
+			$tmp->add_child(new GenElement('module_arg', $arg, array('index' => $index_key)));
 		}
 		$this->content_xml[] = $tmp;
 
         //============================================================
 		// Start Content Block
 		//============================================================
-		$content_node = new gen_element('content');
+		$content_node = new GenElement('content');
 		$content_node->display_tree();
 
         //============================================================
@@ -364,10 +368,10 @@ class Module extends Page
 		if (file_exists($local_inc)) { include($local_inc); }
 		
 		if (isset($mod_title)) {
-			$tmp2 = new gen_element('section_title');
+			$tmp2 = new GenElement('section_title');
 			$tmp2->display_tree();
-			$tmp2->add_child(new gen_element('linkhref', $this->page_url));
-			$tmp2->add_child(new gen_element('desc', $mod_title));
+			$tmp2->add_child(new GenElement('linkhref', $this->page_url));
+			$tmp2->add_child(new GenElement('desc', $mod_title));
 			$content_node->add_child($tmp2);
 		}
 
@@ -379,7 +383,7 @@ class Module extends Page
             //--------------------------------------------------------
 			// Module Exists
             //--------------------------------------------------------
-			$content_node->add_child(new gen_element('controller_exists', 1));
+			$content_node->add_child(new GenElement('controller_exists', 1));
 			define('CONTROLLER_EXISTS', true);
 
             //--------------------------------------------------------
@@ -401,19 +405,19 @@ class Module extends Page
 			if (isset($this->content_xsl) && !empty($this->content_xsl)) {
 				$tmp_xml = ob_get_clean();
 				ob_start();
-				xml_transform($tmp_xml, $this->content_xsl);
+				Transform::XSL($tmp_xml, $this->content_xsl);
 			}
 			
 			$tmp_content = ob_get_clean();
 			
-			$content_node->add_child(new gen_element('content_data', xml_escape($tmp_content)));
+			$content_node->add_child(new GenElement('content_data', Format::XMLEscape($tmp_content)));
 			$this->content_xml[] = $content_node;
 		}
 		//============================================================
 		// Controller does NOT Exist
 		//============================================================
 		else {
-			$content_node->add_child(new gen_element('controller_exists', 0));
+			$content_node->add_child(new GenElement('controller_exists', 0));
 			define('CONTROLLER_EXISTS', false);
 		}
 

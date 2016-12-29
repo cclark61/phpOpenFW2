@@ -14,7 +14,8 @@
 //**************************************************************************************
 //**************************************************************************************
 
-namespace phpOpen\Bootstrap;
+namespace phpOpen\Framework;
+use phpOpen\Framework\App\Security as Security;
 
 //**************************************************************************************
 /**
@@ -33,40 +34,17 @@ class App {
 	public static function Run($file_path)
 	{
 		//============================================================
-		// Is File Path Valid?
+		// Bootstrap the Core
 		//============================================================
-		if (is_dir($file_path)) {
-			trgger_error('Invalid file path given to bootsrap run method.');
-			return false;
-		}
+		\phpOpen\Framework\Core::Bootstrap($file_path);
 
-		//============================================================
-		// Include phpOpenFW Core
-		//============================================================
-		require_once(__DIR__ . '/core/phpOpenFW.class.php');
-		$pofw = new phpOpenFW();
-		$pofw->bootstrap();
-		
 		//============================================================
 		// Load Config if not logged in
 		//============================================================
 		if (!isset($_SESSION['userid'])) {
-		    $pofw->load_config();
+		    \phpOpen\Framework\Core::load_config();
 		}
-		
-		//============================================================
-		// Set application logic directory
-		//============================================================
-		$_SESSION['app_logic_path'] = $_SESSION['frame_path'] . '/app_logic/logic1';
-		$app_logic_path = $_SESSION['app_logic_path'];
-		
-		//============================================================
-		// Include necessary application logic
-		//============================================================
-		require_once("{$app_logic_path}/structure/page.class.php");
-		require_once("{$app_logic_path}/structure/message.class.php");
-		require_once("{$app_logic_path}/structure/module.class.php");
-		
+
 		//============================================================
 		// Set module
 		//============================================================
@@ -106,19 +84,18 @@ class App {
 			// * Login
 			//************************************************************
 			case 'login':
-				require_once("{$app_logic_path}/security/login.class.php");
 		
 		        //=============================================================
 				// Perform Login Operation
 				//=============================================================
 				if (!isset($_SESSION['userid'])) {
-					$login = new login();
+					$login = new Security\Login();
 					
 		            //--------------------------------------------------------
 					// If login.inc.php exists include it
 		            //--------------------------------------------------------
-					if (file_exists("{$_SESSION['file_path']}/login.inc.php")) {
-		    			require_once("{$_SESSION['file_path']}/login.inc.php");
+					if (file_exists(PHPOPENFW_APP_FILE_PATH . '/login.inc.php')) {
+		    			require_once(PHPOPENFW_APP_FILE_PATH . '/login.inc.php');
 		            }
 		
 		            //--------------------------------------------------------
@@ -132,14 +109,14 @@ class App {
 						exit;
 					}
 				}
-				$page = new module();
+				$page = new App\Flow\Module();
 				break;
 		
 			//************************************************************
 			// * Logout
 			//************************************************************
 			case 'logout':
-				$page = new message('7');
+				$page = new App\Flow\Message('7');
 				break;
 		
 			//************************************************************
@@ -165,25 +142,24 @@ class App {
 							//============================================================
 		                    // Show Login Page
 							//============================================================
-							$page = new message('login');
+							$page = new App\Flow\Message('login');
 							break;
 							
 						case 'error';
-							$page = new message('8');
+							$page = new App\Flow\Message('8');
 							break;
 							
 						default:
 						    //=============================================================
 							// Perform Login Operation
 							//=============================================================
-							require_once("{$app_logic_path}/security/login.class.php");
-							$login = new login();
+							$login = new Security\Login();
 		
 		                    //=============================================================
 							// If login.inc.php exists include it
 		                    //=============================================================
-							if (file_exists("{$_SESSION['file_path']}/login.inc.php")) {
-		    					require_once("{$_SESSION['file_path']}/login.inc.php");
+							if (file_exists(PHPOPENFW_APP_FILE_PATH . '/login.inc.php')) {
+		    					require_once(PHPOPENFW_APP_FILE_PATH . '/login.inc.php');
 		    				}
 		
 		                    //=============================================================
@@ -196,7 +172,7 @@ class App {
 								die();
 							}
 							
-							$page = new module();
+							$page = new App\Flow\Module();
 							break;
 					}
 				}
@@ -204,7 +180,7 @@ class App {
 				// ** User is Logged in
 				//************************************************************
 				else {
-					$page = new module();
+					$page = new App\Flow\Module();
 				}
 				break;
 		}

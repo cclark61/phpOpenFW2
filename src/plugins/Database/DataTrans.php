@@ -13,6 +13,8 @@
 */
 //**************************************************************************************
 
+namespace phpOpen\Database;
+
 //**************************************************************************************
 /**
  * Data Transaction Class
@@ -52,7 +54,9 @@ class DataTrans {
 	//*************************************************************************
 	public function __construct($data_src='', $tmp_trans_type='qry')
 	{
+        //=================================================================
 		// Data Source
+        //=================================================================
 		if ($data_src != '') {
 			if (!isset($_SESSION[$data_src])) {
 				trigger_error("Error: [data_trans]::__construct(): Invalid Data Source '{$data_src}'.");
@@ -69,30 +73,37 @@ class DataTrans {
 			}
 		}
 
+        //=================================================================
 		// Driver
+        //=================================================================
         $this->data_type = $_SESSION[$data_src]['type'];
-
-        // Include Data Result Object
-        require_once(dirname(__FILE__) . '/data_result.class.php');
 
         //=================================================================
         // Create Object based on Data Source Type
         //=================================================================
 
+		//------------------------------------------------------------
         // Data Library Paths
+		//------------------------------------------------------------
         $data_lib = dirname(__FILE__) . '/lib/data_trans';
         $data_structure_lib = $data_lib . '/dt_structure.class.php';
         $data_object_lib = $data_lib . '/dt_' . $this->data_type . '.class.php';
 
+		//------------------------------------------------------------
         // Include necessary Data Object Libraries
-        require_once($data_structure_lib);
-        require_once($data_object_lib);
+		//------------------------------------------------------------
+        //require_once($data_structure_lib);
+        //require_once($data_object_lib);
 
+		//------------------------------------------------------------
         // Create new Data Object
-        $dt_class = 'dt_' . $this->data_type;
+		//------------------------------------------------------------
+        $dt_class = '\phpOpen\Database\Drivers\DataTrans\dt_' . $this->data_type;
         $this->data_object = new $dt_class($data_src, $tmp_trans_type);
 
+		//------------------------------------------------------------
 		// Check if we are setting the character set
+		//------------------------------------------------------------
 		if (!empty($_SESSION[$data_src]['charset'])) {
 			$this->data_object->set_opt('charset', $_SESSION[$data_src]['charset']);
 		}
@@ -117,17 +128,25 @@ class DataTrans {
 	//*************************************************************************
 	public function data_query($query, $params=false)
 	{
+		//------------------------------------------------------------
 		// Unset last_id / Clear results
+		//------------------------------------------------------------
 		$this->data_object->clear_last_insert_id();
 		$this->data_object->clear_result();
 
+		//------------------------------------------------------------
 		// Execute the Query
+		//------------------------------------------------------------
 		$query_result = $this->data_object->query($query, $params);
 
+		//------------------------------------------------------------
 		// Print Query (if necessary)
+		//------------------------------------------------------------
 		if ($this->print_query) { $this->display_query(); }
 
+		//------------------------------------------------------------
 		// Return Results
+		//------------------------------------------------------------
 		return $query_result;
 	}
 
@@ -351,7 +370,9 @@ class DataTrans {
 	//*************************************************************************
 	public function prepare($statement=false)
 	{
+		//------------------------------------------------------------
 		// Unset last_id / Clear results
+		//------------------------------------------------------------
 		$this->data_object->clear_last_insert_id();
 		$this->data_object->clear_result();
 
@@ -362,7 +383,9 @@ class DataTrans {
 			return false;
 		}
 		else {
+			//------------------------------------------------------------
 			// Arguments
+			//------------------------------------------------------------
 			$args = array();
 			foreach (func_get_args() as $arg) { $args[] = $arg; }
 			return call_user_func_array(array($this->data_object, 'prepare'), $args);
@@ -377,21 +400,31 @@ class DataTrans {
 	//*************************************************************************
 	public function execute($params=false)
 	{
+		//------------------------------------------------------------
 		// Unset last_id / Clear results
+		//------------------------------------------------------------
 		$this->data_object->clear_last_insert_id();
 		$this->data_object->clear_result();
 
+		//------------------------------------------------------------
 		// Check if Connection Open
+		//------------------------------------------------------------
 		if (!$this->data_object->is_open()) { return false; }
 
+		//------------------------------------------------------------
 		// Extra Function Arguments
+		//------------------------------------------------------------
 		$args = array();
 		foreach (func_get_args() as $arg) { $args[] = $arg; }
 
+		//------------------------------------------------------------
 		// Execute Query
+		//------------------------------------------------------------
 		$exec_result = call_user_func_array(array($this->data_object, 'execute'), $args);
 
+		//------------------------------------------------------------
 		// Print Query (if necessary)
+		//------------------------------------------------------------
 		if ($this->print_query) { $this->display_query(); }
 
 		return $exec_result;
@@ -404,7 +437,9 @@ class DataTrans {
 	//*************************************************************************
 	protected function display_query()
 	{
+		//------------------------------------------------------------
 		// Pull Query and Bind Params
+		//------------------------------------------------------------
 		$query = $this->data_object->get_query();
 		if (!$query) {
 			return false;
@@ -465,4 +500,3 @@ class DataTrans {
 	}
 
 }
-

@@ -2,10 +2,10 @@
 //************************************************************************************
 //************************************************************************************
 /**
-* phpOpenFW Core Class
+* Framework Core Class
 *
 * @package		phpOpenFW
-* @subpackage	Core
+* @subpackage	Framework
 * @author 		Christian J. Clark
 * @copyright	Copyright (c) Christian J. Clark
 * @license		http://www.gnu.org/licenses/gpl-2.0.txt
@@ -14,51 +14,39 @@
 //************************************************************************************
 //************************************************************************************
 
-class phpOpenFW
+namespace phpOpen\Framework;
+
+class Core
 {
-	//************************************************************************
-    // Class Members
-	//************************************************************************
-    private $frame_path;
-    private $pofw_is_cli;
-    private $xsl_loaded;
-
-    //================================================================================
-    //================================================================================
-    //================================================================================
-    // Public Methods
-    //================================================================================
-    //================================================================================
-    //================================================================================
-
-	//************************************************************************
-	//************************************************************************
-	/**
-	 * phpOpenFW Constructor Function
-	 **/
-	//************************************************************************
-	//************************************************************************
-	public function __construct($mode=false)
-	{
-        $this->frame_path = realpath(__DIR__ . '/../');
-        $this->set_version();
-        $this->detect_env();
-        $this->check_xsl_loaded();
-    }
-
 	//************************************************************************
 	//************************************************************************
     /**
-    * Check XSL Loaded Function
+    * Bootstrap Method
     */
 	//************************************************************************
 	//************************************************************************
-    public function bootstrap()
+    public static function Bootstrap($file_path)
     {
-        //============================================================
-        // Set Application Plugin Folders
-        //============================================================
-        set_plugin_folder("{$this->frame_path}/src/plugins");
+        $frame_path = realpath(__DIR__ . '/../../../');
+        define('PHPOPENFW_FRAME_PATH', $frame_path);
+        //$_SESSION['frame_path'] = PHPOPENFW_FRAME_PATH;
+
+		//============================================================
+		// Is File Path Valid?
+		//============================================================
+		if (!is_dir($file_path)) {
+			trigger_error('Invalid file path given to bootstrap run method.');
+			return false;
+		}
+		define('PHPOPENFW_APP_FILE_PATH', $file_path);
+		//$_SESSION['file_path'] = PHPOPENFW_APP_FILE_PATH;
+		
+		//============================================================
+		// Setup Methods
+		//============================================================
+        self::set_version();
+        self::detect_env();
+        self::check_xsl_loaded();
     }
 
 	//************************************************************************
@@ -68,7 +56,7 @@ class phpOpenFW
     */
 	//************************************************************************
 	//************************************************************************
-    public function get_url_path()
+    public static function get_url_path()
     {
     	//----------------------------------------------------
     	// If $_SERVER['REDIRECT_URL'] is set
@@ -107,7 +95,7 @@ class phpOpenFW
     // Get HTML Path Function
 	//************************************************************************
 	//************************************************************************
-    public function get_html_path()
+    public static function get_html_path()
     {
     	$path = '';
     	if (isset($_SERVER['DOCUMENT_ROOT']) && isset($_SERVER['SCRIPT_FILENAME'])) {
@@ -138,13 +126,12 @@ class phpOpenFW
 	//************************************************************************
     /**
     * Load Configuration Function
-    * @access private
     */
 	//************************************************************************
     // Load Configuration Function
 	//************************************************************************
 	//************************************************************************
-    public function load_config($config_file=false)
+    public static function load_config($config_file=false)
     {
     	//*************************************************************
     	// Initialize the Arrays
@@ -155,9 +142,9 @@ class phpOpenFW
     	//*************************************************************
         // Set Application Plugin Folder
     	//*************************************************************
-    	$app_plugin_folder = "{$_SESSION['file_path']}/plugins";
+    	$app_plugin_folder = PHPOPENFW_APP_FILE_PATH . '/plugins';
         if (is_dir($app_plugin_folder)) {
-            set_plugin_folder($app_plugin_folder);
+            self::set_plugin_folder($app_plugin_folder);
         }
 
     	//*************************************************************
@@ -167,7 +154,7 @@ class phpOpenFW
             require($config_file);
         }
     	else {
-        	require($_SESSION['file_path'] . '/config.inc.php');
+        	require(PHPOPENFW_APP_FILE_PATH . '/config.inc.php');
         }
 
     	//*************************************************************
@@ -177,7 +164,7 @@ class phpOpenFW
     		$_SESSION['html_path'] = $config_arr['html_path'];
     	}
     	else {
-    		$_SESSION['html_path'] = $this->get_html_path();
+    		$_SESSION['html_path'] = self::get_html_path();
     	}
 
     	//*************************************************************
@@ -195,7 +182,7 @@ class phpOpenFW
         //=============================================================
     	$key_arr2 = array_keys($data_arr);
     	foreach ($key_arr2 as $key2) {
-    		$reg_code = reg_data_source($key2, $data_arr[$key2]);
+    		$reg_code = self::reg_data_source($key2, $data_arr[$key2]);
     		if (!$reg_code) { $_SESSION[$key2]['handle'] = 0; }
     	}
 
@@ -234,7 +221,7 @@ class phpOpenFW
     */
 	//************************************************************************
 	//************************************************************************
-    public function load_db_config($db_config, $force_config=false)
+    public static function load_db_config($db_config, $force_config=false)
     {
     	if ((bool)$force_config === true || !empty($_SESSION['db_config_set'])) {
     		if (file_exists($db_config)) {
@@ -264,69 +251,11 @@ class phpOpenFW
 	//************************************************************************
 	//************************************************************************
     /**
-    * Load Form Element Classes Function
-    */
-	//************************************************************************
-	//************************************************************************
-    public function load_form_elements()
-    {
-    	$form_elem_dir = $this->frame_path . '/core/structure/forms';
-		require_once($form_elem_dir . '/simple.inc.php');
-		require_once($form_elem_dir . '/complex/cfe.class.php');
-		require_once($form_elem_dir . '/complex/ssa.class.php');
-		require_once($form_elem_dir . '/complex/sst.class.php');
-		require_once($form_elem_dir . '/complex/cga.class.php');
-		require_once($form_elem_dir . '/complex/rga.class.php');
-		require_once($form_elem_dir . '/complex/rgt.class.php');
-		return true;
-    }
-
-	//************************************************************************
-	//************************************************************************
-    /**
-    * Load Form Engine
-    */
-	//************************************************************************
-	//************************************************************************
-    public function load_form_engine()
-    {
-        load_form_elements();
-    	if (defined('POFW_XSL_LOADED') && POFW_XSL_LOADED) {
-        	$this->load_form_elements();
-            require_once($this->frame_path . '/core/structure/forms/form.class.php');
-    		require_once($this->frame_path . '/core/structure/forms/form_too.class.php');
-        }
-    	else {
-    		trigger_error('Error: load_form_engine(): Cannot use form engine, XSL and/or DOM are not loaded!.');
-    		return false;
-    	}
-
-        return true;
-    }
-
-	//************************************************************************
-	//************************************************************************
-    /**
-    * Load Database Engine
-    */
-	//************************************************************************
-	//************************************************************************
-    public function load_db_engine()
-    {
-    	require_once($this->frame_path . '/core/data_access/data_trans.class.php');
-    	require_once($this->frame_path . '/core/data_access/data_query.class.php');
-        load_plugin('qdba');
-    	load_plugin('dio');
-    }
-
-	//************************************************************************
-	//************************************************************************
-    /**
     * Kill a Session Function
     */
 	//************************************************************************
 	//************************************************************************
-    public function session_kill($plugin)
+    public static function session_kill($plugin)
     {
     	if (isset($_SESSION)) {
     		$_SESSION = array();
@@ -358,7 +287,7 @@ class phpOpenFW
     // Register a new data source in the Session
 	//************************************************************************
 	//************************************************************************
-    public function reg_data_source($ds_index, $ds_params)
+    public static function reg_data_source($ds_index, $ds_params)
     {
     	$known_params = array(
     		'type',
@@ -425,7 +354,7 @@ class phpOpenFW
     // Set Default Data Source
 	//************************************************************************
 	//************************************************************************
-    public function default_data_source($index)
+    public static function default_data_source($index)
     {
     	settype($index, 'string');
     	if ($index != '') {
@@ -452,7 +381,7 @@ class phpOpenFW
     */
 	//************************************************************************
 	//************************************************************************
-    public function set_plugin_folder($dir)
+    public static function set_plugin_folder($dir)
     {
         //=================================================================
         // Validate Directory
@@ -495,7 +424,7 @@ class phpOpenFW
     */
 	//************************************************************************
     //************************************************************************
-    public function unset_plugin_folder($dir)
+    public static function unset_plugin_folder($dir)
     {
         //=================================================================
         // Validate Directory
@@ -537,7 +466,7 @@ class phpOpenFW
     // Load a Plugin from the "plugins" directory
 	//************************************************************************
     //************************************************************************
-    public function load_plugin($plugin)
+    public static function load_plugin($plugin)
     {
         //=================================================================
         // Are there plugin folders defined?
@@ -611,13 +540,13 @@ class phpOpenFW
     */
 	//************************************************************************
 	//************************************************************************
-    private function detect_env()
+    private static function detect_env()
     {
-        if (!defined('POFW_IS_CLI')) {
-            $this->pofw_env = (php_sapi_name() == 'cli') ? (true) : (false);
-            define('POFW_IS_CLI', $this->pofw_is_cli);
+        if (!defined('POPOPENFW_IS_CLI')) {
+            $env = (php_sapi_name() == 'cli') ? (true) : (false);
+            define('POPOPENFW_IS_CLI', $env);
         }
-        return POFW_IS_CLI;
+        return POPOPENFW_IS_CLI;
     }
 
 	//************************************************************************
@@ -627,9 +556,9 @@ class phpOpenFW
     */
 	//************************************************************************
 	//************************************************************************
-    private function set_version()
+    private static function set_version()
     {
-        if (defined('PHPOPENFW_VERSION')) {
+        if (defined('PHPOPEN_VERSION')) {
             return PHPOPENFW_VERSION;
         }
         else if (isset($_SESSION['PHPOPENFW_VERSION'])) {
@@ -637,9 +566,9 @@ class phpOpenFW
         }
         else {
         	$version = false;
-        	$ver_file = $this->frame_path . '/../VERSION';
+        	$ver_file = PHPOPENFW_FRAME_PATH . '/VERSION';
         	if (file_exists($ver_file)) {
-        		$version = file_get_contents($ver_file);
+        		$version = trim(file_get_contents($ver_file));
         	}
         	$_SESSION['PHPOPENFW_VERSION'] = $version;
         }
@@ -654,18 +583,17 @@ class phpOpenFW
     */
 	//************************************************************************
 	//************************************************************************
-    private function check_xsl_loaded()
+    private static function check_xsl_loaded()
     {
-        if (!defined('POFW_XSL_LOADED')) {
+        if (!defined('PHPOPENFW_XSL_LOADED')) {
             if (extension_loaded('xsl') && extension_loaded('dom')) {
-                define('POFW_XSL_LOADED', true);
+                define('PHPOPENFW_XSL_LOADED', true);
             }
             else {
-                define('POFW_XSL_LOADED', false);
+                define('PHPOPENFW_XSL_LOADED', false);
             }
-            $this->xsl_loaded = POFW_XSL_LOADED;
         }
-        return POFW_XSL_LOADED;
+        return PHPOPENFW_XSL_LOADED;
     }
 
 }

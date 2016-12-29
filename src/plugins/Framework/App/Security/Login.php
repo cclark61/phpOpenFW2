@@ -15,6 +15,9 @@
 //**************************************************************************************
 //**************************************************************************************
 
+namespace phpOpen\Framework\App\Security;
+use phpOpen\Framework\App\Flow as Flow;
+
 //**************************************************************************************
 /**
  * Login Class
@@ -44,31 +47,23 @@ class Login {
 	//************************************************************************
 	public function __construct()
 	{
-		// Grab local path
-		$local_path = dirname(__FILE__);
-
+		//****************************************************
 		// Set Authentication Data Source
+		//****************************************************
 		$this->auth_data_source = strtolower($_SESSION['auth_data_source']);
 
+		//****************************************************
 		// Set login status to false by default
+		//****************************************************
 		$this->status = false;
-
-		// Include necessary classes
-		require_once($_SESSION['frame_path'] . '/core/data_access/data_trans.class.php');
-		require_once($local_path . '/nav.class.php');
-		require_once($local_path . '/xml_nav.class.php');
-		require_once($local_path . '/authentication.class.php');
-		require_once($local_path . '/module_list.class.php');
 
 		//****************************************************
 		// Build Array NAVs		
 		//****************************************************
-
-		// User Modules
 		$modules_dir = (isset($_SESSION['modules_dir'])) ? ($_SESSION['modules_dir']) : ('modules');
-		$modules_path = $_SESSION['file_path'] . '/' . $modules_dir;
+		$modules_path = PHPOPENFW_APP_FILE_PATH . '/' . $modules_dir;
 		if (file_exists($modules_path) && is_dir($modules_path)) {
-			$nav = new nav($modules_path);
+			$nav = new Nav($modules_path);
 		}
 		$_SESSION['menu_array'] = (isset($nav)) ? ($nav->export()) : (array());
 		$_SESSION['menu_array2'] = (isset($nav)) ? ($nav->export2()) : (array());
@@ -76,18 +71,22 @@ class Login {
 		//**************************************
 		// Authenticate
 		//**************************************
-		$authen = new authentication();
+		$authen = new Authentication();
 		
 		//**************************************
 		// Authentication Success
 		//**************************************
 		if ($authen->status()) {
 
+			//-----------------------------------------------------
 			// Build XML Nav
-			$module_xml = new xml_nav($_SESSION['menu_array']);
+			//-----------------------------------------------------
+			$module_xml = new XMLNav($_SESSION['menu_array']);
 			$_SESSION['menu_xml'] = $module_xml->export();
 
+			//-----------------------------------------------------
 			// Login Success
+			//-----------------------------------------------------
 			$this->status = true;
 		}
 		//**************************************
@@ -109,7 +108,7 @@ class Login {
 			$fail_ret_val = call_user_func('failed_login');
 			if ($fail_ret_val) { $msg = $fail_ret_val; }
 		}
-		$page = new message($msg);
+		$page = new Flow\Message($msg);
 		$page->render();
 		exit(0);
 	}
@@ -123,4 +122,3 @@ class Login {
 	public function status() { return $this->status; }
 	
 }
-

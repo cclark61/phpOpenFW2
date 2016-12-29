@@ -1,5 +1,5 @@
 <?php
-
+//*************************************************************************
 /**
 * Data Transaction / MySQL Improved (mysqli) Plugin
 * A MySQLi plugin to the (data_trans) class
@@ -12,15 +12,19 @@
 * @access		private
 * @version 		Started: 6-3-2009 updated: 11-26-2012
 */
+//*************************************************************************
 
-//***************************************************************
+namespace phpOpen\Database\Drivers\DataTrans;
+use phpOpen\Database\DataResult;
+
+//*************************************************************************
 /**
  * dt_mysqli Class
  * @package		phpOpenFW
  * @subpackage	Database_Tools
  * @access		private
  */
-//***************************************************************
+//*************************************************************************
 class dt_mysqli extends dt_structure
 {
 
@@ -320,7 +324,7 @@ class dt_mysqli extends dt_structure
 				$this->rsrc_id = $this->stmt->get_result();
 				if (gettype($this->rsrc_id) != 'boolean') {
 					$opts = array('stmt' => $this->stmt, 'prepared_query' => 1);
-		        	$this->data_result = new data_result($this->rsrc_id, $this->data_src, $opts);
+		        	$this->data_result = new DataResult($this->rsrc_id, $this->data_src, $opts);
 		        }
 	        }
 			//---------------------------------------------------

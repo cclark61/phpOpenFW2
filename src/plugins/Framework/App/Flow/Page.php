@@ -2,7 +2,7 @@
 //**************************************************************************************
 //**************************************************************************************
 /**
-* A simple core class to construct the basic page framework
+* A class to construct the page framework
 *
 * @package		phpOpenFW
 * @subpackage	Framework\App\Flow
@@ -13,6 +13,10 @@
 **/
 //**************************************************************************************
 //**************************************************************************************
+
+namespace phpOpen\Framework\App\Flow;
+use phpOpen\XML\GenElement;
+use phpOpen\XML\Transform;
 
 //**************************************************************************************
 /**
@@ -38,16 +42,6 @@ abstract class Page
 	* (pulled from config.inc.php)
 	**/
 	protected $frame_path;
-
-	/**
-	* @var object phpOpenFW Core Object
-	**/
-	protected $pofw;
-
-	/**
-	* @var string File path of the application logic directory for this logic
-	**/
-	protected $app_logic_path;
 
 	/**
 	* @var string root html path of the application
@@ -191,10 +185,8 @@ abstract class Page
 	protected function initialize()
 	{
 		// Set Base Variables
-		$this->file_path = $_SESSION['file_path'];
-		$this->frame_path = $_SESSION['frame_path'];
-		$this->pofw = new phpOpenFW();
-		$this->app_logic_path = $_SESSION['app_logic_path'];
+		$this->file_path = PHPOPENFW_APP_FILE_PATH;
+		$this->frame_path = PHPOPENFW_FRAME_PATH;
 		$this->html_path = $_SESSION['html_path'];
 		$this->mods_dir = (isset($_SESSION['modules_dir'])) ? ($_SESSION['modules_dir']) : ('modules');
 		$this->local_html_path = '';
@@ -225,7 +217,9 @@ abstract class Page
 		//****************************************************
 		if (isset($_SESSION['nav_xml_format'])) {
 			$valid_formats = array('numeric' => 'numeric', 'rewrite' => 'rewrite', 'long_url' => 'long_url');
-			$this->nav_xml_format = (isset($valid_formats[$_SESSION['nav_xml_format']])) ? ($valid_formats[$_SESSION['nav_xml_format']]) : ('numeric');
+			$this->nav_xml_format = (isset($valid_formats[$_SESSION['nav_xml_format']])) 
+				? ($valid_formats[$_SESSION['nav_xml_format']]) 
+				: ('numeric');
 		}
 		else { $this->nav_xml_format = 'numeric'; }
 
@@ -280,25 +274,25 @@ abstract class Page
 		//===========================================================
 		// Start Page
 		//===========================================================
-		$page = new gen_element('page');
+		$page = new GenElement('page');
 		$page->display_tree();
 
 		//===========================================================
 		// Start Page and set basic values
 		//===========================================================
-		$page->add_child(new gen_element('html_path', $this->html_path));
-		$page->add_child(new gen_element('page_type', $this->page_type));
+		$page->add_child(new GenElement('html_path', $this->html_path));
+		$page->add_child(new GenElement('page_type', $this->page_type));
 		
 		//===========================================================
 		// CSS files
 		//===========================================================
-		$tmp = new gen_element('css_files');
+		$tmp = new GenElement('css_files');
 		$tmp->display_tree();
 		foreach ($this->css_files as $file_attrs) {
-			$tmp2 = new gen_element('css_file');
+			$tmp2 = new GenElement('css_file');
 			$tmp2->display_tree();
 			foreach ($file_attrs as $attr_key => $attr_val) {
-				$tmp3 = new gen_element($attr_key, $attr_val);
+				$tmp3 = new GenElement($attr_key, $attr_val);
 				$tmp2->add_child($tmp3);
 			}
 			$tmp->add_child($tmp2);
@@ -309,13 +303,13 @@ abstract class Page
 		// Theme CSS files
 		//===========================================================
 		if ($this->theme_css_files) {
-			$tmp = new gen_element('theme_css_files');
+			$tmp = new GenElement('theme_css_files');
 			$tmp->display_tree();
 			foreach ($this->theme_css_files as $file_attrs) {
-				$tmp2 = new gen_element('theme_css_file');
+				$tmp2 = new GenElement('theme_css_file');
 				$tmp2->display_tree();
 				foreach ($file_attrs as $attr_key => $attr_val) {
-					$tmp3 = new gen_element($attr_key, $attr_val);
+					$tmp3 = new GenElement($attr_key, $attr_val);
 					$tmp2->add_child($tmp3);
 				}
 				$tmp->add_child($tmp2);
@@ -326,10 +320,10 @@ abstract class Page
 		//===========================================================
 		// Javascript files
 		//===========================================================
-		$tmp = new gen_element('js_files');
+		$tmp = new GenElement('js_files');
 		$tmp->display_tree();
 		foreach ($this->js_files as $js_file) {
-			$tmp->add_child(new gen_element('js_file', $js_file));
+			$tmp->add_child(new GenElement('js_file', $js_file));
 		}
 		$page->add_child($tmp);
 
@@ -337,10 +331,10 @@ abstract class Page
 		// Theme Javascript files
 		//===========================================================
 		if ($this->theme_js_files) {
-			$tmp = new gen_element('theme_js_files');
+			$tmp = new GenElement('theme_js_files');
 			$tmp->display_tree();
 			foreach ($this->theme_js_files as $js_file) {
-				$tmp->add_child(new gen_element('theme_js_file', $js_file));
+				$tmp->add_child(new GenElement('theme_js_file', $js_file));
 			}
 			$page->add_child($tmp);
 		}
@@ -349,13 +343,13 @@ abstract class Page
 		// Copyright
 		//===========================================================
 		$curr_year = date('Y');
-		$page->add_child(new gen_element('copyright', "{$curr_year} {$this->creator}"));
+		$page->add_child(new GenElement('copyright', "{$curr_year} {$this->creator}"));
 
 		//===========================================================
 		// Account Name
 		//===========================================================
 		if ($this->account_name) {
-			$page->add_child(new gen_element('account_name', $this->account_name));
+			$page->add_child(new GenElement('account_name', $this->account_name));
 		}
 		
 		//===========================================================
@@ -367,7 +361,7 @@ abstract class Page
 				$page->add_child("{$tmp_site_xml}\n");
 			}
 			else {
-				$page->add_child(new gen_element('site_data', $this->site_xml));
+				$page->add_child(new GenElement('site_data', $this->site_xml));
 			}
 		}
 		
@@ -375,7 +369,7 @@ abstract class Page
 		// Application XML
 		//===========================================================
 		if (count($this->app_xml) > 0) {
-			$tmp = new gen_element('application_data');
+			$tmp = new GenElement('application_data');
 			$tmp->display_tree();
 
 			foreach ($this->app_xml as $xml_line) {
@@ -384,7 +378,7 @@ abstract class Page
 					$tmp->add_child("{$new_xml_line}\n");	
 				}
 				else {
-					$tmp->add_child(new gen_element($xml_line[0], $xml_line[1]));
+					$tmp->add_child(new GenElement($xml_line[0], $xml_line[1]));
 				}
 			}
 			$page->add_child($tmp);
@@ -396,22 +390,22 @@ abstract class Page
 		if (isset($_SESSION['userid'])) {
 
 			// User Info
-			$tmp = new gen_element('user');
+			$tmp = new GenElement('user');
 			$tmp->display_tree();
-			$tmp->add_child(new gen_element('userid', $_SESSION['userid']));
+			$tmp->add_child(new GenElement('userid', $_SESSION['userid']));
 			if (!isset($_SESSION['name'])) { $_SESSION['name'] = ''; }
-			$tmp->add_child(new gen_element('name', xml_escape($_SESSION['name'])));
+			$tmp->add_child(new GenElement('name', xml_escape($_SESSION['name'])));
 			$page->add_child($tmp);
 		
 			// Special links (logout)
 			$exit_phrase = 'Logout';
 			if ($_SESSION['auth_data_type'] == 'none') { $exit_phrase = 'Quit'; }
-			$tmp = new gen_element('userlinks');
+			$tmp = new GenElement('userlinks');
 			$tmp->display_tree();
-			$tmp2 = new gen_element('link');
+			$tmp2 = new GenElement('link');
 			$tmp2->display_tree();
-			$tmp2->add_child(new gen_element('linkdesc', $exit_phrase));
-			$tmp2->add_child(new gen_element('linkhref', "{$this->html_path}/?mod=logout"));
+			$tmp2->add_child(new GenElement('linkdesc', $exit_phrase));
+			$tmp2->add_child(new GenElement('linkhref', "{$this->html_path}/?mod=logout"));
 			$tmp->add_child($tmp2);
 
 			$page->add_child($tmp);
@@ -444,7 +438,7 @@ abstract class Page
 		//===========================================================
 		ob_start();
 		$sxoe = (isset($_SESSION['show_xml_on_error']) && $_SESSION['show_xml_on_error'] == 1) ? (true) : (false);
-		xml_transform($this->page_xml, $this->xsl_template, $sxoe);
+		Transform::XSL($this->page_xml, $this->xsl_template, $sxoe);
 		$page_content = ob_get_clean();
 
 		//===========================================================
@@ -460,7 +454,9 @@ abstract class Page
 	}
 
 	//***********************************************************************************
+	//***********************************************************************************
 	// Variable Access Functions
+	//***********************************************************************************
 	//***********************************************************************************
 
 	//***********************************************************************
@@ -499,7 +495,9 @@ abstract class Page
 	public function xsl_template() { return $this->xsl_template; }
 
 	//***********************************************************************************
+	//***********************************************************************************
 	// Variable Set Functions
+	//***********************************************************************************
 	//***********************************************************************************
 
 	//***********************************************************************
@@ -585,4 +583,3 @@ abstract class Page
 // End page.class.php
 //*************************************************************************************
 //*************************************************************************************
-

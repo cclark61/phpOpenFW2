@@ -4,18 +4,25 @@
 /**
 * Framework Core Class
 *
-* @package		phpOpenFW
+* @package		phpOpenFW2
 * @subpackage	Framework
 * @author 		Christian J. Clark
 * @copyright	Copyright (c) Christian J. Clark
 * @license		http://www.gnu.org/licenses/gpl-2.0.txt
-* @version 		Started: 1/13/2016, Last updated: 2/24/2016
+* @version 		Started: 1/13/2016, Updated: 12/30/2016
 **/
 //************************************************************************************
 //************************************************************************************
 
 namespace phpOpen\Framework;
 
+//**************************************************************************************
+/**
+ * Framework Core Class
+ * @package		phpOpenFW2
+ * @subpackage	Framework
+ */
+//**************************************************************************************
 class Core
 {
 	//************************************************************************
@@ -25,22 +32,29 @@ class Core
     */
 	//************************************************************************
 	//************************************************************************
-    public static function Bootstrap($file_path)
+    public static function Bootstrap($file_path=false)
     {
-        $frame_path = realpath(__DIR__ . '/../../../');
-        define('PHPOPENFW_FRAME_PATH', $frame_path);
-        //$_SESSION['frame_path'] = PHPOPENFW_FRAME_PATH;
+		//============================================================
+		// Define Framework Path?
+		//============================================================
+	    if (!defined('PHPOPENFW_FRAME_PATH')) {
+	        $frame_path = realpath(__DIR__ . '/../../../');
+	        define('PHPOPENFW_FRAME_PATH', $frame_path);
+	        //$_SESSION['frame_path'] = PHPOPENFW_FRAME_PATH;
+		}
 
 		//============================================================
-		// Is File Path Valid?
+		// Define File Path?
 		//============================================================
-		if (!is_dir($file_path)) {
-			trigger_error('Invalid file path given to bootstrap run method.');
-			return false;
+		if (!defined('PHPOPENFW_APP_FILE_PATH')) {
+			if ($file_path && !is_dir($file_path)) {
+				trigger_error('Invalid file path given to Core Bootstrap method.');
+				return false;
+			}
+			define('PHPOPENFW_APP_FILE_PATH', $file_path);
+			//$_SESSION['file_path'] = PHPOPENFW_APP_FILE_PATH;
 		}
-		define('PHPOPENFW_APP_FILE_PATH', $file_path);
-		//$_SESSION['file_path'] = PHPOPENFW_APP_FILE_PATH;
-		
+
 		//============================================================
 		// Setup Methods
 		//============================================================
@@ -558,7 +572,7 @@ class Core
 	//************************************************************************
     private static function set_version()
     {
-        if (defined('PHPOPEN_VERSION')) {
+        if (defined('PHPOPENFW_VERSION')) {
             return PHPOPENFW_VERSION;
         }
         else if (isset($_SESSION['PHPOPENFW_VERSION'])) {

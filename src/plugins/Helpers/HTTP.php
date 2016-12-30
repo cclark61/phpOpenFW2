@@ -5,7 +5,7 @@
 * HTTP Helper Object
 *
 * @package		phpOpenPlugins
-* @subpackage	Helper
+* @subpackage	Helpers
 * @author 		Christian J. Clark
 * @copyright	Copyright (c) Christian J. Clark
 * @license		http://www.gnu.org/licenses/gpl-2.0.txt
@@ -14,6 +14,8 @@
 **/
 //*****************************************************************************
 //*****************************************************************************
+
+namespace phpOpenFW\Helpers;
 
 //*******************************************************************************
 //*******************************************************************************

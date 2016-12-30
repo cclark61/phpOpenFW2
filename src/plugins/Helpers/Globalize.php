@@ -14,12 +14,12 @@
 //**************************************************************************************
 //**************************************************************************************
 
-namespace phpOpen\Helpers;
+namespace phpOpenFW\Helpers;
 
 //**************************************************************************************
 /**
  * Globalizing Class
- * @package		phpOpenFW
+ * @package		phpOpenFW2
  * @subpackage	Globalize
  */
 //**************************************************************************************
@@ -28,11 +28,40 @@ class Globalize
 
 	//*****************************************************************************
 	/**
+	 * Bootstrap Method
+	 */
+	//*****************************************************************************
+	protected static function Bootstrap()
+	{
+		//============================================================
+		// Bootstrap the Core?
+		//============================================================
+		if (!defined('PHPOPENFW_FRAME_PATH')) {
+			\phpOpenFW\Framework\Core::Bootstrap();
+		}
+	}
+
+	//*****************************************************************************
+	/**
+	 * Globalize ALL Functions
+	 */
+	//*****************************************************************************
+	public static function All(Array $excluded=[])
+	{
+		self::Bootstrap();
+		self::XML($excluded);
+		self::Core($excluded);
+		self::UPN($excluded);
+	}
+
+	//*****************************************************************************
+	/**
 	 * Globalize XML Functions
 	 */
 	//*****************************************************************************
 	public static function XML(Array $excluded=[])
 	{
+		self::Bootstrap();
 		include_once(PHPOPENFW_FRAME_PATH . '/src/globals/Globalize/XML.php');
 	}
 
@@ -43,6 +72,7 @@ class Globalize
 	//*****************************************************************************
 	public static function Core(Array $excluded=[])
 	{
+		self::Bootstrap();
 		include_once(PHPOPENFW_FRAME_PATH . '/src/globals/Globalize/Core.php');
 	}
 
@@ -53,6 +83,7 @@ class Globalize
 	//*****************************************************************************
 	public static function UPN(Array $excluded=[])
 	{
+		self::Bootstrap();
 		include_once(PHPOPENFW_FRAME_PATH . '/src/globals/Globalize/UPN.php');
 	}
 

@@ -2,14 +2,14 @@
 //**************************************************************************************
 //**************************************************************************************
 /**
-* Bootstrap Application Class
+* Application Framework Class
 *
-* @package		phpOpenFW
-* @subpackage 	Bootstrap
+* @package		phpOpenFW2
+* @subpackage 	Framework
 * @author 		Christian J. Clark
 * @copyright	Copyright (c) Christian J. Clark
 * @license		http://www.gnu.org/licenses/gpl-2.0.txt
-* @version 		Started: 12/23/2016, Updated: 12/28/2016
+* @version 		Started: 12/23/2016, Updated: 12/30/2016
 */
 //**************************************************************************************
 //**************************************************************************************
@@ -19,12 +19,13 @@ use phpOpen\Framework\App\Security as Security;
 
 //**************************************************************************************
 /**
- * Bootstrap Application Class
- * @package		phpOpenFW
- * @subpackage	Bootstrap
+ * Application Framework Class
+ * @package		phpOpenFW2
+ * @subpackage	Framework
  */
 //**************************************************************************************
-class App {
+class App
+{
 
 	//*************************************************************************
 	/**
@@ -33,6 +34,13 @@ class App {
 	//*************************************************************************
 	public static function Run($file_path)
 	{
+		//============================================================
+		// Must specify an applciation directory
+		//============================================================
+		if (!is_dir($file_path)) {
+			die('You must give a valid application path.');
+		}
+
 		//============================================================
 		// Bootstrap the Core
 		//============================================================

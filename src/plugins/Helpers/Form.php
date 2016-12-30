@@ -15,6 +15,8 @@
 //*****************************************************************************
 //*****************************************************************************
 
+namespace phpOpenFW\Helpers;
+
 //*******************************************************************************
 //*******************************************************************************
 // Form Helper Object
@@ -27,7 +29,7 @@ class Form
 	// Check and Clear Form Key Function
 	//=============================================================================
 	//=============================================================================
-	public static function CheckAndClearFormKey($obj, $mod_var_index, $form_key)
+	public static function check_and_clear_form_key($obj, $mod_var_index, $form_key)
 	{
 		$do_trans = false;
 		$form_key_sess = $obj->get_mod_var($mod_var_index);

@@ -4,7 +4,7 @@
 /**
 * MySQL Methods Class
 *
-* @package		phpOpenPlugins
+* @package		phpOpenFW2
 * @subpackage	Database
 * @author 		Christian J. Clark
 * @copyright	Copyright (c) Christian J. Clark
@@ -14,14 +14,15 @@
 **/
 //*****************************************************************************
 //*****************************************************************************
-require_once('POP_static_core.class.php');
+
+namespace phpOpenFW\Helpers\Database;
 
 //*******************************************************************************
 //*******************************************************************************
 // MySQL Object
 //*******************************************************************************
 //*******************************************************************************
-class MySQL extends POP_static_core
+class MySQL extends \phpOpenFW\Cores\StaticCore;
 {
 
 	//#########################################################################

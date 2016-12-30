@@ -2,34 +2,44 @@
 //**************************************************************************************
 //**************************************************************************************
 /**
-* Bootstrap Site Class
+* Site Framework Class
 *
-* @package		phpOpenFW
-* @subpackage 	Bootstrap
+* @package		phpOpenFW2
+* @subpackage 	Framework
 * @author 		Christian J. Clark
 * @copyright	Copyright (c) Christian J. Clark
 * @license		http://www.gnu.org/licenses/gpl-2.0.txt
-* @version 		Started: 12/23/2016, Updated: 12/23/2016
+* @version 		Started: 12/23/2016, Updated: 12/30/2016
 */
 //**************************************************************************************
 //**************************************************************************************
 
+namespace phpOpen\Framework;
+
 //**************************************************************************************
 /**
- * Bootstrap Site Class
- * @package		phpOpenFW
- * @subpackage	Bootstrap
+ * Site Framework Class
+ * @package		phpOpenFW2
+ * @subpackage	Framework
  */
 //**************************************************************************************
-class Site {
+class Site
+{
 
 	//*************************************************************************
 	/**
 	* Run Method
 	**/
 	//*************************************************************************
-	public static function Run()
+	public static function Run($file_path)
 	{
+		//============================================================
+		// Must specify an applciation directory
+		//============================================================
+		if (!is_dir($file_path)) {
+			die('You must give a valid site path.');
+		}
+
 		//============================================================
 		// Capture page start time
 		//============================================================
@@ -59,14 +69,12 @@ class Site {
 			header("Location: {$tmp_url2}");
 			exit;
 		}
-		
+
 		//============================================================
-		// Include phpOpenFW Core
+		// Bootstrap the Core
 		//============================================================
-		require_once(__DIR__ . '/core/phpOpenFW.class.php');
-		$pofw = new phpOpenFW();
-		$pofw->bootstrap();
-		
+		\phpOpen\Framework\Core::Bootstrap($file_path);
+	
 		//============================================================
 		// Include Application Logic
 		// Start Page Data
@@ -192,7 +200,7 @@ class Site {
 		//============================================================
 		// Build URL Path and Parts
 		//============================================================
-		$module_url_path = $pofw->get_url_path();
+		$module_url_path = \phpOpen\Framework\Core::get_url_path();
 		if ($base_url != '/') {
 			$module_url_path = str_replace($base_url, '', $module_url_path);
 		}

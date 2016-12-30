@@ -23,6 +23,6 @@ if (!isset($excluded)) {
 // Function Declarations
 //=============================================================================
 if (!in_array('load_plugin', $excluded)) {
-	function load_plugin() { return call_user_func_array('\phpOpen\Framework\Core::load_plugin', func_get_args()); }
+	function load_plugin() { return call_user_func_array('\phpOpenFW\Framework\Core::load_plugin', func_get_args()); }
 }
 

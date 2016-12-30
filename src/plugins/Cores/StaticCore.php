@@ -4,13 +4,12 @@
 /**
 * A Core plugin for classes used with static functions
 *
-* @package		phpOpenPlugins
+* @package		phpOpenFW
 * @subpackage	Core
 * @author 		Christian J. Clark
 * @copyright	Copyright (c) Christian J. Clark
-* @license		http://www.gnu.org/licenses/gpl-2.0.txt
-* @link			http://www.emonlade.net/phpopenplugins/
-* @version 		Started: 8/25/2015, Last updated: 8/25/2015
+* @license		https://mit-license.org
+* @version 		Started: 8/25/2015, Updated: 8/25/2015
 **/
 //*****************************************************************************
 //*****************************************************************************

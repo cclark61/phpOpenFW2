@@ -8,14 +8,14 @@
 * @subpackage	Framework\App\Security
 * @author 		Christian J. Clark
 * @copyright	Copyright (c) Christian J. Clark
-* @license		http://www.gnu.org/licenses/gpl-2.0.txt
-* @version 		Started: 4-13-2006, Last updated: 4-6-2010
+* @license		https://mit-license.org
+* @version 		Started: 4-13-2006, Updated: 4-6-2010
 * @access		private
 **/
 //**************************************************************************************
 //**************************************************************************************
 
-namespace phpOpen\Framework\App\Security;
+namespace phpOpenFW\Framework\App\Security;
 
 //**************************************************************************************
 /**

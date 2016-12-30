@@ -8,13 +8,13 @@
  * @subpackage	XML
  * @author 		Christian J. Clark
  * @copyright	Copyright (c) Christian J. Clark
- * @license		http://www.gnu.org/licenses/gpl-2.0.txt
- * @version 	Started: 3-15-2006, Last updated: 12-23-2016
+ * @license		https://mit-license.org
+ * @version 	Started: 3-15-2006, Updated: 12-23-2016
  **/
 //**************************************************************************************
 //**************************************************************************************
 
-namespace phpOpen\XML;
+namespace phpOpenFW\XML;
 
 //**************************************************************************************
 /**
@@ -62,7 +62,7 @@ class Transform
 			// Load the XSL Source
 			//--------------------------------------------------------------
 			if (file_exists($xsl_template)) {
-				set_error_handler('\phpOpen\XML\Transform::HandleXSLError');
+				set_error_handler('\phpOpenFW\XML\Transform::HandleXSLError');
 				$xsl = new \DOMDocument;
 				$xsl_load_status = $xsl->load($xsl_template, LIBXML_NOCDATA);
 				restore_error_handler();

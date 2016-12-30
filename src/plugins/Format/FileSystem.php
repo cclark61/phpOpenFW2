@@ -4,13 +4,12 @@
 /**
 * File System Formatting Class
 *
-* @package		phpOpenPlugins
+* @package		phpOpenFW
 * @subpackage	Format
 * @author 		Christian J. Clark
 * @copyright	Copyright (c) Christian J. Clark
-* @license		http://www.gnu.org/licenses/gpl-2.0.txt
-* @link			http://www.emonlade.net/phpopenplugins/
-* @version 		Started: 7/17/2012, Last updated: 6/7/2016
+* @license		https://mit-license.org
+* @version 		Started: 7/17/2012, Updated: 6/7/2016
 **/
 //*****************************************************************************
 //*****************************************************************************

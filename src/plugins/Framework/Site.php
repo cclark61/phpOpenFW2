@@ -8,13 +8,13 @@
 * @subpackage 	Framework
 * @author 		Christian J. Clark
 * @copyright	Copyright (c) Christian J. Clark
-* @license		http://www.gnu.org/licenses/gpl-2.0.txt
+* @license		https://mit-license.org
 * @version 		Started: 12/23/2016, Updated: 12/30/2016
 */
 //**************************************************************************************
 //**************************************************************************************
 
-namespace phpOpen\Framework;
+namespace phpOpenFW\Framework;
 
 //**************************************************************************************
 /**
@@ -73,7 +73,7 @@ class Site
 		//============================================================
 		// Bootstrap the Core
 		//============================================================
-		\phpOpen\Framework\Core::Bootstrap($file_path);
+		\phpOpenFW\Framework\Core::Bootstrap($file_path);
 	
 		//============================================================
 		// Include Application Logic
@@ -200,7 +200,7 @@ class Site
 		//============================================================
 		// Build URL Path and Parts
 		//============================================================
-		$module_url_path = \phpOpen\Framework\Core::get_url_path();
+		$module_url_path = \phpOpenFW\Framework\Core::get_url_path();
 		if ($base_url != '/') {
 			$module_url_path = str_replace($base_url, '', $module_url_path);
 		}

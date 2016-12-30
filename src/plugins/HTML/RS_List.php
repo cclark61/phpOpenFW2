@@ -6,7 +6,7 @@
 * @subpackage	HTML
 * @author		Christian J. Clark
 * @copyright	Copyright (c) Christian J. Clark
-* @license		http://www.gnu.org/licenses/gpl-2.0.txt
+* @license		https://mit-license.org
 * @version		Started: 1-27-2006 Updated: 2-17-2013
 */
 //****************************************************************************
@@ -20,7 +20,7 @@ namespace phpOpenFW\HTML;
  * @subpackage	HTML
  */
 //****************************************************************************
-class RSList
+class RS_List
 {
 
 	//*********************************************************************

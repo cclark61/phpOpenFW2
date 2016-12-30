@@ -2,35 +2,39 @@
 //**************************************************************************
 //**************************************************************************
 /**
-* Button Form Class
+* Secret Form Class
 *
 * @package		phpOpenFW
 * @subpackage	Forms\Elements
 * @author 		Christian J. Clark
 * @copyright	Copyright (c) Christian J. Clark
-* @license		http://www.gnu.org/licenses/gpl-2.0.txt
+* @license		https://mit-license.org
 * @version 		Started: 3-20-2006 Updated: 12-29-2011
 **/
 //**************************************************************************
 //**************************************************************************
 
+namespace phpOpenFW\Form\Elements;
+
 //**************************************************************************
 /**
- * Button Class
+ * Secret Class
  * @package		phpOpenFW
  * @subpackage	Forms\Elements
  */
 //**************************************************************************
-class Button extends element
+class secret extends \phpOpenFW\XML\Element
 {	
-	//************************************************************************
+	//***********************************************************************
 	// Constructor Function
-	//************************************************************************
-	public function __construct($content, $type=false)
+	//***********************************************************************
+	public function __construct($name, $value='', $size=20)
 	{
-		$this->element = 'button';
-		if ($type) { $this->set_attribute('type', $type); }
-		$this->inset($content);
+		$this->element = 'input';
+		$this->set_attribute('type', 'password');
+		$this->set_attribute('name', $name);
+		$this->set_attribute('value', $value);
+		$this->attributes['size'] = $size;
 	}
 
 }

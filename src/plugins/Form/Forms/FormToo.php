@@ -8,7 +8,7 @@
 * @subpackage	Forms
 * @author 		Christian J. Clark
 * @copyright	Copyright (c) Christian J. Clark
-* @license		http://www.gnu.org/licenses/gpl-2.0.txt
+* @license		https://mit-license.org
 * @version 		Started: 12-9-2012 Updated: 3-6-2013
 **/
 //**************************************************************************

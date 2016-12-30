@@ -8,14 +8,14 @@
 * @subpackage 	Framework
 * @author 		Christian J. Clark
 * @copyright	Copyright (c) Christian J. Clark
-* @license		http://www.gnu.org/licenses/gpl-2.0.txt
+* @license		https://mit-license.org
 * @version 		Started: 12/23/2016, Updated: 12/30/2016
 */
 //**************************************************************************************
 //**************************************************************************************
 
-namespace phpOpen\Framework;
-use phpOpen\Framework\App\Security as Security;
+namespace phpOpenFW\Framework;
+use phpOpenFW\Framework\App\Security as Security;
 
 //**************************************************************************************
 /**
@@ -44,13 +44,13 @@ class App
 		//============================================================
 		// Bootstrap the Core
 		//============================================================
-		\phpOpen\Framework\Core::Bootstrap($file_path);
+		\phpOpenFW\Framework\Core::Bootstrap($file_path);
 
 		//============================================================
 		// Load Config if not logged in
 		//============================================================
 		if (!isset($_SESSION['userid'])) {
-		    \phpOpen\Framework\Core::load_config();
+		    \phpOpenFW\Framework\Core::load_config();
 		}
 
 		//============================================================

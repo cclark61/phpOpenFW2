@@ -8,15 +8,15 @@
 * @subpackage	Framework\App\Security
 * @author 		Christian J. Clark
 * @copyright	Copyright (c) Christian J. Clark
-* @license		http://www.gnu.org/licenses/gpl-2.0.txt
-* @version 		Started: 8-16-2005, Last updated: 8-27-2014
+* @license		https://mit-license.org
+* @version 		Started: 8-16-2005, Updated: 8-27-2014
 * @access		private
 **/
 //**************************************************************************************
 //**************************************************************************************
 
-namespace phpOpen\Framework\App\Security;
-use phpOpen\Framework\App\Flow as Flow;
+namespace phpOpenFW\Framework\App\Security;
+use phpOpenFW\Framework\App\Flow as Flow;
 
 //**************************************************************************************
 /**

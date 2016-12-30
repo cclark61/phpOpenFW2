@@ -8,7 +8,7 @@
 * @subpackage 	Database_Tools
 * @author 		Christian J. Clark
 * @copyright	Copyright (c) Christian J. Clark
-* @license		http://www.gnu.org/licenses/gpl-2.0.txt
+* @license		https://mit-license.org
 * @access		private
 * @version 		Started: 11/16/2012 updated: 11/16/2012
 */

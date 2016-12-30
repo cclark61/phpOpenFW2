@@ -8,12 +8,12 @@
 * @subpackage 	Database
 * @author 		Christian J. Clark
 * @copyright	Copyright (c) Christian J. Clark
-* @license		http://www.gnu.org/licenses/gpl-2.0.txt
+* @license		https://mit-license.org
 * @version 		Started: 9-20-2005 updated: 8-27-2014
 */
 //**************************************************************************************
 
-namespace phpOpen\Database;
+namespace phpOpenFW\Database;
 
 //**************************************************************************************
 /**
@@ -98,7 +98,7 @@ class DataTrans {
 		//------------------------------------------------------------
         // Create new Data Object
 		//------------------------------------------------------------
-        $dt_class = '\phpOpen\Database\Drivers\DataTrans\dt_' . $this->data_type;
+        $dt_class = '\phpOpenFW\Database\Drivers\DataTrans\dt_' . $this->data_type;
         $this->data_object = new $dt_class($data_src, $tmp_trans_type);
 
 		//------------------------------------------------------------

@@ -4,13 +4,12 @@
 /**
 * Form Formatting Class
 *
-* @package		phpOpenPlugins
+* @package		phpOpenFW
 * @subpackage	Format
 * @author 		Christian J. Clark
 * @copyright	Copyright (c) Christian J. Clark
-* @license		http://www.gnu.org/licenses/gpl-2.0.txt
-* @link			http://www.emonlade.net/phpopenplugins/
-* @version 		Started: 7/17/2012, Last updated: 6/7/2016
+* @license		https://mit-license.org
+* @version 		Started: 7/17/2012, Updated: 6/7/2016
 **/
 //*****************************************************************************
 //*****************************************************************************
@@ -30,7 +29,7 @@ class Form
 	// SQL Escape Values Function
 	//=============================================================================
 	//=============================================================================
-	public static function SQLEscapeValues(&$in_val, $ignore_indices=false)
+	public static function sql_escape_values(&$in_val, $ignore_indices=false)
 	{
 		//---------------------------------------------------------
 		// Indices set to be ignored
@@ -53,7 +52,7 @@ class Form
 	// Set Category Function
 	//=============================================================================
 	//=============================================================================
-	public static function SetCategory(&$cat, $new_cat)
+	public static function set_category(&$cat, $new_cat)
 	{
 		if ($cat == "[+]" && $new_cat != "") { $cat = $new_cat; }
 		else if ($cat == "[+]" && $new_cat == "") { $cat = ""; }

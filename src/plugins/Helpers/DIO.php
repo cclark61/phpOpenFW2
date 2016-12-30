@@ -4,13 +4,12 @@
 /**
 * Database Interface Object Helper Object
 *
-* @package		phpOpenPlugins
+* @package		phpOpenFW
 * @subpackage	Helper
 * @author 		Christian J. Clark
 * @copyright	Copyright (c) Christian J. Clark
-* @license		http://www.gnu.org/licenses/gpl-2.0.txt
-* @link			http://www.emonlade.net/phpopenplugins/
-* @version 		Started: 8/25/2015, Last updated: 8/27/2015
+* @license		https://mit-license.org
+* @version 		Started: 8/25/2015, Updated: 8/27/2015
 **/
 //*****************************************************************************
 //*****************************************************************************
@@ -28,7 +27,7 @@ class DIO
 	// Set DIO Field to NULL
 	//=============================================================================
 	//=============================================================================
-	public static function SetFieldNull(&$obj, $field_name)
+	public static function set_field_null(&$obj, $field_name)
 	{
 		$obj->set_field_quotes($field_name, 'disable');
 		$obj->set_field_data($field_name, 'NULL');
@@ -40,7 +39,7 @@ class DIO
 	// Set DIO Field to Current Date/Time
 	//=============================================================================
 	//=============================================================================
-	public static function SetFieldCurrent_dttm(&$obj, $field_name)
+	public static function set_field_current_dttm(&$obj, $field_name)
 	{
 		$obj->set_field_quotes($field_name, 'disable');
 		$obj->set_field_data($field_name, 'NOW()');
@@ -52,7 +51,7 @@ class DIO
 	// Save DIO Record Function
 	//=============================================================================
 	//=============================================================================
-	public static function SaveRecord($obj_name, $data, $pkey=false, $args=false)
+	public static function save_record($obj_name, $data, $pkey=false, $args=false)
 	{
 		//------------------------------------------------------
 		// Transaction Type

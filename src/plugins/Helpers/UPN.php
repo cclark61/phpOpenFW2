@@ -4,13 +4,12 @@
 /**
 * Universal Path Notation (UPN) Plugin
 *
-* @package		phpOpenPlugins
+* @package		phpOpenFW
 * @subpackage	Helpers
 * @author 		Christian J. Clark
 * @copyright	Copyright (c) Christian J. Clark
-* @license		http://www.gnu.org/licenses/gpl-2.0.txt
-* @link			http://www.emonlade.net/phpopenplugins/
-* @version 		Started: 5-1-2016, Last updated: 5-24-2016
+* @license		https://mit-license.org
+* @version 		Started: 5-1-2016, Updated: 5-24-2016
 **/
 //*****************************************************************************
 //*****************************************************************************

@@ -4,13 +4,12 @@
 /**
 * Remote Class Plugin
 *
-* @package		phpOpenPlugins
+* @package		phpOpenFW
 * @subpackage	Remote
 * @author 		Christian J. Clark
 * @copyright	Copyright (c) Christian J. Clark
-* @license		http://www.gnu.org/licenses/gpl-2.0.txt
-* @link			http://www.emonlade.net/phpopenplugins/
-* @version 		Started: 1/1/2011, Last updated: 11/17/2011
+* @license		https://mit-license.org
+* @version 		Started: 1/1/2011, Updated: 11/17/2011
 **/
 //*****************************************************************************
 //*****************************************************************************

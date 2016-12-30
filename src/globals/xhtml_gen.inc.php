@@ -8,8 +8,8 @@
 * @subpackage	Globals
 * @author 		Christian J. Clark
 * @copyright	Copyright (c) Christian J. Clark
-* @license		http://www.gnu.org/licenses/gpl-2.0.txt
-* @version 		Started: 3/9/2012, Last updated: 2/15/2013
+* @license		https://mit-license.org
+* @version 		Started: 3/9/2012, Updated: 2/15/2013
 **/
 //*****************************************************************************
 //*****************************************************************************

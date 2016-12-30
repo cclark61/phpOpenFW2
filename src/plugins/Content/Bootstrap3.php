@@ -4,13 +4,12 @@
 /**
 * Bootstrap Object (for Version 3)
 *
-* @package		phpOpenPlugins
+* @package		phpOpenFW
 * @subpackage	Content
 * @author 		Christian J. Clark
 * @copyright	Copyright (c) Christian J. Clark
-* @license		http://www.gnu.org/licenses/gpl-2.0.txt
-* @link			http://www.emonlade.net/phpopenplugins/
-* @version 		Started: 9/18/2013, Last updated: 8/24/2015
+* @license		https://mit-license.org
+* @version 		Started: 9/18/2013, Updated: 8/24/2015
 **/
 //*****************************************************************************
 //*****************************************************************************

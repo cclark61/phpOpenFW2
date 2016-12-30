@@ -7,7 +7,7 @@
 * @subpackage	Format
 * @author 		Christian J. Clark
 * @copyright	Copyright (c) Christian J. Clark
-* @license		http://www.gnu.org/licenses/gpl-2.0.txt
+* @license		https://mit-license.org
 * @version 		Started: 1-4-2005 Updated: 4-2-2013
 **/
 //*****************************************************************************
@@ -86,7 +86,7 @@ class Content
 	// Format Filesize Function
 	//=============================================================================
 	//=============================================================================
-	public static function FormatFilesize($bytes)
+	public static function format_filesize($bytes)
 	{
 	    if ($bytes < 1024) {
 	        return $bytes .' B';
@@ -107,7 +107,7 @@ class Content
 	// Get Saveable Password Function
 	//=============================================================================
 	//=============================================================================
-	public static function GetSaveablePassword($pass, $aps=false)
+	public static function get_saveable_password($pass, $aps=false)
 	{
 		if (!$aps && isset($_SESSION['auth_pass_security'])) {
 			$aps = strtolower($_SESSION['auth_pass_security']);
@@ -138,7 +138,7 @@ class Content
 	// Print Code Function
 	//=============================================================================
 	//=============================================================================
-	public static function PrintCode($code, $return=false)
+	public static function print_code($code, $return=false)
 	{
 		if ($return) { ob_start(); }
 		print div(nl2br($code), array("class" => "code_box"));

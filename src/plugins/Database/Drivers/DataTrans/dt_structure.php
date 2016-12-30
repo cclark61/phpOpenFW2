@@ -8,13 +8,13 @@
 * @subpackage 	Database_Tools
 * @author 		Christian J. Clark
 * @copyright	Copyright (c) Christian J. Clark
-* @license		http://www.gnu.org/licenses/gpl-2.0.txt
+* @license		https://mit-license.org
 * @access		private
 * @version 		Started: 2-1-2007 updated: 9-1-2013
 */
 //*************************************************************************
 
-namespace phpOpen\Database\Drivers\DataTrans;
+namespace phpOpenFW\Database\Drivers\DataTrans;
 
 //*************************************************************************
 /**

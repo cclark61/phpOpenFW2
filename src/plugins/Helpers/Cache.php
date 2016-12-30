@@ -4,13 +4,12 @@
 /**
 * Cache Helper Methods Plugin
 *
-* @package		phpOpenPlugins
+* @package		phpOpenFW
 * @subpackage	Database
 * @author 		Christian J. Clark
 * @copyright	Copyright (c) Christian J. Clark
-* @license		http://www.gnu.org/licenses/gpl-2.0.txt
-* @link			http://www.emonlade.net/phpopenplugins/
-* @version 		Started: 8/25/2015, Last updated: 8/31/2015
+* @license		https://mit-license.org
+* @version 		Started: 8/25/2015, Updated: 8/31/2015
 **/
 //*****************************************************************************
 //*****************************************************************************
@@ -35,7 +34,7 @@ class Cache
 	*/
 	//=============================================================================
 	//=============================================================================
-	public static function MakeCacheKey($stub, $args)
+	public static function make_cache_key($stub, $args)
 	{
 		if (empty($stub) || empty($args)) { return false; }
 		$cache_key = (defined('MC_KEY_STUB')) ? (MC_KEY_STUB . ':' . $stub) : ($stub);

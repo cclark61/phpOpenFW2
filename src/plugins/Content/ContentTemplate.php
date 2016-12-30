@@ -4,13 +4,12 @@
 /**
 * Content Template Object
 *
-* @package		phpOpenPlugins
+* @package		phpOpenFW
 * @subpackage	Content
 * @author 		Christian J. Clark
 * @copyright	Copyright (c) Christian J. Clark
-* @license		http://www.gnu.org/licenses/gpl-2.0.txt
-* @link			http://www.emonlade.net/phpopenplugins/
-* @version 		Started: 2/4/2012, Last updated: 2/18/2013
+* @license		https://mit-license.org
+* @version 		Started: 2/4/2012, Updated: 2/18/2013
 **/
 //*****************************************************************************
 //*****************************************************************************

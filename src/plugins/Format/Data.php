@@ -7,7 +7,7 @@
 * @subpackage	Format
 * @author 		Christian J. Clark
 * @copyright	Copyright (c) Christian J. Clark
-* @license		http://www.gnu.org/licenses/gpl-2.0.txt
+* @license		https://mit-license.org
 * @version 		Started: 1-4-2005 Updated: 4-2-2013
 **/
 //*****************************************************************************
@@ -26,7 +26,7 @@ class Data
 	// Format Records Method
 	//=============================================================================
 	//=============================================================================
-	public static function FormatRecords(&$recs, $fields)
+	public static function format_records(&$recs, $fields)
 	{
 		if (!is_array($fields)) {
 			$msg = 'Second parameter must be an array of key/value pairs that specify the field name and the formatting function name respectively.';

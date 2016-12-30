@@ -7,7 +7,7 @@
 * @subpackage	Objects
 * @author 		Christian J. Clark
 * @copyright	Copyright (c) Christian J. Clark
-* @license		http://www.gnu.org/licenses/gpl-2.0.txt
+* @license		https://mit-license.org
 * @version 		Started: 4-21-2008 Updated: 5-31-2016
 **/
 //****************************************************************************
@@ -21,7 +21,7 @@ namespace phpOpenFW\HTML;
  * @subpackage	Objects
  */
 //****************************************************************************
-class Table extends element
+class Table extends \phpOpenFW\XML\Element
 {
 	//*************************************************************************
 	// Table class variables

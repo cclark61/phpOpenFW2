@@ -8,8 +8,8 @@
 * @subpackage	Framework\Site
 * @author 		Christian J. Clark
 * @copyright	Copyright (c) Christian J. Clark
-* @license		http://www.gnu.org/licenses/gpl-2.0.txt
-* @version 		Started: 2/18/2013, Last updated: 1/13/2016
+* @license		https://mit-license.org
+* @version 		Started: 2/18/2013, Updated: 1/13/2016
 **/
 //*************************************************************************
 //*************************************************************************

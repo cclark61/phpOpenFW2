@@ -8,16 +8,13 @@
 * @subpackage	Form_Engine
 * @author 		Christian J. Clark
 * @copyright	Copyright (c) Christian J. Clark
-* @license		http://www.gnu.org/licenses/gpl-2.0.txt
+* @license		https://mit-license.org
 * @version 		Started: 9-19-2005 Updated: 12-31-2013
 **/
 //**************************************************************************
 //**************************************************************************
 
-//***************************************************************
-// Contributions by Lucas Hoezee ( http://thecodify.com/ )
-// 5/10/2011
-//***************************************************************
+namespace phpOpenFW\Form\Elements;
 
 //**************************************************************************
 /**
@@ -26,7 +23,7 @@
  * @subpackage	Form_Engine
  */
 //**************************************************************************
-class SSA extends SelectFormElement
+class ssa extends SelectFormElement
 {
 	private $select_vals;	// Values of the select
 	

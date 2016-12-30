@@ -8,11 +8,13 @@
 * @subpackage	Forms\Elements
 * @author 		Christian J. Clark
 * @copyright	Copyright (c) Christian J. Clark
-* @license		http://www.gnu.org/licenses/gpl-2.0.txt
+* @license		https://mit-license.org
 * @version 		Started: 3-20-2006 Updated: 12-29-2011
 **/
 //**************************************************************************
 //**************************************************************************
+
+namespace phpOpenFW\Form\Elements;
 
 //**************************************************************************
 /**
@@ -21,7 +23,7 @@
  * @subpackage	Forms\Elements
  */
 //**************************************************************************
-class Image extends element
+class image extends \phpOpenFW\XML\Element
 {	
 	//***********************************************************************
 	// Constructor Function

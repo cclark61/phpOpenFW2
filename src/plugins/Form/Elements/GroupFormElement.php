@@ -8,11 +8,13 @@
 * @subpackage	Form_Engine
 * @author 		Christian J. Clark
 * @copyright	Copyright (c) Christian J. Clark
-* @license		http://www.gnu.org/licenses/gpl-2.0.txt
+* @license		https://mit-license.org
 * @version 		Started: 11-20-2012 Updated: 12-31-2013
 **/
 //**************************************************************************
 //**************************************************************************
+
+namespace phpOpenFW\Form\Elements;
 
 //**************************************************************************
 /**
@@ -21,7 +23,7 @@
  * @subpackage	Form_Engine
  */
 //**************************************************************************
-abstract class GroupFormElement extends element
+abstract class GroupFormElement extends \phpOpenFW\XML\Element
 {
 	/**
 	* @var array An array of arrays. The attributes for elements by key.

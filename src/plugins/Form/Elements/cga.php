@@ -8,11 +8,13 @@
 * @subpackage	Form_Engine
 * @author 		Christian J. Clark
 * @copyright	Copyright (c) Christian J. Clark
-* @license		http://www.gnu.org/licenses/gpl-2.0.txt
+* @license		https://mit-license.org
 * @version 		Started: 9-22-2005 Updated: 12-28-2012
 **/
 //**************************************************************************
 //**************************************************************************
+
+namespace phpOpenFW\Form\Elements;
 
 //**************************************************************************
 /**
@@ -21,7 +23,7 @@
  * @subpackage	Form_Engine
  */
 //**************************************************************************
-class CGA extends GroupFormElement
+class cga extends GroupFormElement
 {
 	private $checkboxes;	// Array of Array([Name], [Value], [Desc])
 	private $attrs;			// Attributes of the checkboxes

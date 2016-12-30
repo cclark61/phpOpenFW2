@@ -8,14 +8,14 @@
 * @subpackage	Plugin
 * @author 		Christian J. Clark
 * @copyright	Copyright (c) Christian J. Clark
-* @license		http://www.gnu.org/licenses/gpl-2.0.txt
-* @version 		Started: 3-15-2007, Last updated: 11-26-2012
+* @license		https://mit-license.org
+* @version 		Started: 3-15-2007, Updated: 11-26-2012
 **/
 //**************************************************************************************
 //**************************************************************************************
 
-namespace phpOpen\Database;
-use phpOpen\Database\DataTrans;
+namespace phpOpenFW\Database;
+use phpOpenFW\Database\DataTrans;
 
 //**************************************************************************************
 /**

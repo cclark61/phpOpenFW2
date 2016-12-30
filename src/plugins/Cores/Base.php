@@ -4,13 +4,12 @@
 /**
 * Base Class Plugin
 *
-* @package		phpOpenPlugins
+* @package		phpOpenFW
 * @subpackage	Core
 * @author 		Christian J. Clark
 * @copyright	Copyright (c) Christian J. Clark
-* @license		http://www.gnu.org/licenses/gpl-2.0.txt
-* @link			http://www.emonlade.net/phpopenplugins/
-* @version 		Started: 11/28/2012, Last updated: 7/22/2013
+* @license		https://mit-license.org
+* @version 		Started: 11/28/2012, Updated: 7/22/2013
 **/
 //*****************************************************************************
 //*****************************************************************************

@@ -4,11 +4,11 @@
 * Load Global Database Functions Plugin
 *
 * @package		phpOpenFW
-* @subpackage	Plugin
+* @subpackage	Globals
 * @author 		Christian J. Clark
 * @copyright	Copyright (c) Christian J. Clark
-* @license		http://www.gnu.org/licenses/gpl-2.0.txt
-* @version 		Started: 12/28/2016, Last updated: 12/28/2016
+* @license		https://mit-license.org
+* @version 		Started: 12/28/2016, Updated: 12/28/2016
 **/
 //*****************************************************************************
 

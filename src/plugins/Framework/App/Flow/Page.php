@@ -8,15 +8,15 @@
 * @subpackage	Framework\App\Flow
 * @author 		Christian J. Clark
 * @copyright	Copyright (c) Christian J. Clark
-* @license		http://www.gnu.org/licenses/gpl-2.0.txt
-* @version 		Started: 12-29-2004, Last updated: 1-13-2016
+* @license		https://mit-license.org
+* @version 		Started: 12-29-2004, Updated: 1-13-2016
 **/
 //**************************************************************************************
 //**************************************************************************************
 
-namespace phpOpen\Framework\App\Flow;
-use phpOpen\XML\GenElement;
-use phpOpen\XML\Transform;
+namespace phpOpenFW\Framework\App\Flow;
+use phpOpenFW\XML\GenElement;
+use phpOpenFW\XML\Transform;
 
 //**************************************************************************************
 /**

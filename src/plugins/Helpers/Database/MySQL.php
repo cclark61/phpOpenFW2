@@ -8,9 +8,8 @@
 * @subpackage	Database
 * @author 		Christian J. Clark
 * @copyright	Copyright (c) Christian J. Clark
-* @license		http://www.gnu.org/licenses/gpl-2.0.txt
-* @link			http://www.emonlade.net/phpopenplugins/
-* @version 		Started: 8/24/2015, Last updated: 10/22/2015
+* @license		https://mit-license.org
+* @version 		Started: 8/24/2015, Updated: 10/22/2015
 **/
 //*****************************************************************************
 //*****************************************************************************

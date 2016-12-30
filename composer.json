@@ -10,7 +10,7 @@
     },
     "autoload": {
 		"psr-4": {
-			"phpOpen\\": "/src/plugins"
+			"phpOpenFW\\": "/src/plugins"
 		}
 	},
 	"scripts-dev": {

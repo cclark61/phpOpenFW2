@@ -11,14 +11,14 @@ phpOpenFW is an open source MVC PHP web development framework released under the
 Christian J. Clark
 
 -----------------------------------------------------------------------------------------------------------
-## Website
+## Website / Documentation
 -----------------------------------------------------------------------------------------------------------
-http://www.emonlade.net/phpOpen/
+http://www.phpopenfw.org/
 
 -----------------------------------------------------------------------------------------------------------
 ## License
 -----------------------------------------------------------------------------------------------------------
-GNU Public License (GPL) version 3 ( https://www.gnu.org/licenses/gpl-3.0.txt )
+Released under the MIT License: https://mit-license.org/
 
 -----------------------------------------------------------------------------------------------------------
 ## Version
@@ -28,26 +28,22 @@ GNU Public License (GPL) version 3 ( https://www.gnu.org/licenses/gpl-3.0.txt )
 -----------------------------------------------------------------------------------------------------------
 ## Requirements
 -----------------------------------------------------------------------------------------------------------
-phpOpen requires PHP >= 5.4, libxslt, libxml, php-xsl, and php-xml.
-
------------------------------------------------------------------------------------------------------------
-## Support
------------------------------------------------------------------------------------------------------------
-Contact support@emonlade.net for comments questions, or concerns.
+phpOpenFW requires PHP >= 5.4, libxslt, libxml, php-xsl, and php-xml.
 
 -----------------------------------------------------------------------------------------------------------
 ## Features
 -----------------------------------------------------------------------------------------------------------
-phpOpen has an abundance of features that facilitate the development of powerful, flexible web sites and web applications. Below is an outline of the features offered by phpOpen.
+phpOpenFW has an abundance of features that facilitate the development of powerful, flexible applications, sites, and scripts. 
+Below is an outline of some of the features offered by phpOpenFW:
 
 #### Framework Facilities
 
-* Form Engine
-* Database Abstraction Class
+* Database Abstraction Layers
 * Active Record Class
+* SQL Query Builder
 * XML Element Class (abstract)
-* Recordset List to Table Class
-* Generic XHTML Table Class
+* HTML Helpers
+* Form Engine
 * Plugin Facility
 
 #### Application Facilities
@@ -59,11 +55,11 @@ phpOpen has an abundance of features that facilitate the development of powerful
 
 * XML Transformation (using XSL)
 * Quick Database Actions
-* Date/Time Functions
+* Date / Time Functions
 * Code Benchmark
 
 -----------------------------------------------------------------------------------------------------------
-## Apache Mod_Rewrite Rules
+## Apache ModRewrite Rules
 -----------------------------------------------------------------------------------------------------------
 When using the nav_xml_format of "rewrite", you need to have to following apache mod_rewrite rules 
 in place for the application navigation to work correctly. You can tweak the rules to suit you application, 

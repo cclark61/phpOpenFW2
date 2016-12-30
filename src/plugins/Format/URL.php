@@ -7,7 +7,7 @@
 * @subpackage	Format
 * @author 		Christian J. Clark
 * @copyright	Copyright (c) Christian J. Clark
-* @license		http://www.gnu.org/licenses/gpl-2.0.txt
+* @license		https://mit-license.org
 * @version 		Started: 1-4-2005 Updated: 4-2-2013
 **/
 //*****************************************************************************
@@ -37,7 +37,7 @@ class URL
 	*/
 	//=============================================================================
 	//=============================================================================
-	public static function AddParams($in_url, $params, $xml_escape=false, $url_encode=true)
+	public static function add_url_params($in_url, $params, $xml_escape=false, $url_encode=true)
 	{
 		$out_url = $in_url;
 		if (!is_array($params)) {

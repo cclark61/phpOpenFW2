@@ -9,14 +9,14 @@
 * @subpackage	Database
 * @author 		Christian J. Clark
 * @copyright	Copyright (c) Christian J. Clark
-* @license		http://www.gnu.org/licenses/gpl-2.0.txt
+* @license		https://mit-license.org
 * @version 		Started: 10-17-2006 Updated: 10-3-2013
 * @internal
 **/
 //**************************************************************************************
 //**************************************************************************************
 
-namespace phpOpen\Database;
+namespace phpOpenFW\Database;
 
 //**************************************************************************************
 /**

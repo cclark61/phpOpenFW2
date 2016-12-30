@@ -8,15 +8,15 @@
 * @subpackage	XML
 * @author 		Christian J. Clark
 * @copyright	Copyright (c) Christian J. Clark
-* @license		http://www.gnu.org/licenses/gpl-2.0.txt
+* @license		https://mit-license.org
 * @version 		Started: 1-24-2006 Updated: 2-1-2013
 * @internal
 **/
 //*************************************************************************
 //*************************************************************************
 
-namespace phpOpen\XML;
-use phpOpen\XML\Transform;
+namespace phpOpenFW\XML;
+use phpOpenFW\XML\Transform;
 
 //*************************************************************************
 /**
@@ -283,7 +283,7 @@ abstract class Element
 	//*****************************************************************************
 	protected function xml_escape($str_data)
 	{
-		return \phpOpen\XML\Format::xml_escape($str_data);
+		return \phpOpenFW\XML\Format::xml_escape($str_data);
 		//if ($str_data !== '') { return '<![CDATA[' . $str_data . ']]>'; }
 		//else { return false; }
 	}

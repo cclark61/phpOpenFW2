@@ -8,13 +8,13 @@
  * @subpackage	XML
  * @author 		Christian J. Clark
  * @copyright	Copyright (c) Christian J. Clark
- * @license		http://www.gnu.org/licenses/gpl-2.0.txt
- * @version 	Started: 3-15-2006, Last updated: 12-29-2016
+ * @license		https://mit-license.org
+ * @version 	Started: 3-15-2006, Updated: 12-29-2016
  **/
 //**************************************************************************************
 //**************************************************************************************
 
-namespace phpOpen\XML;
+namespace phpOpenFW\XML;
 
 //**************************************************************************************
 /**

@@ -7,7 +7,7 @@
 * @subpackage	Format
 * @author 		Christian J. Clark
 * @copyright	Copyright (c) Christian J. Clark
-* @license		http://www.gnu.org/licenses/gpl-2.0.txt
+* @license		https://mit-license.org
 * @version 		Started: 1-4-2005 Updated: 4-2-2013
 **/
 //*****************************************************************************
@@ -30,7 +30,7 @@ class Output
 	*/
 	//*****************************************************************************
 	//*****************************************************************************
-	public static function PrintArray()
+	public static function print_array()
 	{
 		$sapi = strtoupper(php_sapi_name());
 		$arg_list = func_get_args();

@@ -3,7 +3,7 @@
 # phpOpenFW
 -----------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------
-phpOpenFW is an open source MVC PHP web development framework released under the GNU Public License (GPL) version 3.
+phpOpenFW is an open source MVC PHP web development framework released under the MIT License.
 
 -----------------------------------------------------------------------------------------------------------
 ## Author

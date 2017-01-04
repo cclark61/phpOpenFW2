@@ -5,11 +5,9 @@
  * Plugin for performing XML Formatting
  *
  * @package		phpOpenFW
- * @subpackage	XML
  * @author 		Christian J. Clark
  * @copyright	Copyright (c) Christian J. Clark
  * @license		https://mit-license.org
- * @version 	Started: 3-15-2006, Updated: 12-29-2016
  **/
 //**************************************************************************************
 //**************************************************************************************
@@ -19,8 +17,6 @@ namespace phpOpenFW\XML;
 //**************************************************************************************
 /**
  * XML Format Class
- * @package		phpOpenFW
- * @subpackage	XML
  */
 //**************************************************************************************
 class Format

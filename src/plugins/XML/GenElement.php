@@ -1,24 +1,24 @@
 <?php
-//*****************************************************************************
+//**************************************************************************************
+//**************************************************************************************
 /**
-* Creates a generic xml element with content
-* @package		phpOpenFW
-* @subpackage	XML
-* @param string Element Name (ie. "div", "data", "p", etc.) Can be XML or XHTML
-* @param string Content inside of element
-* @param array An array, in the form of [key] => [value], of attributes
-*/
-//*****************************************************************************
+ * Creates a generic xml element with content
+ *
+ * @package		phpOpenFW
+ * @param string Element Name (ie. "div", "data", "p", etc.) Can be XML or XHTML
+ * @param string Content inside of element
+ * @param array An array, in the form of [key] => [value], of attributes
+ **/
+//**************************************************************************************
+//**************************************************************************************
 
 namespace phpOpenFW\XML;
 
-//*************************************************************************
+//**************************************************************************************
 /**
  * Generic (XML) Element Class
- * @package		phpOpenFW
- * @subpackage	XML
  */
-//*************************************************************************
+//**************************************************************************************
 class GenElement extends Element
 {
 	public function __construct($element, $content=false, $attrs=false)

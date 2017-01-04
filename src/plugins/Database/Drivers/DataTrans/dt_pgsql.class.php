@@ -1,26 +1,27 @@
 <?php
-
+//**************************************************************************************
+//**************************************************************************************
 /**
-* Data Transaction / PostgreSQL Plugin
-* A PostgreSQL plugin to the (data_trans) class
-*
-* @package		phpOpenFW
-* @subpackage 	Database_Tools
-* @author 		Christian J. Clark
-* @copyright	Copyright (c) Christian J. Clark
-* @license		https://mit-license.org
-* @access		private
-* @version 		Started: 2-1-2007 updated: 11-22-2012
-*/
-
-//***************************************************************
-/**
- * dt_pgsql Class
+ * Data Transaction / PostgreSQL Plugin
+ * A PostgreSQL plugin to the (data_trans) class
+ *
  * @package		phpOpenFW
- * @subpackage	Database_Tools
+ * @author 		Christian J. Clark
+ * @copyright	Copyright (c) Christian J. Clark
+ * @license		https://mit-license.org
  * @access		private
  */
-//***************************************************************
+//**************************************************************************************
+//**************************************************************************************
+
+namespace phpOpenFW\Database\Drivers\DataTrans;
+use phpOpenFW\Database\DataResult;
+
+//**************************************************************************************
+/**
+ * dt_pgsql Class
+ */
+//**************************************************************************************
 class dt_pgsql extends dt_structure
 {
     

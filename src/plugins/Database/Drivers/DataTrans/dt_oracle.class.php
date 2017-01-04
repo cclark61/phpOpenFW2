@@ -1,26 +1,27 @@
 <?php
-
+//**************************************************************************************
+//**************************************************************************************
 /**
-* Data Transaction / Oracle Plugin
-* A Oracle plugin to the (data_trans) class
-*
-* @package		phpOpenFW
-* @subpackage 	Database_Tools
-* @author 		Christian J. Clark
-* @copyright	Copyright (c) Christian J. Clark
-* @license		https://mit-license.org
-* @access		private
-* @version 		Started: 6-3-2009 updated: 11-22-2012
-*/
-
-//***************************************************************
-/**
- * dt_oracle Class
+ * Data Transaction / Oracle Plugin
+ * A Oracle plugin to the (data_trans) class
+ *
  * @package		phpOpenFW
- * @subpackage	Database_Tools
+ * @author 		Christian J. Clark
+ * @copyright	Copyright (c) Christian J. Clark
+ * @license		https://mit-license.org
  * @access		private
  */
-//***************************************************************
+//**************************************************************************************
+//**************************************************************************************
+
+namespace phpOpenFW\Database\Drivers\DataTrans;
+use phpOpenFW\Database\DataResult;
+
+//**************************************************************************************
+/**
+ * dt_oracle Class
+ */
+//**************************************************************************************
 class dt_oracle extends dt_structure
 {
 

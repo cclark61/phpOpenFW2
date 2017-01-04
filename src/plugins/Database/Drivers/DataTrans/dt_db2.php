@@ -1,30 +1,27 @@
 <?php
-//*************************************************************************
+//**************************************************************************************
+//**************************************************************************************
 /**
-* Data Transaction / IBM DB2 Plugin
-* A IBM DB2 plugin to the (data_trans) class
-*
-* @package		phpOpenFW
-* @subpackage 	Database_Tools
-* @author 		Christian J. Clark
-* @copyright	Copyright (c) Christian J. Clark
-* @license		https://mit-license.org
-* @access		private
-* @version 		Started: 9-21-2011 updated: 11-22-2012
-*/
-//*************************************************************************
+ * Data Transaction / IBM DB2 Plugin
+ * A IBM DB2 plugin to the (data_trans) class
+ *
+ * @package		phpOpenFW
+ * @author 		Christian J. Clark
+ * @copyright	Copyright (c) Christian J. Clark
+ * @license		https://mit-license.org
+ * @access		private
+ */
+//**************************************************************************************
+//**************************************************************************************
 
 namespace phpOpenFW\Database\Drivers\DataTrans;
 use phpOpenFW\Database\DataResult;
 
-//*************************************************************************
+//**************************************************************************************
 /**
  * dt_db2 Class
- * @package		phpOpenFW
- * @subpackage	Database_Tools
- * @access		private
  */
-//*************************************************************************
+//**************************************************************************************
 class dt_db2 extends dt_structure
 {
     

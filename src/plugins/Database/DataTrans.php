@@ -1,16 +1,16 @@
 <?php
 //**************************************************************************************
+//**************************************************************************************
 /**
-* Data Transaction Class
-* A data abstraction class used to handle all database transactions. This class is a controller to the data object class it uses.
-*
-* @package		phpOpenFW
-* @subpackage 	Database
-* @author 		Christian J. Clark
-* @copyright	Copyright (c) Christian J. Clark
-* @license		https://mit-license.org
-* @version 		Started: 9-20-2005 updated: 8-27-2014
-*/
+ * Data Transaction Class
+ * A data abstraction class used to handle all database transactions. 
+ *
+ * @package		phpOpenFW
+ * @author 		Christian J. Clark
+ * @copyright	Copyright (c) Christian J. Clark
+ * @license		https://mit-license.org
+ */
+//**************************************************************************************
 //**************************************************************************************
 
 namespace phpOpenFW\Database;
@@ -18,11 +18,10 @@ namespace phpOpenFW\Database;
 //**************************************************************************************
 /**
  * Data Transaction Class
- * @package		phpOpenFW
- * @subpackage	Database
  */
 //**************************************************************************************
-class DataTrans {
+class DataTrans
+{
 
 	//************************************************************************	
 	// Class variables

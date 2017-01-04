@@ -1,29 +1,26 @@
 <?php
-//*************************************************************************
+//**************************************************************************************
+//**************************************************************************************
 /**
-* DT Structure Class
-* Abstract Data Transaction Structure Class
-*
-* @package		phpOpenFW
-* @subpackage 	Database_Tools
-* @author 		Christian J. Clark
-* @copyright	Copyright (c) Christian J. Clark
-* @license		https://mit-license.org
-* @access		private
-* @version 		Started: 2-1-2007 updated: 9-1-2013
-*/
-//*************************************************************************
+ * DT Structure Class
+ * Abstract Data Transaction Structure Class
+ *
+ * @package		phpOpenFW
+ * @author 		Christian J. Clark
+ * @copyright	Copyright (c) Christian J. Clark
+ * @license		https://mit-license.org
+ * @access		private
+ */
+//**************************************************************************************
+//**************************************************************************************
 
 namespace phpOpenFW\Database\Drivers\DataTrans;
 
-//*************************************************************************
+//**************************************************************************************
 /**
  * dt_structure Class
- * @package		phpOpenFW
- * @subpackage	Database_Tools
- * @access		private
  */
-//*************************************************************************
+//**************************************************************************************
 abstract class dt_structure {
 
 	//*************************************************************************	

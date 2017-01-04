@@ -1,26 +1,27 @@
 <?php
-
+//**************************************************************************************
+//**************************************************************************************
 /**
-* Data Transaction / LDAP Plugin
-* A LDAP plugin to the (data_trans) class
-*
-* @package		phpOpenFW
-* @subpackage 	Database_Tools
-* @author 		Christian J. Clark
-* @copyright	Copyright (c) Christian J. Clark
-* @license		https://mit-license.org
-* @access		private
-* @version 		Started: 2-1-2007 updated: 11-20-2012
-*/
-
-//***************************************************************
-/**
- * dt_ldap Class
+ * Data Transaction / LDAP Plugin
+ * A LDAP plugin to the (data_trans) class
+ *
  * @package		phpOpenFW
- * @subpackage	Database_Tools
+ * @author 		Christian J. Clark
+ * @copyright	Copyright (c) Christian J. Clark
+ * @license		https://mit-license.org
  * @access		private
  */
-//***************************************************************
+//**************************************************************************************
+//**************************************************************************************
+
+namespace phpOpenFW\Database\Drivers\DataTrans;
+use phpOpenFW\Database\DataResult;
+
+//**************************************************************************************
+/**
+ * dt_ldap Class
+ */
+//**************************************************************************************
 class dt_ldap extends dt_structure
 {
     

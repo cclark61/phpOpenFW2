@@ -2,16 +2,14 @@
 //**************************************************************************************
 //**************************************************************************************
 /**
-* Data Result Class
-* A data result abstraction class used to handle database results.
-*
-* @package		phpOpenFW
-* @subpackage 	Database
-* @author 		Christian J. Clark
-* @copyright	Copyright (c) Christian J. Clark
-* @license		https://mit-license.org
-* @version 		Started: 11/15/2012 updated: 8/27/2014
-*/
+ * Data Result Class
+ * A data result abstraction class used to handle database results.
+ *
+ * @package		phpOpenFW
+ * @author 		Christian J. Clark
+ * @copyright	Copyright (c) Christian J. Clark
+ * @license		https://mit-license.org
+ */
 //**************************************************************************************
 //**************************************************************************************
 
@@ -20,11 +18,10 @@ namespace phpOpenFW\Database;
 //**************************************************************************************
 /**
  * Data Result Class
- * @package		phpOpenFW
- * @subpackage	Database
  */
 //**************************************************************************************
-class DataResult {
+class DataResult
+{
 
 	//************************************************************************	
 	// Class variables

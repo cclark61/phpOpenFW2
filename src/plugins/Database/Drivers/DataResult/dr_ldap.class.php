@@ -1,26 +1,26 @@
 <?php
-
+//**************************************************************************************
+//**************************************************************************************
 /**
-* Data Result / LDAP Plugin
-* A LDAP plugin to the (data_result) class
-*
-* @package		phpOpenFW
-* @subpackage 	Database_Tools
-* @author 		Christian J. Clark
-* @copyright	Copyright (c) Christian J. Clark
-* @license		https://mit-license.org
-* @access		private
-* @version 		Started: 11/16/2012 updated: 11/20/2012
-*/
-
-//***************************************************************
-/**
- * dr_ldap Class
+ * Data Result / LDAP Plugin
+ * A LDAP plugin to the (data_result) class
+ *
  * @package		phpOpenFW
- * @subpackage	Database_Tools
+ * @author 		Christian J. Clark
+ * @copyright	Copyright (c) Christian J. Clark
+ * @license		https://mit-license.org
  * @access		private
  */
-//***************************************************************
+//**************************************************************************************
+//**************************************************************************************
+
+namespace phpOpenFW\Database\Drivers\DataResult;
+
+//**************************************************************************************
+/**
+ * dr_ldap Class
+ */
+//**************************************************************************************
 class dr_ldap extends dr_structure
 {
 

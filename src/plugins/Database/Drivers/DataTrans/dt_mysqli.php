@@ -1,30 +1,27 @@
 <?php
-//*************************************************************************
+//**************************************************************************************
+//**************************************************************************************
 /**
-* Data Transaction / MySQL Improved (mysqli) Plugin
-* A MySQLi plugin to the (data_trans) class
-*
-* @package		phpOpenFW
-* @subpackage 	Database_Tools
-* @author 		Christian J. Clark
-* @copyright	Copyright (c) Christian J. Clark
-* @license		https://mit-license.org
-* @access		private
-* @version 		Started: 6-3-2009 updated: 11-26-2012
-*/
-//*************************************************************************
+ * Data Transaction / MySQL Improved (mysqli) Plugin
+ * A MySQLi plugin to the (data_trans) class
+ *
+ * @package		phpOpenFW
+ * @author 		Christian J. Clark
+ * @copyright	Copyright (c) Christian J. Clark
+ * @license		https://mit-license.org
+ * @access		private
+ */
+//**************************************************************************************
+//**************************************************************************************
 
 namespace phpOpenFW\Database\Drivers\DataTrans;
 use phpOpenFW\Database\DataResult;
 
-//*************************************************************************
+//**************************************************************************************
 /**
  * dt_mysqli Class
- * @package		phpOpenFW
- * @subpackage	Database_Tools
- * @access		private
  */
-//*************************************************************************
+//**************************************************************************************
 class dt_mysqli extends dt_structure
 {
 

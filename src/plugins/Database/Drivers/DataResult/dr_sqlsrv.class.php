@@ -1,26 +1,26 @@
 <?php
-
+//**************************************************************************************
+//**************************************************************************************
 /**
-* Data Result / Microsoft SQL Server Plugin for Microsoft's SQLSRV Driver
-* A Microsoft SQL Server (SQLSRV) plugin to the (data_result) class
-*
-* @package		phpOpenFW
-* @subpackage 	Database_Tools
-* @author 		Christian J. Clark
-* @copyright	Copyright (c) Christian J. Clark
-* @license		https://mit-license.org
-* @access		private
-* @version 		Started: 11/16/2012 updated: 11/19/2012
-*/
-
-//***************************************************************
-/**
- * dr_sqlsrv Class
+ * Data Result / Microsoft SQL Server Plugin for Microsoft's SQLSRV Driver
+ * A Microsoft SQL Server (SQLSRV) plugin to the (data_result) class
+ *
  * @package		phpOpenFW
- * @subpackage	Database_Tools
+ * @author 		Christian J. Clark
+ * @copyright	Copyright (c) Christian J. Clark
+ * @license		https://mit-license.org
  * @access		private
  */
-//***************************************************************
+//**************************************************************************************
+//**************************************************************************************
+
+namespace phpOpenFW\Database\Drivers\DataResult;
+
+//**************************************************************************************
+/**
+ * dr_sqlsrv Class
+ */
+//**************************************************************************************
 class dr_sqlsrv extends dr_structure
 {
 

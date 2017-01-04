@@ -1,24 +1,26 @@
 <?php
+//**************************************************************************************
+//**************************************************************************************
 /**
-* Data Result Structure Class
-* An abstract data result structure class
-*
-* @package		phpOpenFW
-* @subpackage 	Database_Tools
-* @author 		Christian J. Clark
-* @copyright	Copyright (c) Christian J. Clark
-* @license		https://mit-license.org
-* @version 		Started: 11/15/2012 updated: 11/26/2012
-*/
-
-//***************************************************************
-/**
- * Data Result Class
+ * Data Result Structure Class
+ * An abstract data result structure class
+ *
  * @package		phpOpenFW
- * @subpackage	Database_Tools
+ * @author 		Christian J. Clark
+ * @copyright	Copyright (c) Christian J. Clark
+ * @license		https://mit-license.org
  * @access		private
  */
-//***************************************************************
+//**************************************************************************************
+//**************************************************************************************
+
+namespace phpOpenFW\Database\Drivers\DataResult;
+
+//**************************************************************************************
+/**
+ * Data Result Class
+ */
+//**************************************************************************************
 abstract class dr_structure {
 
 	//************************************************************************	

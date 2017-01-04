@@ -2,17 +2,14 @@
 //**************************************************************************************
 //**************************************************************************************
 /**
-* Database Interface Object Plugin
-* An abstract class for building Database to Object programmatic bridges
-*
-* @package		phpOpenFW
-* @subpackage	Database
-* @author 		Christian J. Clark
-* @copyright	Copyright (c) Christian J. Clark
-* @license		https://mit-license.org
-* @version 		Started: 10-17-2006 Updated: 10-3-2013
-* @internal
-**/
+ * Database Interface Object Plugin
+ * An abstract class for building Database to Object programmatic bridges
+ *
+ * @package		phpOpenFW
+ * @author 		Christian J. Clark
+ * @copyright	Copyright (c) Christian J. Clark
+ * @license		https://mit-license.org
+ */
 //**************************************************************************************
 //**************************************************************************************
 
@@ -21,8 +18,6 @@ namespace phpOpenFW\Database;
 //**************************************************************************************
 /**
  * Database Interface Object Class
- * @package		phpOpenFW
- * @subpackage	Database
  */
 //**************************************************************************************
 abstract class DIO

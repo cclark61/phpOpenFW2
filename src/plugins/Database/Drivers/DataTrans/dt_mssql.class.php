@@ -1,26 +1,27 @@
 <?php
-
+//**************************************************************************************
+//**************************************************************************************
 /**
-* Data Transaction / Microsoft SQL Server Plugin
-* A Microsoft SQL Server plugin to the (data_trans) class
-*
-* @package		phpOpenFW
-* @subpackage 	Database_Tools
-* @author 		Christian J. Clark
-* @copyright	Copyright (c) Christian J. Clark
-* @license		https://mit-license.org
-* @access		private
-* @version 		Started/Copied: 7-28-2009 updated: 11-22-2012
-*/
-
-//***************************************************************
-/**
- * dt_mssql Class
+ * Data Transaction / Microsoft SQL Server Plugin
+ * A Microsoft SQL Server plugin to the (data_trans) class
+ *
  * @package		phpOpenFW
- * @subpackage	Database_Tools
+ * @author 		Christian J. Clark
+ * @copyright	Copyright (c) Christian J. Clark
+ * @license		https://mit-license.org
  * @access		private
  */
-//***************************************************************
+//**************************************************************************************
+//**************************************************************************************
+
+namespace phpOpenFW\Database\Drivers\DataTrans;
+use phpOpenFW\Database\DataResult;
+
+//**************************************************************************************
+/**
+ * dt_mssql Class
+ */
+//**************************************************************************************
 class dt_mssql extends dt_structure
 {
 

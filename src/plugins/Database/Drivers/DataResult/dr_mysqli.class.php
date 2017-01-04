@@ -1,26 +1,26 @@
 <?php
-
+//**************************************************************************************
+//**************************************************************************************
 /**
-* Data Result / MySQL Improved (mysqli) Plugin
-* A MySQLi plugin to the (data_result) class
-*
-* @package		phpOpenFW
-* @subpackage 	Database_Tools
-* @author 		Christian J. Clark
-* @copyright	Copyright (c) Christian J. Clark
-* @license		https://mit-license.org
-* @access		private
-* @version 		Started: 11/16/2012 updated: 11/26/2012
-*/
-
-//***************************************************************
-/**
- * dr_mysqli Class
+ * Data Result / MySQL Improved (mysqli) Plugin
+ * A MySQLi plugin to the (data_result) class
+ *
  * @package		phpOpenFW
- * @subpackage	Database_Tools
+ * @author 		Christian J. Clark
+ * @copyright	Copyright (c) Christian J. Clark
+ * @license		https://mit-license.org
  * @access		private
  */
-//***************************************************************
+//**************************************************************************************
+//**************************************************************************************
+
+namespace phpOpenFW\Database\Drivers\DataResult;
+
+//**************************************************************************************
+/**
+ * dr_mysqli Class
+ */
+//**************************************************************************************
 class dr_mysqli extends dr_structure
 {
 

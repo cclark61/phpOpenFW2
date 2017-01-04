@@ -1,30 +1,24 @@
 <?php
-//*******************************************************************************
-//*******************************************************************************
+//**************************************************************************************
+//**************************************************************************************
 /**
-* A class to construct XHTML tables (Requires XSLT Support)
-*
-* @package		phpOpenFW
-* @subpackage	Objects
-* @author 		Christian J. Clark
-* @copyright	Copyright (c) Christian J. Clark
-* @license		https://mit-license.org
-* @version 		Started: 4-21-2008 Updated: 5-31-2016
-**/
-//*******************************************************************************
-//*******************************************************************************
+ * A class to construct (X)HTML tables (Requires XSLT Support)
+ *
+ * @package		phpOpenFW
+ * @author 		Christian J. Clark
+ * @copyright	Copyright (c) Christian J. Clark
+ * @license		https://mit-license.org
+ **/
+//**************************************************************************************
+//**************************************************************************************
 
 namespace phpOpenFW\HTML;
 
-//*******************************************************************************
-//*******************************************************************************
+//**************************************************************************************
 /**
- * (XHTML) Table Class
- * @package		phpOpenFW
- * @subpackage	Objects
+ * (X)HTML Table Class
  */
-//*******************************************************************************
-//*******************************************************************************
+//**************************************************************************************
 class Table extends \phpOpenFW\XML\Element
 {
 	//*************************************************************************
@@ -34,17 +28,17 @@ class Table extends \phpOpenFW\XML\Element
 	/**
 	* @var array An array of all of the data for this table
 	**/
-	private $table_data;		// Array of table data
+	private $table_data;
 	
 	/**
 	* @var array An array of elements in the table
 	**/
-	private $table_elements;		// Array of fields in the table
+	private $table_elements;
 	
 	/**
 	* @var integer number of columns in the table
 	**/
-	private $columns;				// Number of columns in the table
+	private $columns;
 
 	/**
 	* @var Flag: true = put "alt" class in row element, false = don't

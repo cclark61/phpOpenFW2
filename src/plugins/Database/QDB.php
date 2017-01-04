@@ -2,15 +2,13 @@
 //**************************************************************************************
 //**************************************************************************************
 /**
-* Quick Database Actions Class
-*
-* @package		phpOpenFW
-* @subpackage	Plugin
-* @author 		Christian J. Clark
-* @copyright	Copyright (c) Christian J. Clark
-* @license		https://mit-license.org
-* @version 		Started: 3-15-2007, Updated: 11-26-2012
-**/
+ * Quick Database Actions Class
+ *
+ * @package		phpOpenFW
+ * @author 		Christian J. Clark
+ * @copyright	Copyright (c) Christian J. Clark
+ * @license		https://mit-license.org
+ */
 //**************************************************************************************
 //**************************************************************************************
 
@@ -20,8 +18,6 @@ use phpOpenFW\Database\DataTrans;
 //**************************************************************************************
 /**
  * Quick Database Actions Class
- * @package		phpOpenFW
- * @subpackage	Database
  */
 //**************************************************************************************
 class QDB

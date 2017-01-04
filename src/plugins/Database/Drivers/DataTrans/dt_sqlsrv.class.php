@@ -1,26 +1,27 @@
 <?php
-
+//**************************************************************************************
+//**************************************************************************************
 /**
-* Data Transaction / Microsoft SQL Server Plugin for Microsoft's SQLSRV Driver
-* A Microsoft SQL Server (SQLSRV) plugin to the (data_trans) class
-*
-* @package		phpOpenFW
-* @subpackage 	Database_Tools
-* @author 		Christian J. Clark
-* @copyright	Copyright (c) Christian J. Clark
-* @license		https://mit-license.org
-* @access		private
-* @version 		Started/Copied: 12-23-2011 updated: 11-22-2012
-*/
-
-//***************************************************************
-/**
- * dt_sqlsrv Class
+ * Data Transaction / Microsoft SQL Server Plugin for Microsoft's SQLSRV Driver
+ * A Microsoft SQL Server (SQLSRV) plugin to the (data_trans) class
+ *
  * @package		phpOpenFW
- * @subpackage	Database_Tools
+ * @author 		Christian J. Clark
+ * @copyright	Copyright (c) Christian J. Clark
+ * @license		https://mit-license.org
  * @access		private
  */
-//***************************************************************
+//**************************************************************************************
+//**************************************************************************************
+
+namespace phpOpenFW\Database\Drivers\DataTrans;
+use phpOpenFW\Database\DataResult;
+
+//**************************************************************************************
+/**
+ * dt_sqlsrv Class
+ */
+//**************************************************************************************
 class dt_sqlsrv extends dt_structure
 {
 

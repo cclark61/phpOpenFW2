@@ -1,26 +1,24 @@
 <?php
-//*****************************************************************************
-//*****************************************************************************
-/**
-* File System Formatting Class
-*
-* @package		phpOpenFW
-* @subpackage	Format
-* @author 		Christian J. Clark
-* @copyright	Copyright (c) Christian J. Clark
-* @license		https://mit-license.org
-* @version 		Started: 7/17/2012, Updated: 6/7/2016
-**/
-//*****************************************************************************
-//*****************************************************************************
-
-//*****************************************************************************
+//**************************************************************************************
+//**************************************************************************************
 /**
  * File System Formatting Class
- * @package		phpOpenFW
- * @subpackage	Format
+ *
+ * @package		phpOpenFW 
+ * @author 		Christian J. Clark
+ * @copyright	Copyright (c) Christian J. Clark
+ * @license		https://mit-license.org
+ **/
+//**************************************************************************************
+//**************************************************************************************
+
+namespace phpOpenFW\Format;
+
+//**************************************************************************************
+/**
+ * File System Formatting Class
  */
-//*****************************************************************************
+//**************************************************************************************
 class FileSystem
 {
 	//=============================================================================
@@ -28,7 +26,7 @@ class FileSystem
 	// Function to clean slashes from directory paths
 	//=============================================================================
 	//=============================================================================
-	public static function CleanDir(&$dir, $front_slashes=false, $rear_slashes=true)
+	public static function clean_dir(&$dir, $front_slashes=false, $rear_slashes=true)
 	{
 		if (strlen($dir) > 0) {
 			// Remove Trailing Slashes
@@ -48,7 +46,7 @@ class FileSystem
 	// Load File Content Function
 	//=============================================================================
 	//=============================================================================
-	public static function LoadFileContent($dir, $file)
+	public static function load_file_content($dir, $file)
 	{
 		$full_file = "{$dir}/{$file}";
 		if (file_exists($full_file)) {

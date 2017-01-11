@@ -5,25 +5,19 @@
  * Class for Globalizing Functions
  *
  * @package		phpOpenFW
- * @subpackage	Helpers
  * @author 		Christian J. Clark
  * @copyright	Copyright (c) Christian J. Clark
  * @license		https://mit-license.org
- * @version 	Started: 12/28/2016, Updated: 12/28/2016
  **/
 //*******************************************************************************
 //*******************************************************************************
 
-namespace phpOpenFW\Helpers;
+namespace phpOpenFW\Format;
 
-//*******************************************************************************
 //*******************************************************************************
 /**
  * Globalizing Class
- * @package		phpOpenFW2
- * @subpackage	Globalize
  */
-//*******************************************************************************
 //*******************************************************************************
 class Globalize
 {
@@ -54,6 +48,12 @@ class Globalize
 		self::XML($excluded);
 		self::Core($excluded);
 		self::UPN($excluded);
+		if (!isset($excluded['LoadHTMLHelpers'])) {
+			self::LoadHTMLHelpers();
+		}
+		if (!isset($excluded['LoadSessionMessageHelpers'])) {
+			self::LoadSessionMessageHelpers();
+		}
 	}
 
 	//*****************************************************************************
@@ -87,6 +87,28 @@ class Globalize
 	{
 		self::Bootstrap();
 		include_once(PHPOPENFW_FRAME_PATH . '/src/globals/Globalize/UPN.php');
+	}
+
+	//*****************************************************************************
+	/**
+	 * Load Global HTML Helper Functions
+	 */
+	//*****************************************************************************
+	public static function LoadHTMLHelpers()
+	{
+		self::Bootstrap();
+		include_once(PHPOPENFW_FRAME_PATH . '/src/globals/xhtml_gen.inc.php');
+	}
+
+	//*****************************************************************************
+	/**
+	 * Load Session Messages Helper Functions
+	 */
+	//*****************************************************************************
+	public static function LoadSessionMessageHelpers()
+	{
+		self::Bootstrap();
+		include_once(PHPOPENFW_FRAME_PATH . '/src/globals/SessionMessages.inc.php');
 	}
 
 }

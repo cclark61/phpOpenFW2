@@ -1,22 +1,22 @@
 <?php
-//*****************************************************************************
+//**************************************************************************************
+//**************************************************************************************
 /**
-* Data Formatting Class
-*
-* @package		phpOpenFW
-* @subpackage	Format
-* @author 		Christian J. Clark
-* @copyright	Copyright (c) Christian J. Clark
-* @license		https://mit-license.org
-* @version 		Started: 1-4-2005 Updated: 4-2-2013
-**/
-//*****************************************************************************
+ * Data Formatting Class
+ *
+ * @package		phpOpenFW
+ * @author 		Christian J. Clark
+ * @copyright	Copyright (c) Christian J. Clark
+ * @license		https://mit-license.org
+ **/
+//**************************************************************************************
+//**************************************************************************************
+
+namespace phpOpenFW\Format;
 
 //*****************************************************************************
 /**
  * Data Formatting Class
- * @package		phpOpenFW
- * @subpackage	Format
  */
 //*****************************************************************************
 class Data

@@ -1,20 +1,24 @@
 <?php
-//*****************************************************************************
-//*****************************************************************************
+//**************************************************************************************
+//**************************************************************************************
 /**
-* SQL Formatting Class
-*
-* @package		SwellCore
-* @subpackage	Plugins
-* @author 		Christian J. Clark
-* @copyright	Copyright (c) Swell Development LLC
-* @link			http://www.swelldevelopment.com/
-**/
-//*****************************************************************************
-//*****************************************************************************
+ * SQL Formatting Class
+ *
+ * @package		phpOpenFW
+ * @author 		Christian J. Clark
+ * @copyright	Copyright (c) Christian J. Clark
+ * @license		https://mit-license.org
+ **/
+//**************************************************************************************
+//**************************************************************************************
 
 namespace phpOpenFW\Format;
 
+//**************************************************************************************
+/**
+ * SQL Formatting Class
+ */
+//**************************************************************************************
 class SQL
 {
 
@@ -117,8 +121,8 @@ class SQL
 		// Defaults
 		//==================================================================
 		$db_type = 'mysql';
-		if (defined('SWELLCORE_DEFAULT_DB_TYPE')) {
-			$db_type = SWELLCORE_DEFAULT_DB_TYPE;
+		if (defined('PHPOPENFW_DEFAULT_DB_TYPE')) {
+			$db_type = PHPOPENFW_DEFAULT_DB_TYPE;
 		}
 		if (!is_array($params)) {
 			$params = [''];
@@ -229,8 +233,8 @@ class SQL
 		// Defaults
 		//==================================================================
 		$db_type = 'mysql';
-		if (defined('SWELLCORE_DEFAULT_DB_TYPE')) {
-			$db_type = SWELLCORE_DEFAULT_DB_TYPE;
+		if (defined('PHPOPENFW_DEFAULT_DB_TYPE')) {
+			$db_type = PHPOPENFW_DEFAULT_DB_TYPE;
 		}
 		if (!is_array($params)) {
 			$params = [''];

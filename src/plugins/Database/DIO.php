@@ -14,6 +14,7 @@
 //**************************************************************************************
 
 namespace phpOpenFW\Database;
+use phpOpenFW\Database\DataTrans;
 
 //**************************************************************************************
 /**
@@ -85,7 +86,7 @@ abstract class DIO
             //-----------------------------------------------------------------
             // Create a new data transaction and execute query
             //-----------------------------------------------------------------
-            $data1 = new data_trans($this->data_source);
+            $data1 = new DataTrans($this->data_source);
 
             //-----------------------------------------------------------------
 			// Use Bind Parameters
@@ -404,7 +405,7 @@ abstract class DIO
         }
         else {
             // Create a new data transaction and execute query
-            $data1 = new data_trans($this->data_source);
+            $data1 = new DataTrans($this->data_source);
 
 			// set Character set?
 			if (!empty($this->charset)) {
@@ -484,7 +485,7 @@ abstract class DIO
             }
             else {
 	            // Create a new data transaction and execute query
-	            $data1 = new data_trans($this->data_source);
+	            $data1 = new DataTrans($this->data_source);
 
 				// Use Bind Parameters
 				if ($this->use_bind_params) {
@@ -626,7 +627,7 @@ abstract class DIO
             }
 
             // Pull Table Info
-            $data1 = new data_trans($this->data_source);
+            $data1 = new DataTrans($this->data_source);
 
             switch ($this->db_type) {
                 case 'mysql':

@@ -92,20 +92,20 @@ class App
 			// * Login
 			//************************************************************
 			case 'login':
-		
+
 		        //=============================================================
 				// Perform Login Operation
 				//=============================================================
 				if (!isset($_SESSION['userid'])) {
 					$login = new Security\Login();
-					
+
 		            //--------------------------------------------------------
 					// If login.inc.php exists include it
 		            //--------------------------------------------------------
 					if (file_exists(PHPOPENFW_APP_FILE_PATH . '/login.inc.php')) {
 		    			require_once(PHPOPENFW_APP_FILE_PATH . '/login.inc.php');
 		            }
-		
+
 		            //--------------------------------------------------------
 					// If previous URL given go there after login
 		            //--------------------------------------------------------
@@ -137,7 +137,6 @@ class App
 				//************************************************************
 				if (!isset($_SESSION['userid'])) {
 					switch ($_SESSION['auth_data_type']) {
-						case 'ldap':
 						case 'mysql':
 						case 'pgsql':
 						case 'mysqli':
@@ -162,7 +161,7 @@ class App
 							// Perform Login Operation
 							//=============================================================
 							$login = new Security\Login();
-		
+
 		                    //=============================================================
 							// If login.inc.php exists include it
 		                    //=============================================================

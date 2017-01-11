@@ -3,7 +3,7 @@
 //**************************************************************************************
 /**
  * Data Transaction / PostgreSQL Plugin
- * A PostgreSQL plugin to the (data_trans) class
+ * A PostgreSQL plugin to the (DataTrans) class
  *
  * @package		phpOpenFW
  * @author 		Christian J. Clark
@@ -113,7 +113,7 @@ class dt_pgsql extends dt_structure
 		// Create Data Result Object if Necessary
 		//----------------------------------------------
     	if ($this->rsrc_id && gettype($this->rsrc_id) != 'boolean') {
-        	$this->data_result = new data_result($this->rsrc_id, $this->data_src);
+        	$this->data_result = new DataResult($this->rsrc_id, $this->data_src);
         }
 
 		//----------------------------------------------
@@ -251,7 +251,7 @@ class dt_pgsql extends dt_structure
 			// Create Data Result Object if Necessary
 			//----------------------------------------------
         	if ($this->rsrc_id && gettype($this->rsrc_id) != 'boolean') {
-	        	$this->data_result = new data_result($this->rsrc_id, $this->data_src);
+	        	$this->data_result = new DataResult($this->rsrc_id, $this->data_src);
 	        }
         }
 

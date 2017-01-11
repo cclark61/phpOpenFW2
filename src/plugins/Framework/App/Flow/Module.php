@@ -121,7 +121,7 @@ class Module extends Page
 			//----------------------------------------------------
 			// Get URL Path
 			//----------------------------------------------------
-			$this->mod = $this->pofw->get_url_path();
+			$this->mod = \phpOpenFW\Framework\Core::get_url_path();
 
 			//----------------------------------------------------
 			// Remove contents of $this->html_path if it exists
@@ -281,19 +281,6 @@ class Module extends Page
 	//************************************************************************************
 	public function render()
 	{
-        //============================================================
-		// Core Components
-		//============================================================
-		$this->pofw->load_db_engine();
-		$this->pofw->load_form_engine();
-		load_plugin('rs_list');
-        load_plugin('table');
-
-        //============================================================
-		// Application Logic
-		//============================================================
-		require_once("{$this->app_logic_path}/security/module_list.class.php");
-
         //============================================================
 		// Menu
 		//============================================================

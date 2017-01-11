@@ -3,7 +3,7 @@
 //**************************************************************************************
 /**
  * Data Transaction / IBM DB2 Plugin
- * A IBM DB2 plugin to the (data_trans) class
+ * A IBM DB2 plugin to the (DataTrans) class
  *
  * @package		phpOpenFW
  * @author 		Christian J. Clark
@@ -349,7 +349,7 @@ class dt_db2 extends dt_structure
 			//----------------------------------------------
 	    	// Create Data Result Object
 			//----------------------------------------------
-        	$this->data_result = new data_result($this->stmt, $this->data_src);
+        	$this->data_result = new DataResult($this->stmt, $this->data_src);
 
 			//----------------------------------------------
 	        // Last Insert ID

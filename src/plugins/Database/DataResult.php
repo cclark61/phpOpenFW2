@@ -32,7 +32,7 @@ class DataResult
 	private $data_src;
 
 	/**
-	* @var string Data source type (mysql, mysqli, pgsql, ldap, oracle, mssql, db2, sqlsrv, sqlite)
+	* @var string Data source type (mysql, mysqli, pgsql, oracle, mssql, db2, sqlsrv, sqlite)
 	**/
 	private $data_type;
 
@@ -74,26 +74,17 @@ class DataResult
 		$this->data_src = $data_src;
 
         //=================================================================
-		// Data Type
+		// Convert Mysql to MySQLi Database Driver
         //=================================================================
-        $this->data_type = $_SESSION[$this->data_src]['type'];
+        if ($_SESSION[$this->data_src]['type'] == 'mysql') { $_SESSION[$this->data_src]['type'] = 'mysqli'; }
 
         //=================================================================
         // Create Object based on Data Source Type
         //=================================================================
-
-        // Data Library
-        $data_lib = dirname(__FILE__) . '/lib/data_result';
-        $data_object_lib = $data_lib . '/dr_' . $this->data_type . '.class.php';
-        $data_structure_lib = $data_lib . '/dr_structure.class.php';
-
-        // Include necessary data structure libraries
-        require_once($data_structure_lib);
-        require_once($data_object_lib);
-
-        // Create new Data Object
-        $dr_class = 'dr_' . $this->data_type;
+        $this->data_type = $_SESSION[$this->data_src]['type'];
+        $dr_class = '\phpOpenFW\Database\Drivers\DataResult\dr_' . $this->data_type;
         $this->data_object = new $dr_class($resource, $data_src, $opts);
+
         return $this->data_object;
 	}
 

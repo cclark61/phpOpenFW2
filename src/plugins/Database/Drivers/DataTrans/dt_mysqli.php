@@ -3,7 +3,7 @@
 //**************************************************************************************
 /**
  * Data Transaction / MySQL Improved (mysqli) Plugin
- * A MySQLi plugin to the (data_trans) class
+ * A MySQLi plugin to the (DataTrans) class
  *
  * @package		phpOpenFW
  * @author 		Christian J. Clark
@@ -36,7 +36,7 @@ class dt_mysqli extends dt_structure
 		if (!$this->handle) {
 			if (!$this->port) { $this->port = 3306; }
 			if ($this->persistent) { $this->server = 'p:' . $this->server; }
-	        $this->handle = @new mysqli($this->server, $this->user, $this->pass, $this->source, $this->port);
+	        $this->handle = @new \mysqli($this->server, $this->user, $this->pass, $this->source, $this->port);
 
 	        if ($this->handle->connect_errno) {
 	        	$this->connection_error($this->handle->connect_error, $this->handle->connect_errno);
@@ -44,20 +44,28 @@ class dt_mysqli extends dt_structure
 				return false;
 	        }
 
+			//------------------------------------------------------
 			// Keep track of the number of connections we create
+			//------------------------------------------------------
 			$this->increment_counters();
 		}
 
+		//----------------------------------------------
 		// Flag Connection as Open
+		//----------------------------------------------
         $this->conn_open = true;
 
+		//----------------------------------------------
 		// Start Transaction and Turn off Auto Commit?
+		//----------------------------------------------
         if (!$this->auto_commit && !$this->trans_started) {
         	$this->handle->autocommit($this->auto_commit);
         	$this->start_trans();
         }
 
+		//----------------------------------------------
 		// Set the character Set If needed
+		//----------------------------------------------
 		if ($this->charset) {
 			//$this->handle->set_charset($this->charset);
 		}
@@ -114,7 +122,7 @@ class dt_mysqli extends dt_structure
 		// Create Data Result Object if Necessary
 		//----------------------------------------------
     	if ($this->rsrc_id && gettype($this->rsrc_id) != 'boolean') {
-        	$this->data_result = new data_result($this->rsrc_id, $this->data_src);
+        	$this->data_result = new DataResult($this->rsrc_id, $this->data_src);
         }
 
 		//----------------------------------------------
@@ -299,7 +307,9 @@ class dt_mysqli extends dt_structure
     		return false;
     	}
     	else {
+			//----------------------------------------------
 			// Last Insert ID
+			//----------------------------------------------
 	        $this->last_id = $this->handle->insert_id;
     	}
 
@@ -330,7 +340,7 @@ class dt_mysqli extends dt_structure
 	        else {
 		        $this->stmt->store_result();
 	        	$opts = array('stmt' => $this->stmt, 'prepared_query' => 1);
-	        	$this->data_result = new data_result($this->stmt, $this->data_src, $opts);
+	        	$this->data_result = new DataResult($this->stmt, $this->data_src, $opts);
 	        }
 		}
 

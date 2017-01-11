@@ -16,6 +16,7 @@
 //**************************************************************************************
 
 namespace phpOpenFW\Framework\App\Security;
+use phpOpenFW\Database\DataTrans;
 
 //**************************************************************************************
 /**
@@ -25,7 +26,8 @@ namespace phpOpenFW\Framework\App\Security;
  * @access		private
  */
 //**************************************************************************************
-class Authentication {
+class Authentication
+{
 
 	//***********************************************************************	
 	// Class variables
@@ -79,16 +81,20 @@ class Authentication {
 	//************************************************************************
 	public function __construct()
 	{
+		//***********************************************************
 		// Set class variables
+		//***********************************************************
 		$this->status = false;
-		$this->data_src = strtolower($_SESSION['auth_data_source']);
+		$this->data_src = (isset($_SESSION['auth_data_source'])) ? (strtolower($_SESSION['auth_data_source'])) : ('none');
 
+		//***********************************************************
 		// Set this local file path
+		//***********************************************************
 		$local_path = dirname(__FILE__);
 
-		//*****************************************
+		//***********************************************************
 		// Load and Set Authentication Parameters
-		//*****************************************
+		//***********************************************************
 		if ($this->data_src != 'none' && $this->data_src != 'custom') {
 			$this->data_type = $_SESSION['auth_data_type'];
 			$this->user_table = $_SESSION['auth_user_table'];
@@ -98,7 +104,11 @@ class Authentication {
 			//-----------------------------------------------------
 			// Password Security
 			//-----------------------------------------------------
-			$valid_pass_sec_types = array('clear' => 'clear', 'md5' => 'md5', 'sha1' => 'sha1');
+			$valid_pass_sec_types = array(
+				'clear' => 'clear', 
+				'md5' => 'md5', 
+				'sha1' => 'sha1'
+			);
 			$this->auth_pass_security = (isset($_SESSION['auth_pass_security'])) ? (strtolower($_SESSION['auth_pass_security'])) : ('clear');
 			if (!isset($valid_pass_sec_types[$this->auth_pass_security])) {
 				$this->auth_pass_security = 'clear';
@@ -135,15 +145,10 @@ class Authentication {
 			$this->data_type = 'none';
 		}
 
-		//*****************************************
+		//***********************************************************
 		// Setup the Query
-		//*****************************************
+		//***********************************************************
 		switch ($this->data_type) {
-			case 'ldap':
-				$search_dn = $this->user_table . ',';
-				$ldapFilter = "(&(uid=$this->user))";
-				$query = array($search_dn, $ldapFilter);
-				break;
 
 			case 'mysql':
 			case 'pgsql':
@@ -154,8 +159,8 @@ class Authentication {
 			case 'sqlsrv':
 			case 'sqlite':
 			case 'db2':
-				$query = "select * from $this->user_table where $this->user_field = '$this->user'";
-				if ($this->add_to_where != '') { $query .= " and $this->add_to_where"; }
+				$query = "select * from {$this->user_table} where {$this->user_field} = '{$this->user}'";
+				if ($this->add_to_where != '') { $query .= " and {$this->add_to_where}"; }
 				break;
 
 			case 'custom':
@@ -184,50 +189,31 @@ class Authentication {
 				break;
 		}
 
-		//*****************************************
+		//***********************************************************
 		// Perform Authentication
-		//*****************************************
+		//***********************************************************
 		if ($this->data_src != 'none' && $this->data_src != 'custom') {
-			$data_auth = new data_trans($this->data_src);
+			$data_auth = new DataTrans($this->data_src);
 			$data_auth->data_query($query);
 			$user_info = $data_auth->data_assoc_result();
 			$num_rows = $data_auth->data_num_rows();
-			$auth_user = (strtolower($this->data_type) == 'ldap' && isset($user_info[0])) ? ($user_info[0]['dn']) : ($this->user);
 
 			if ($num_rows <= 0) {
 				$this->status = false;
+				return false;
 			}
-			elseif ($data_auth->data_user_bind($auth_user, $this->pass)) {
-				$_SESSION['userid'] = $this->user;
-				$_SESSION['passwd'] = $this->pass;
-				
-				//-----------------------------------------------------
-				// Set Name of User
-				//-----------------------------------------------------
-				switch ($this->data_type) {
-					case 'ldap':
-						$_SESSION['ldap_userid'] = $user_info[0]['dn'];
-						$_SESSION['name'] = (isset($user_info[0][$_SESSION['auth_fname_field']][0])) ? ($user_info[0][$_SESSION['auth_fname_field']][0]) : ('');
-						break;
 
-					case 'mysql':
-					case 'pgsql':
-					case 'mysqli':
-					case 'oracle':
-					case 'sqlite':
-					case 'mssql':
-					case 'sqlsrv':
-					case 'sqlite':
-					case 'db2':
-						$_SESSION['first_name'] = (isset($user_info[0][$_SESSION['auth_fname_field']])) ? ($user_info[0][$_SESSION['auth_fname_field']]) : ('');
-						$_SESSION['last_name'] = (isset($user_info[0][$_SESSION['auth_lname_field']])) ? ($user_info[0][$_SESSION['auth_lname_field']]) : ('');
-						$_SESSION['name'] = $_SESSION['first_name'] . ' ' . $_SESSION['last_name'];
-						break;
-				}
-				
-				$this->status = true;
-			}
+			$_SESSION['userid'] = $this->user;
+			$_SESSION['passwd'] = sha1($this->pass);
+			$_SESSION['first_name'] = (isset($user_info[0][$_SESSION['auth_fname_field']])) ? ($user_info[0][$_SESSION['auth_fname_field']]) : ('');
+			$_SESSION['last_name'] = (isset($user_info[0][$_SESSION['auth_lname_field']])) ? ($user_info[0][$_SESSION['auth_lname_field']]) : ('');
+			$_SESSION['name'] = $_SESSION['first_name'] . ' ' . $_SESSION['last_name'];
+			
+			$this->status = true;
 		}
+		//***********************************************************
+		// Custom Login
+		//***********************************************************
 		else if ($this->data_src == 'custom') {
 			if (function_exists('custom_login')) {
 				$custom_ret_val = call_user_func('custom_login');

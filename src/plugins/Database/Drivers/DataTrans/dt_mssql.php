@@ -2,8 +2,8 @@
 //**************************************************************************************
 //**************************************************************************************
 /**
- * Data Transaction / MySQL Plugin
- * A MySQL plugin to the (data_trans) class
+ * Data Transaction / Microsoft SQL Server Plugin
+ * A Microsoft SQL Server plugin to the (DataTrans) class
  *
  * @package		phpOpenFW
  * @author 		Christian J. Clark
@@ -19,38 +19,44 @@ use phpOpenFW\Database\DataResult;
 
 //**************************************************************************************
 /**
- * dt_mysql Class
+ * dt_mssql Class
  */
 //**************************************************************************************
-class dt_mysql extends dt_structure
+class dt_mssql extends dt_structure
 {
 
+	//*************************************************************************
     /**
 	* Opens a connection to the specified data source based on the data source type
 	**/
 	//*************************************************************************
-	// Make a connection to the given source and store the handle
-	//*************************************************************************
 	public function open()
 	{
 		if (!$this->handle) {
+
+			// Setup Connection Parameters
 			$host = $this->server;
 			if (!empty($this->port)) { $host .= ':' . $this->port; }
-			if ($this->persistent) { $this->handle = @mysql_pconnect($host, $this->user, $this->pass); }
-	        else { $this->handle = @mysql_connect($host, $this->user, $this->pass); }
+			if (!empty($this->instance)) { $host .= '\\' . $this->instance; }
+	
+			// Attempt Connection
+	        if ($this->persistent) { $this->handle = mssql_pconnect($host, $this->user, $this->pass); }
+	        else { $this->handle = mssql_connect($host, $this->user, $this->pass); }
 		}
 
-        if (!$this->handle || mysql_errno()) {
-            $this->connection_error(mysql_error());
+        if (!$this->handle) {
+            $this->connection_error('MSSQL: There was an error connecting to the database server.');
             $this->handle = false;
             return false;
         }
         else {
 			// Select Database
-        	@mysql_select_db($this->source, $this->handle);
+        	$select_db_ok = @mssql_select_db($this->source, $this->handle);
 
-			if (mysql_errno()) {
-				$this->gen_error(mysql_error());
+			if (!$select_db_ok) {
+				$msg = "Unable to select database '$this->source'. Either the database does not exist";
+				$msg .= ' or the database for this data source is configured incorrectly.';
+				$this->gen_error($msg);
 				$this->close();
 				$this->handle = false;
 				return false;
@@ -58,7 +64,6 @@ class dt_mysql extends dt_structure
 
 			// Keep track of the number of connections we create
 			$this->increment_counters();
-
 		}
 
 		// Flag Connection as Open       
@@ -67,29 +72,27 @@ class dt_mysql extends dt_structure
         return true;
 	}
 	
+	//*************************************************************************
 	/**
 	* Closes a connection to the specified data source based on the data source type
 	**/
-	//*************************************************************************
-	// Close the connection to the data source
 	//*************************************************************************
     public function close()
 	{
 		$this->conn_open = false;
 		if (!$this->reuse_connection) {
 			if ($this->handle && !$this->data_result) {
-				return mysql_close($this->handle);
+				return mssql_close($this->handle);
 			}
 		}
 		return true;
 	}
 
+	//*************************************************************************
 	/**
 	* Executes a query based on the data source type
-	* @param mixed MySQL: SQL Statement
+	* @param mixed MsSQL: SQL Statement
 	**/
-	//*************************************************************************
-	// Execute a query and store the record set
 	//*************************************************************************
 	public function query($query)
 	{
@@ -104,25 +107,34 @@ class dt_mysql extends dt_structure
 		//----------------------------------------------
 		// Execute Query
 		//----------------------------------------------
-        $this->rsrc_id = mysql_query($query);
+        $this->rsrc_id = mssql_query($query);
 
 		//----------------------------------------------
 		// Affected Rows
 		//----------------------------------------------
-    	$this->affected_rows = mysql_affected_rows();
+    	$this->affected_rows = $this->_affected_rows();
     	$ret_val = $this->affected_rows;
 
 		//----------------------------------------------
 		// Create Data Result Object if Necessary
 		//----------------------------------------------
     	if ($this->rsrc_id && gettype($this->rsrc_id) != 'boolean') {
-        	$this->data_result = new data_result($this->rsrc_id, $this->data_src);
+        	$this->data_result = new DataResult($this->rsrc_id, $this->data_src);
         }
 
-		//----------------------------------------------
+        //----------------------------------------------
         // Last Insert ID
-		//----------------------------------------------
-        $this->last_id = mysql_insert_id();
+        //----------------------------------------------
+        $this->last_id = null;
+
+        //----------------------------------------------
+        // Error Reporting
+        //----------------------------------------------
+        if (!$this->rsrc_id) {
+        	$msg = "There was an error performing the query.";
+        	$this->gen_error($msg);
+        	return false;
+        }
 
 		//----------------------------------------------
 		// Return Data Result Object if it exists
@@ -133,29 +145,31 @@ class dt_mysql extends dt_structure
 			$ret_val = $this->data_result;
 		}
 
-		//----------------------------------------------
-        // Check for Errors
-		//----------------------------------------------
-        if ($this->check_and_print_error()) { return false; }
-
         return $ret_val;
 	}
 
 	//*************************************************************************
 	/**
-	* Check and Print Database Error
+	* Get the error code for a MSSQL Query
+	* @return integer Error Code
 	**/
 	//*************************************************************************
-	// Check and Print Database Error
-	//*************************************************************************
-	private function check_and_print_error()
+	private function _get_error_code()
 	{
-		if ($error=mysql_error()) {
-			$this->print_error($error, mysql_errno());
-			return true;
-		}
+		$error = mssql_query("select @@ERROR as error", $this->handle);
+		return mssql_result($error, 0, "error"); 
+	}
 
-		return false;
+	//*************************************************************************
+	/**
+	* Get the number of affected rows for a MSSQL Query
+	* @return integer Number of rows
+	**/
+	//*************************************************************************
+	private function _affected_rows()
+	{
+		$rsRows = mssql_query("select @@rowcount as rows", $this->handle);
+		return mssql_result($rsRows, 0, "rows"); 
 	}
 
 }

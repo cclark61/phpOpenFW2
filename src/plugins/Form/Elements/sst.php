@@ -15,6 +15,7 @@
 //**************************************************************************
 
 namespace phpOpenFW\Form\Elements;
+use phpOpenFW\Database\DataTrans;
 
 //**************************************************************************
 /**
@@ -55,7 +56,7 @@ class sst extends SelectFormElement
 		//============================================
 		// Pull items from database
 		//============================================
-		$data = new data_trans($this->data_src);
+		$data = new DataTrans($this->data_src);
 		$data->data_query($this->strsql);
 		$result = $data->data_assoc_result();
 

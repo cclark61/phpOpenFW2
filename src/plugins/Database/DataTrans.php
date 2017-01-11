@@ -27,7 +27,7 @@ class DataTrans
 	// Class variables
 	//************************************************************************
 	/**
-	* @var string data source type (mysql, mysqli, pgsql, ldap, oracle, mssql, db2, sqlsrv, sqlite)
+	* @var string data source type (mysql, mysqli, pgsql, oracle, mssql, db2, sqlsrv, sqlite)
 	**/
 	private $data_type;
 	
@@ -51,14 +51,14 @@ class DataTrans
 	//*************************************************************************
 	// Constructor function
 	//*************************************************************************
-	public function __construct($data_src='', $tmp_trans_type='qry')
+	public function __construct($data_src='')
 	{
         //=================================================================
 		// Data Source
         //=================================================================
 		if ($data_src != '') {
 			if (!isset($_SESSION[$data_src])) {
-				trigger_error("Error: [data_trans]::__construct(): Invalid Data Source '{$data_src}'.");
+				trigger_error("Error: [DataTrans]::__construct(): Invalid Data Source '{$data_src}'.");
 				return false;
 			}
 		}
@@ -67,44 +67,29 @@ class DataTrans
 				$data_src = $_SESSION['default_data_source'];
 			}
 			else {
-				trigger_error('Error: [data_trans]::__construct(): Data Source not given and default data source is not set.');
+				trigger_error('Error: [DataTrans]::__construct(): Data Source not given and default data source is not set.');
 				return false;
 			}
 		}
+		$this->data_src = $data_src;
 
         //=================================================================
-		// Driver
+		// Convert Mysql to MySQLi Database Driver
         //=================================================================
-        $this->data_type = $_SESSION[$data_src]['type'];
+        if ($_SESSION[$this->data_src]['type'] == 'mysql') { $_SESSION[$this->data_src]['type'] = 'mysqli'; }
 
         //=================================================================
         // Create Object based on Data Source Type
         //=================================================================
-
-		//------------------------------------------------------------
-        // Data Library Paths
-		//------------------------------------------------------------
-        $data_lib = dirname(__FILE__) . '/lib/data_trans';
-        $data_structure_lib = $data_lib . '/dt_structure.class.php';
-        $data_object_lib = $data_lib . '/dt_' . $this->data_type . '.class.php';
-
-		//------------------------------------------------------------
-        // Include necessary Data Object Libraries
-		//------------------------------------------------------------
-        //require_once($data_structure_lib);
-        //require_once($data_object_lib);
-
-		//------------------------------------------------------------
-        // Create new Data Object
-		//------------------------------------------------------------
+        $this->data_type = $_SESSION[$this->data_src]['type'];
         $dt_class = '\phpOpenFW\Database\Drivers\DataTrans\dt_' . $this->data_type;
-        $this->data_object = new $dt_class($data_src, $tmp_trans_type);
+        $this->data_object = new $dt_class($this->data_src);
 
 		//------------------------------------------------------------
 		// Check if we are setting the character set
 		//------------------------------------------------------------
-		if (!empty($_SESSION[$data_src]['charset'])) {
-			$this->data_object->set_opt('charset', $_SESSION[$data_src]['charset']);
+		if (!empty($_SESSION[$this->data_src]['charset'])) {
+			$this->data_object->set_opt('charset', $_SESSION[$this->data_src]['charset']);
 		}
 		
         return $this->data_object;
@@ -119,7 +104,7 @@ class DataTrans
 
 	/**
 	* Executes a query based on the data source type
-	* @param mixed MySQL: SQL Statement, PostgreSQL: SQL Statement, LDAP: properly formatted and filled array
+	* @param string SQL Statement
 	* @param array Bind Parameters (Optional)
 	**/
 	//*************************************************************************
@@ -147,42 +132,6 @@ class DataTrans
 		// Return Results
 		//------------------------------------------------------------
 		return $query_result;
-	}
-
-	/**
-	* Bind to a Data Source (Used for Authentication Primarily)
-	* @param string userid of the user trying to bind to data source
-	* @param string password of the user trying to bind to data source
-	**/
-	//*************************************************************************
-	// Bind to a data source as a specified user
-	// *** Used for Authentication
-	//*************************************************************************
-	private function data_bind($user, $pass)
-	{
-		return $this->data_object->bind($user, $pass);
-	}
-
-	/**
-	* Bind to the Data Source with user and password specified in the configuration
-	**/
-	//*************************************************************************
-	// Bind to a data source as the configured user
-	//*************************************************************************
-	public function data_admin_bind()
-	{
-		return $this->data_bind($this->data_object->get_user(), $this->data_object->get_pass());
-	}
-	
-	/**
-	* Bind to the Data Source with the provided user and password
-	**/
-	//*************************************************************************
-	// Bind to a data source as a specified user
-	//*************************************************************************
-	public function data_user_bind($user, $pass)
-	{
-		return $this->data_bind($user, $pass);
 	}
 	
 	/**
@@ -235,42 +184,6 @@ class DataTrans
 		return $this->data_object->last_insert_id();
 	}
 
-	/**
-	* Set the current transaction type
-	* @param string Query Type: '?' - query (default, all SQL queries), '+' - add (LDAP), '~' - modify (LDAP), 
-	* '-' - delete (LDAP), '?1' - one level query (LDAP)
-	**/
-	//*************************************************************************
-	// Set the Transaction type
-	// '?' - query (default), '+' - add, '~' - modify, '-' - delete
-	// '?1' - one level query (LDAP)
-	//*************************************************************************
-	public function set_trans_type($in_type)
-	{
-		switch ($in_type) {
-			case '+':
-				$tmp_trans_type = 'add';
-				break;
-				
-			case '~':
-				$tmp_trans_type = 'mod';
-				break;
-				
-			case '-':
-				$tmp_trans_type = 'del';
-				break;
-				
-			case '?1':
-				$tmp_trans_type = 'qry1';
-				break;
-					
-			default:
-				$tmp_trans_type = 'qry';
-				break;
-		}
-		$this->data_object->set_trans_type($tmp_trans_type);
-	}
-	
 	//*************************************************************************
 	/**
 	* Return the number rows in the current record set
@@ -378,7 +291,7 @@ class DataTrans
 		if (!$this->data_object->is_open()) { return false; }
 
 		if (!$statement) {
-			trigger_error('Error: [data_trans]::prepare(): No statement or invalid statement passed.');
+			trigger_error('Error: [DataTrans]::prepare(): No statement or invalid statement passed.');
 			return false;
 		}
 		else {

@@ -32,7 +32,7 @@ abstract class dr_structure {
 	protected $data_src;
 
 	/**
-	* @var string Data source type (mysql, mysqli, pgsql, ldap, oracle, mssql, db2, sqlsrv, sqlite)
+	* @var string Data source type (mysql, mysqli, pgsql, oracle, mssql, db2, sqlsrv, sqlite)
 	**/
 	protected $data_type;
 

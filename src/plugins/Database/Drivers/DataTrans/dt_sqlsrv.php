@@ -3,7 +3,7 @@
 //**************************************************************************************
 /**
  * Data Transaction / Microsoft SQL Server Plugin for Microsoft's SQLSRV Driver
- * A Microsoft SQL Server (SQLSRV) plugin to the (data_trans) class
+ * A Microsoft SQL Server (SQLSRV) plugin to the (DataTrans) class
  *
  * @package		phpOpenFW
  * @author 		Christian J. Clark
@@ -137,7 +137,7 @@ class dt_sqlsrv extends dt_structure
 	    	// Create Data Result Object
 			//----------------------------------------------
 			$has_rows = sqlsrv_has_rows($this->stmt);
-        	$this->data_result = new data_result($this->stmt, $this->data_src);
+        	$this->data_result = new DataResult($this->stmt, $this->data_src);
 
 			//----------------------------------------------
 	        // Last Insert ID
@@ -355,7 +355,7 @@ class dt_sqlsrv extends dt_structure
 	    	// Create Data Result Object
 			//----------------------------------------------
 			$has_rows = sqlsrv_has_rows($this->stmt);
-        	$this->data_result = new data_result($this->stmt, $this->data_src);
+        	$this->data_result = new DataResult($this->stmt, $this->data_src);
 
 			//----------------------------------------------
 	        // Last Insert ID

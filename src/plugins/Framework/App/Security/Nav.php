@@ -29,7 +29,8 @@ namespace phpOpenFW\Framework\App\Security;
  * @access		private
  */
 //**************************************************************************************
-class Nav {
+class Nav
+{
 
 	//***********************************************************************************
 	//***********************************************************************************
@@ -77,23 +78,25 @@ class Nav {
 	//*************************************************************************
 	public function __construct($base_dir)
 	{
-		//*******************************************
+		//-------------------------------------------------------------
 		// Nav Type / Format
-		//*******************************************
+		//-------------------------------------------------------------
 		if (isset($_SESSION['nav_xml_format'])) {
 			$valid_formats = array('numeric' => 'numeric', 'rewrite' => 'rewrite', 'long_url' => 'long_url');
 			$this->nav_type = (isset($valid_formats[$_SESSION['nav_xml_format']])) ? ($valid_formats[$_SESSION['nav_xml_format']]) : ('numeric');
 		}
 		else { $this->nav_type = 'numeric'; }
 
-		//*******************************************
+		//-------------------------------------------------------------
 		// Set object variables
-		//*******************************************
+		//-------------------------------------------------------------
 		$this->base_dir = $base_dir . '/';
 		$this->local_inc = $this->base_dir . 'local.inc.php';
 		$this->sort_type = (isset($_SESSION['nav_sort'])) ? ($_SESSION['nav_sort']) : ('title');
 
+		//-------------------------------------------------------------
 		// Set Main Menu Title
+		//-------------------------------------------------------------
 		if (file_exists($this->local_inc)) {
 			include($this->local_inc);
 			$mod_order = (isset($mod_order)) ? ($mod_order) : (100);
@@ -103,7 +106,9 @@ class Nav {
 			$mod_order = 100;
 		}
 		
+		//-------------------------------------------------------------
 		// Build the Nav Structure Array
+		//-------------------------------------------------------------
 		$this->nav_array = array(
 			'title' => $mod_title, 
 			'dir' => $this->base_dir, 
@@ -112,7 +117,9 @@ class Nav {
 		);
 		$this->nav_array2 = array();
 		
+		//-------------------------------------------------------------
 		// Sort Modules Array
+		//-------------------------------------------------------------
 		$tmp_dirs = array();
 		if ($this->sort_type == 'dir') {
 			foreach ($this->nav_array['mods'] as $tmp_key => $tmp_val) {
@@ -142,7 +149,9 @@ class Nav {
 	//*************************************************************************
 	private function build_nav($dir)
 	{
+		//-------------------------------------------------------------
 		// Build NAV array
+		//-------------------------------------------------------------
 		$main_array = array();
 		if (is_dir($dir)) {
 			if ($dh = opendir($dir)) {

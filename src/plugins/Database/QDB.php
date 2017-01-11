@@ -25,21 +25,25 @@ class QDB
 
 	//**************************************************************************************
 	/**
-	* Run a Query or Prepare and execute a query. Return a "data_result" object.
+	* Run a Query or Prepare and execute a query. Return a "DataResult" object.
 	*
 	* @param string Index of DB config
 	* @param string SQL Statement
 	* @param array Bind Parameters
 	* @param array Options ('debug')
-	* @return object A "data_result" object which can be used to get the records.
+	* @return object A "DataResult" object which can be used to get the records.
 	*/
 	//**************************************************************************************
 	public static function qdb_result($db_config, $strsql, $bind_params=false, $opts=false)
 	{
+		//------------------------------------------------------------------
 		// Use Bind Parameters?
+		//------------------------------------------------------------------
 		$use_bind_params = (is_array($bind_params) && count($bind_params)) ? (true) : (false);
 
+		//------------------------------------------------------------------
 		// New Data Transaction
+		//------------------------------------------------------------------
 		$data1 = new DataTrans($db_config);
 		if (!empty($opts['debug'])) { $data1->data_debug(true); }
 		$data1->set_opt('make_bind_params_refs', 1);
@@ -48,7 +52,9 @@ class QDB
 			$data1->set_opt('charset', $opts['charset']);
 		}
 
+		//------------------------------------------------------------------
 		// Query: With or Without Bind Parameters
+		//------------------------------------------------------------------
 		if ($use_bind_params) {
 			$prep_status = $data1->prepare($strsql);
 			return $data1->execute($bind_params);
@@ -71,10 +77,14 @@ class QDB
 	//**************************************************************************************
 	public static function qdb_first_row($db_config, $strsql, $bind_params=false, $opts=false)
 	{
+		//------------------------------------------------------------------
 		// Use Bind Parameters?
+		//------------------------------------------------------------------
 		$use_bind_params = (is_array($bind_params) && count($bind_params)) ? (true) : (false);
 
+		//------------------------------------------------------------------
 		// New Data Transaction
+		//------------------------------------------------------------------
 		$data1 = new DataTrans($db_config);
 		if (!empty($opts['debug'])) { $data1->data_debug(true); }
 		$data1->set_opt('make_bind_params_refs', 1);
@@ -83,7 +93,9 @@ class QDB
 			$data1->set_opt('charset', $opts['charset']);
 		}
 
+		//------------------------------------------------------------------
 		// Query: With or Without Bind Parameters
+		//------------------------------------------------------------------
 		if ($use_bind_params) {
 			$prep_status = $data1->prepare($strsql);
 			$result = $data1->execute($bind_params);
@@ -92,7 +104,7 @@ class QDB
 			$result = $data1->data_query($strsql);
 		}
 
-		if (gettype($result) == 'object' && get_class($result) == 'data_result') {
+		if (gettype($result) == 'object' && get_class($result) == 'phpOpenFW\Database\DataResult') {
 			return $result->fetch_row();
 		}
 
@@ -114,17 +126,23 @@ class QDB
 	//**************************************************************************************
 	public static function qdb_row($db_config, $strsql, $row_index=0, $data_format=false, $bind_params=false, $opts=false)
 	{
+		//------------------------------------------------------------------
 		// Use Bind Parameters?
+		//------------------------------------------------------------------
 		$use_bind_params = (is_array($bind_params) && count($bind_params)) ? (true) : (false);
 
+		//------------------------------------------------------------------
 		// Type Cast Row Key into String
+		//------------------------------------------------------------------
 		$row_index = (string)$row_index;
 		if ($row_index == '') {
 			trigger_error("ERROR: QDB::row(): Invalid row index passed.");
 			return false;
 		}
 
+		//------------------------------------------------------------------
 		// New Data Transaction
+		//------------------------------------------------------------------
 		$data1 = new DataTrans($db_config);
 		if (!empty($opts['debug'])) { $data1->data_debug(true); }
 		$data1->set_opt('make_bind_params_refs', 1);
@@ -133,7 +151,9 @@ class QDB
 			$data1->set_opt('charset', $opts['charset']);
 		}
 
+		//------------------------------------------------------------------
 		// Query: With or Without Bind Parameters
+		//------------------------------------------------------------------
 		if ($use_bind_params) {
 			$prep_status = $data1->prepare($strsql);
 			$exec_status = $data1->execute($bind_params);
@@ -142,7 +162,9 @@ class QDB
 			$data1->data_query($strsql);
 		}
 
+		//------------------------------------------------------------------
 		// Pull Data
+		//------------------------------------------------------------------
 		if (empty($data_format)) {
 			$data = $data1->data_assoc_result();
 		}
@@ -180,7 +202,9 @@ class QDB
 	//**************************************************************************************
 	public static function qdb_exec($db_config, $strsql, $bind_params, $return_format='', $opts=false)
 	{
+		//------------------------------------------------------------------
 		// New Data Transaction
+		//------------------------------------------------------------------
 		$data1 = new DataTrans($db_config);
 		if (!empty($opts['debug'])) { $data1->data_debug(true); }
 		$data1->set_opt('make_bind_params_refs', 1);
@@ -189,13 +213,19 @@ class QDB
 			$data1->set_opt('charset', $opts['charset']);
 		}
 
+		//------------------------------------------------------------------
 		// Prepare Query
+		//------------------------------------------------------------------
 		$prep_status = $data1->prepare($strsql);
 
+		//------------------------------------------------------------------
 		// Execute Query
+		//------------------------------------------------------------------
 		$exec_status = $data1->execute($bind_params);
 
+		//------------------------------------------------------------------
 		// Return Result Set
+		//------------------------------------------------------------------
 		$rf_arr = explode(':', $return_format);
 		if (empty($rf_arr[0])) { unset($rf_arr[0]); }
 		if (count($rf_arr) < 1) {
@@ -222,7 +252,9 @@ class QDB
 	//**************************************************************************************
 	public static function qdb_list($db_config, $strsql, $return_format='', $opts=false)
 	{
+		//------------------------------------------------------------------
 		// New Data Transaction
+		//------------------------------------------------------------------
 		$data1 = new DataTrans($db_config);
 		if (!empty($opts['debug'])) { $data1->data_debug(true); }
 
@@ -230,10 +262,14 @@ class QDB
 			$data1->set_opt('charset', $opts['charset']);
 		}
 
+		//------------------------------------------------------------------
 		// Execute Query
+		//------------------------------------------------------------------
 		$query_result = $data1->data_query($strsql);
 
+		//------------------------------------------------------------------
 		// Return Result Set
+		//------------------------------------------------------------------
 		$rf_arr = explode(':', $return_format);
 		if (empty($rf_arr[0])) { unset($rf_arr[0]); }
 		if (count($rf_arr) < 1) {
@@ -265,7 +301,9 @@ class QDB
 			return false;
 		}
 
+		//------------------------------------------------------------------
 		// New Data Transaction
+		//------------------------------------------------------------------
 		$data1 = new DataTrans($db_config);
 		if (!empty($opts['debug'])) { $data1->data_debug(true); }
 		$data1->set_opt('make_bind_params_refs', 1);
@@ -274,11 +312,16 @@ class QDB
 		}
 		$where = trim($where);
 
+		//------------------------------------------------------------------
+		// Check for empty Where
+		//------------------------------------------------------------------
 		if (!empty($where)) {
 			$strsql = "delete from {$db_table} where {$where}";
 		}
 
+		//------------------------------------------------------------------
 		// Execute Query
+		//------------------------------------------------------------------
 		if (!empty($where) && isset($strsql)) {
 			return $data1->data_query($strsql);
 		}
@@ -300,12 +343,16 @@ class QDB
 	//**************************************************************************************
 	public static function qdb_lookup($data_source, $sql, $fields='', $bind_params=false, $opts=false)
 	{
+		//------------------------------------------------------------------
 		// Check if fields are not specified
+		//------------------------------------------------------------------
 		if ($fields == '') {
 			trigger_error('ERROR: QDB::lookup(): No return fields specified!!');
 		}
 
+		//------------------------------------------------------------------
 		// New Data Transaction
+		//------------------------------------------------------------------
 		$data1 = new DataTrans($data_source);
 		if (!empty($opts['debug'])) { $data1->data_debug(true); }
 		$data1->set_opt('make_bind_params_refs', 1);
@@ -314,31 +361,49 @@ class QDB
 			$data1->set_opt('charset', $opts['charset']);
 		}
 
+		//------------------------------------------------------------------
 		// Use Bind Parameters
+		//------------------------------------------------------------------
 		if (is_array($bind_params) && count($bind_params)) {
 
+			//--------------------------------------------------------
 			// Prepare Query
+			//--------------------------------------------------------
 			$prep_status = $data1->prepare($sql);
 
+			//--------------------------------------------------------
 			// Execute Query
+			//--------------------------------------------------------
 			$exec_status = $data1->execute($bind_params);
 		}
+		//------------------------------------------------------------------
 		// Straight Query
+		//------------------------------------------------------------------
 		else {
+			//--------------------------------------------------------
 			// Execute Query
+			//--------------------------------------------------------
 			$query_result = $data1->data_query($sql);
 		}
 
+		//------------------------------------------------------------------
 		// Pull result set
+		//------------------------------------------------------------------
 		$result = $data1->data_assoc_result();
 
+		//------------------------------------------------------------------
 		// If result set empty, return false
+		//------------------------------------------------------------------
 		if (count($result) <= 0) {
 			return false;
 		}
+		//------------------------------------------------------------------
 		// Else Check field values
+		//------------------------------------------------------------------
 		else {
+			//--------------------------------------------------------
 			// Multiple fields specified
+			//--------------------------------------------------------
 			if (is_array($fields)) {
 				$return_vals = array();
 				foreach ($fields as $index) {
@@ -350,7 +415,9 @@ class QDB
 					}
 				}
 			}
+			//--------------------------------------------------------
 			// One field only
+			//--------------------------------------------------------
 			else {
 				if (array_key_exists($fields, $result[0])) { return $result[0][$fields]; }
 				else {
@@ -394,16 +461,22 @@ class QDB
 					else if ($trim_data) { $val[$key2] = trim($val2); }
 				}
 			}
+			//--------------------------------------------------------
 			// Trim Data
+			//--------------------------------------------------------
 			else if ($trim_data) { $val = trim($val); }
 
+			//--------------------------------------------------------
 			// Trim Row Keys
+			//--------------------------------------------------------
 			if ($trim_row_keys) {
 				unset($rs[$key]);
 				$rs[trim($key)] = $val;
 			}
+			//--------------------------------------------------------
 			// Do not Trim Row Keys
 			// If Trim Data or Trim Column Keys, reset in recordset array
+			//--------------------------------------------------------
 			else if ($trim_col_keys || $trim_data) { $rs[$key] = $val; }
 		}
 

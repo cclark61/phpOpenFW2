@@ -26,7 +26,8 @@ use phpOpenFW\Framework\App\Flow as Flow;
  * @access		private
  */
 //**************************************************************************************
-class Login {
+class Login
+{
 
 	/**
 	* @var bool status of the current login process (true = success, false = failure)
@@ -72,7 +73,7 @@ class Login {
 		// Authenticate
 		//**************************************
 		$authen = new Authentication();
-		
+
 		//**************************************
 		// Authentication Success
 		//**************************************

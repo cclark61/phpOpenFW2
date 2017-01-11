@@ -25,7 +25,8 @@ namespace phpOpenFW\Framework\App\Security;
  * @access		private
  */
 //**************************************************************************************
-class ModuleList {
+class ModuleList
+{
 
 	//***********************************************************************************
 	//***********************************************************************************
@@ -84,11 +85,15 @@ class ModuleList {
 	//***********************************************************************************
 	private function build_mod_list($dir_structure, $dir_path, $depth, $url, &$dir_array, $index='')
 	{
+		//-------------------------------------------------------------
         // Directory Path
+		//-------------------------------------------------------------
 		if (substr($dir_path, strlen($dir_path) - 1, 1) != '/' && $dir_path != '') { $dir_path .= '/'; }
 		if ($depth != -1) { $dir_path .= $dir_structure['dir']; }
 		
+		//-------------------------------------------------------------
 		// Save settings for this module
+		//-------------------------------------------------------------
 		$tmp_arr = array();
 		$tmp_arr['dir'] = $dir_path;
 		$tmp_arr['title'] = $dir_structure['title'];
@@ -102,14 +107,18 @@ class ModuleList {
             $dir_array[] = $tmp_arr;
         }
 		
+		//-------------------------------------------------------------
 		// Increment depth / set new url
+		//-------------------------------------------------------------
         $depth++;
         settype($url, 'string');
         if (!empty($url)) {
         	$url .= ($this->nav_type == 'rewrite' || $this->nav_type == 'long_url') ? ('/') : ('-');
         }
 
+		//-------------------------------------------------------------
         // Recursively build list for sub-modules
+		//-------------------------------------------------------------
         $count = 0;
 		foreach ($dir_structure['mods'] as $key => $value) {
        		if ($this->nav_type == 'rewrite' || $this->nav_type == 'long_url') {

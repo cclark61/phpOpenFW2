@@ -16,6 +16,7 @@
 //**************************************************************************************
 
 namespace phpOpenFW\Framework\App\Security;
+use phpOpenFW\XML\GenElement;
 
 //**************************************************************************************
 /**
@@ -25,7 +26,8 @@ namespace phpOpenFW\Framework\App\Security;
  * @access		private
  */
 //**************************************************************************************
-class XMLNav {
+class XMLNav
+{
 
 	//***********************************************************************************
 	//***********************************************************************************
@@ -53,20 +55,22 @@ class XMLNav {
 	//***********************************************************************************
 	public function __construct($menu)
 	{
-		//*******************************************
+		//-------------------------------------------------------------
 		// Nav Type / Format
-		//*******************************************
+		//-------------------------------------------------------------
 		if (isset($_SESSION['nav_xml_format'])) {
 			$valid_formats = array('numeric' => 'numeric', 'rewrite' => 'rewrite', 'long_url' => 'long_url');
 			$this->nav_type = (isset($valid_formats[$_SESSION['nav_xml_format']])) ? ($valid_formats[$_SESSION['nav_xml_format']]) : ('numeric');
 		}
 		else { $this->nav_type = 'numeric'; }
-	
+
+		//-------------------------------------------------------------
 		// Build the XML version of the Nav
-		$tmp = new gen_element('nav');
+		//-------------------------------------------------------------
+		$tmp = new GenElement('nav');
 		$tmp->display_tree();
 		$tmp->set_tabs(1);
-		$tmp->add_child(new gen_element('nav_xml_format', $this->nav_type));
+		$tmp->add_child(new GenElement('nav_xml_format', $this->nav_type));
 		$this->build_xml_nav($tmp, $menu, '/', 0, 0, '-1');
 		$this->xml = $tmp->render(true);
 	}
@@ -86,29 +90,39 @@ class XMLNav {
 	//***********************************************************************************
 	private function build_xml_nav(&$obj, $dir_structure, $url, $depth, $index, $mod_string)
 	{
+		//-------------------------------------------------------------
 		// Initialize basic variables
+		//-------------------------------------------------------------
 		$mod_depth = $depth / 2;
 		$num_elements = count($dir_structure['mods']);
 
+		//-------------------------------------------------------------
 		// Start XML for this module
-		$tmp = new gen_element('module', '', array('index' => $index, 'depth' => $depth));
+		//-------------------------------------------------------------
+		$tmp = new GenElement('module', '', array('index' => $index, 'depth' => $depth));
 		$tmp->display_tree();
 
+		//-------------------------------------------------------------
 		// Output all necessary data for this module
-		$tmp->add_child(new gen_element('url', $url));
-		$tmp->add_child(new gen_element('mod_string', $mod_string));
-		$tmp->add_child(new gen_element('title', $dir_structure['title']));
-		$tmp->add_child(new gen_element('dir', $dir_structure['dir']));
+		//-------------------------------------------------------------
+		$tmp->add_child(new GenElement('url', $url));
+		$tmp->add_child(new GenElement('mod_string', $mod_string));
+		$tmp->add_child(new GenElement('title', $dir_structure['title']));
+		$tmp->add_child(new GenElement('dir', $dir_structure['dir']));
 		$depth += 2;
 
+		//-------------------------------------------------------------
 		// Recursively build the module XML for all submodules of this module
+		//-------------------------------------------------------------
 		if ($num_elements > 0) {
-			$tmp2 = new gen_element('sub_modules');
+			$tmp2 = new GenElement('sub_modules');
 			$tmp2->display_tree();
 			foreach ($dir_structure['mods'] as $key => $value) {
 				$tmp_dir = $value['dir'];
 
+				//------------------------------------------------------
 				// Build URL
+				//------------------------------------------------------
 				if ($url == '/') {
 					if ($this->nav_type == 'rewrite') {
 						$new_url = $url . "$tmp_dir/";
@@ -142,7 +156,9 @@ class XMLNav {
 			$tmp->add_child($tmp2);
 		}
 
+		//-------------------------------------------------------------
 		// End the XML for this module
+		//-------------------------------------------------------------
 		$obj->add_child($tmp);
 	}
 	

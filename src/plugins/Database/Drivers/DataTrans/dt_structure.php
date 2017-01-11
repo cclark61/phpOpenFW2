@@ -33,7 +33,7 @@ abstract class dt_structure {
 	protected $data_src;
 
 	/**
-	* @var string Data source type (mysql, mysqli, pgsql, ldap, oracle, mssql, db2, sqlsrv, sqlite)
+	* @var string Data source type (mysql, mysqli, pgsql, oracle, mssql, db2, sqlsrv, sqlite)
 	**/
 	protected $data_type;
 	
@@ -76,12 +76,7 @@ abstract class dt_structure {
 	* @var string Database specific options
 	**/
 	protected $options;
-	
-	/**
-	* @var string Data transaction type
-	**/
-	protected $trans_type;
-	
+
 	/**
 	* @var resource Connection handle of the current data source connection
 	**/
@@ -202,7 +197,7 @@ abstract class dt_structure {
 	//*************************************************************************
 	// Constructor function
 	//*************************************************************************
-	public function __construct($data_src, $tmp_trans_type='qry')
+	public function __construct($data_src)
 	{
         if (!array_key_exists($data_src, $_SESSION)) {
         	trigger_error('Invalid data source!!');
@@ -233,7 +228,6 @@ abstract class dt_structure {
 		$this->conn_str = (isset($_SESSION[$data_src]['conn_str'])) ? ($_SESSION[$data_src]['conn_str']) : (false);
 		$this->options = (isset($_SESSION[$data_src]['options'])) ? ($_SESSION[$data_src]['options']) : (false);
 		$this->charset = (isset($_SESSION[$data_src]['charset'])) ? ($_SESSION[$data_src]['charset']) : (false);
-		$this->trans_type = $tmp_trans_type;
 		$this->handle = false;
 		$this->result = array();
 		$this->results_set = false;
@@ -316,7 +310,7 @@ abstract class dt_structure {
 		if ($this->charset) {
 			$this->set_opt('charset', $this->charset);
 		}
-		
+
 		//----------------------------------------------------------
 		// Open Connection
 		//----------------------------------------------------------
@@ -342,21 +336,6 @@ abstract class dt_structure {
 	{
 		$class = __CLASS__;
 		trigger_error("Error: [{$class}]::{$function}(): {$msg}");
-	}
-
-    /**
-	* Set the current transaction type
-	* @param string Query Type: "?" - query (default, all SQL queries), "+" - add (LDAP), "~" - modify (LDAP), 
-	* "-" - delete (LDAP), "?1" - one level query (LDAP)
-	**/
-	//*************************************************************************
-	// Set the Transaction type
-	// "?" - query (default), "+" - add, "~" - modify, "-" - delete
-	// "?1" - one level query (LDAP)
-	//*************************************************************************
-	public function set_trans_type($trans_type)
-	{
-		$this->trans_type = $trans_type;	
 	}
 
 	//*************************************************************************
@@ -583,34 +562,19 @@ abstract class dt_structure {
 	{
 		$ret_val = false;
 
+		//---------------------------------------------------
 		// Cache Record Results
+		//---------------------------------------------------
 		$this->cache_results();
 
-		switch ($this->data_type) {
-			case 'mysql':
-			case 'pgsql':
-			case 'mysqli':
-			case 'oracle':
-			case 'mssql':
-			case 'sqlsrv':
-			case 'sqlite':
-			case 'db2':
-				if (isset($this->result[0][$_SESSION['auth_pass_field']]) && $this->result[0][$_SESSION['auth_pass_field']] == $pass) {
-					$ret_val = true;
-					$this->bound = true;
-				}
-				break;
-
-			case 'ldap':
-				$this->open();
-				$bind = @ldap_bind($this->handle, $user, $pass);
-				if ($bind) {
-					$ret_val = true;
-					$this->bound = true;
-				}
-				break;
+		//---------------------------------------------------
+		// Check Password
+		//---------------------------------------------------
+		if (isset($this->result[0][$_SESSION['auth_pass_field']]) && $this->result[0][$_SESSION['auth_pass_field']] == $pass) {
+			$ret_val = true;
+			$this->bound = true;
 		}
-		
+
 		return $ret_val;
 	}
 
@@ -638,54 +602,31 @@ abstract class dt_structure {
 	//*************************************************************************
 	public function key_val_result($key, $value)
 	{
+		//----------------------------------------------------------
    		// Initialize Result Array
+		//----------------------------------------------------------
 		$assoc_result = array();
 
+		//----------------------------------------------------------
 		// Cache Record Results
+		//----------------------------------------------------------
 		$this->cache_results();
 
 		if ($this->result) {
-			switch ($this->data_type) {
-				case 'mysql':
-				case 'pgsql':
-				case 'mysqli':
-				case 'oracle':
-				case 'mssql':
-				case 'sqlsrv':
-				case 'sqlite':
-				case 'db2':
-					foreach ($this->result as $row) {
-						if (array_key_exists($key, $row) && array_key_exists($value, $row)) {
-							$assoc_result[$row[$key]] = $row[$value];
-						}
-						else {
-							trigger_error("$this->disp_dt key_val_result() :: Index \"$key\" or Index \"$value\" does not exist!!");
-							return false;
-						}
-					}
-					break;
-	
-				case 'ldap':
-					for ($a = 0; $a < $this->result['count']; $a++) {
-						$tmp_array = $this->result[$a];
-						if (array_key_exists($key, $tmp_array)) {
-							$assoc_key = ($key == 'dn' || $key == 'count') ? ($tmp_array[$key]) : ($tmp_array[$key][0]);
-							$assoc_value = '';
-							if (array_key_exists($value, $tmp_array)) {
-								$assoc_value = ($value == 'dn' || $value == 'count') ? ($tmp_array[$value]) : ($tmp_array[$value][0]);
-							}
-							$assoc_result[$assoc_key] = $assoc_value;
-						}
-						else {
-							trigger_error("$this->disp_dt key_val_result() :: Index \"$key\" or Index \"$value\" does not exist!!");
-							return false;
-						}
-					}
-					break;
+			foreach ($this->result as $row) {
+				if (array_key_exists($key, $row) && array_key_exists($value, $row)) {
+					$assoc_result[$row[$key]] = $row[$value];
+				}
+				else {
+					trigger_error("{$this->disp_dt} key_val_result() :: Index \"{$key}\" or Index \"{$value}\" does not exist!!");
+					return false;
+				}
 			}
 		}
 
+		//----------------------------------------------------------
 		// Return Result Array		
+		//----------------------------------------------------------
 		return $assoc_result;
 	}
 
@@ -698,50 +639,31 @@ abstract class dt_structure {
 	//*************************************************************************
 	public function key_assoc_result($key)
 	{
+		//----------------------------------------------------------
 		// Initialize Result Array
+		//----------------------------------------------------------
 		$assoc_result = array();
 
+		//----------------------------------------------------------
 		// Cache Record Results
+		//----------------------------------------------------------
 		$this->cache_results();
 
 		if ($this->result) {
-			switch ($this->data_type) {
-				case 'mysql':
-				case 'pgsql':
-				case 'mysqli':
-				case 'oracle':
-				case 'mssql':
-				case 'sqlsrv':
-				case 'sqlite':
-				case 'db2':
-					foreach ($this->result as $row) {
-						if (array_key_exists($key, $row)) {
-							$assoc_result[$row[$key]] = $row;
-						}
-						else{
-							trigger_error("$this->disp_dt key_assoc_result() :: Index \"$key\" does not exist!!");
-							return false;
-						}
-					}
-					break;
-	
-				case 'ldap':
-					for($a = 0; $a < $this->result['count']; $a++) {
-						$tmp_array = $this->result[$a];
-						if (array_key_exists($key, $tmp_array)) {
-							$assoc_key = ($key == 'dn' || $key == 'count') ? ($tmp_array[$key]) : ($tmp_array[$key][0]);
-							$assoc_result[$assoc_key] = $tmp_array;
-						}
-						else{
-							trigger_error("{$this->disp_dt} key_assoc_result() :: Index \"$key\" does not exist!!");
-							return false;
-						}
-					}
-					break;
+			foreach ($this->result as $row) {
+				if (array_key_exists($key, $row)) {
+					$assoc_result[$row[$key]] = $row;
+				}
+				else{
+					trigger_error("{$this->disp_dt} key_assoc_result() :: Index \"{$key}\" does not exist!!");
+					return false;
+				}
 			}
 		}
 
+		//----------------------------------------------------------
 		// Return Result Array		
+		//----------------------------------------------------------
 		return $assoc_result;
 	}
 

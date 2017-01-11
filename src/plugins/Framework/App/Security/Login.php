@@ -2,16 +2,14 @@
 //**************************************************************************************
 //**************************************************************************************
 /**
-* Login Class
-*
-* @package		phpOpenFW
-* @subpackage	Framework\App\Security
-* @author 		Christian J. Clark
-* @copyright	Copyright (c) Christian J. Clark
-* @license		https://mit-license.org
-* @version 		Started: 8-16-2005, Updated: 8-27-2014
-* @access		private
-**/
+ * Login Class
+ *
+ * @package		phpOpenFW
+ * @author 		Christian J. Clark
+ * @copyright	Copyright (c) Christian J. Clark
+ * @license		https://mit-license.org
+ * @access		private
+ **/
 //**************************************************************************************
 //**************************************************************************************
 
@@ -21,9 +19,6 @@ use phpOpenFW\Framework\App\Flow as Flow;
 //**************************************************************************************
 /**
  * Login Class
- * @package		phpOpenFW
- * @subpackage	Framework\App\Security
- * @access		private
  */
 //**************************************************************************************
 class Login

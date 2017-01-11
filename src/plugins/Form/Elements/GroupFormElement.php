@@ -1,28 +1,24 @@
 <?php
-//**************************************************************************
-//**************************************************************************
+//**************************************************************************************
+//**************************************************************************************
 /**
-* An abstract core classes for constructing complex form elements
-*
-* @package		phpOpenFW
-* @subpackage	Form_Engine
-* @author 		Christian J. Clark
-* @copyright	Copyright (c) Christian J. Clark
-* @license		https://mit-license.org
-* @version 		Started: 11-20-2012 Updated: 12-31-2013
-**/
-//**************************************************************************
-//**************************************************************************
+ * An abstract core classes for constructing complex form elements
+ *
+ * @package		phpOpenFW
+ * @author 		Christian J. Clark
+ * @copyright	Copyright (c) Christian J. Clark
+ * @license		https://mit-license.org
+ **/
+//**************************************************************************************
+//**************************************************************************************
 
 namespace phpOpenFW\Form\Elements;
 
-//**************************************************************************
+//**************************************************************************************
 /**
  * Select Form Element Class (Abstract)
- * @package		phpOpenFW
- * @subpackage	Form_Engine
  */
-//**************************************************************************
+//**************************************************************************************
 abstract class GroupFormElement extends \phpOpenFW\XML\Element
 {
 	/**

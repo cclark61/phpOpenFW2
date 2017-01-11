@@ -2,15 +2,13 @@
 //**************************************************************************************
 //**************************************************************************************
 /**
-* A class to construct the page framework
-*
-* @package		phpOpenFW
-* @subpackage	Framework\App\Flow
-* @author 		Christian J. Clark
-* @copyright	Copyright (c) Christian J. Clark
-* @license		https://mit-license.org
-* @version 		Started: 12-29-2004, Updated: 1-13-2016
-**/
+ * A class to construct the page framework
+ *
+ * @package		phpOpenFW
+ * @author 		Christian J. Clark
+ * @copyright	Copyright (c) Christian J. Clark
+ * @license		https://mit-license.org
+ **/
 //**************************************************************************************
 //**************************************************************************************
 
@@ -21,8 +19,6 @@ use phpOpenFW\XML\Transform;
 //**************************************************************************************
 /**
  * Page Class
- * @package		phpOpenFW
- * @subpackage	Framework\App\Flow
  */
 //**************************************************************************************
 abstract class Page

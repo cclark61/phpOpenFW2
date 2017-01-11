@@ -2,23 +2,19 @@
 //**************************************************************************************
 //**************************************************************************************
 /**
-* A simple core class to construct the basic page framework
-*
-* @package		phpOpenFW
-* @subpackage	Framework\Site
-* @author 		Christian J. Clark
-* @copyright	Copyright (c) Christian J. Clark
-* @license		https://mit-license.org
-* @version 		Started: 2/18/2013, Updated: 1/13/2016
-**/
+ * A simple core class to construct the basic page framework
+ *
+ * @package		phpOpenFW
+ * @author 		Christian J. Clark
+ * @copyright	Copyright (c) Christian J. Clark
+ * @license		https://mit-license.org
+ **/
 //**************************************************************************************
 //**************************************************************************************
 
 //**************************************************************************************
 /**
  * Page Class
- * @package		phpOpenFW
- * @subpackage	Framework\Site
  */
 //**************************************************************************************
 class Page

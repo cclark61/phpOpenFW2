@@ -2,15 +2,13 @@
 //**************************************************************************************
 //**************************************************************************************
 /**
-* Application Framework Class
-*
-* @package		phpOpenFW2
-* @subpackage 	Framework
-* @author 		Christian J. Clark
-* @copyright	Copyright (c) Christian J. Clark
-* @license		https://mit-license.org
-* @version 		Started: 12/23/2016, Updated: 12/30/2016
-*/
+ * Application Framework Class
+ *
+ * @package		phpOpenFW2
+ * @author 		Christian J. Clark
+ * @copyright	Copyright (c) Christian J. Clark
+ * @license		https://mit-license.org
+ */
 //**************************************************************************************
 //**************************************************************************************
 
@@ -20,8 +18,6 @@ use phpOpenFW\Framework\App\Security as Security;
 //**************************************************************************************
 /**
  * Application Framework Class
- * @package		phpOpenFW2
- * @subpackage	Framework
  */
 //**************************************************************************************
 class App

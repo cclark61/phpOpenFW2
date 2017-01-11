@@ -1,29 +1,25 @@
 <?php
-//**************************************************************************
-//**************************************************************************
+//**************************************************************************************
+//**************************************************************************************
 /**
-* A class for constructing Simple Selects from a Table (SST)
-*
-* @package		phpOpenFW
-* @subpackage	Form_Engine
-* @author 		Christian J. Clark
-* @copyright	Copyright (c) Christian J. Clark
-* @license		https://mit-license.org
-* @version 		Started: 9-21-2005 Updated: 12-31-2013
-**/
-//**************************************************************************
-//**************************************************************************
+ * A class for constructing Simple Selects from a Table (SST)
+ *
+ * @package		phpOpenFW
+ * @author 		Christian J. Clark
+ * @copyright	Copyright (c) Christian J. Clark
+ * @license		https://mit-license.org
+ **/
+//**************************************************************************************
+//**************************************************************************************
 
 namespace phpOpenFW\Form\Elements;
 use phpOpenFW\Database\DataTrans;
 
-//**************************************************************************
+//**************************************************************************************
 /**
  * Simple Select from Table Class
- * @package		phpOpenFW
- * @subpackage	Form_Engine
  */
-//**************************************************************************
+//**************************************************************************************
 class sst extends SelectFormElement
 {
 	private $data_src;		// Data Source

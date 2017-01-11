@@ -2,16 +2,14 @@
 //**************************************************************************************
 //**************************************************************************************
 /**
-* Module List Class
-*
-* @package		phpOpenFW
-* @subpackage	Framework\App\Security
-* @author 		Christian J. Clark
-* @copyright	Copyright (c) Christian J. Clark
-* @license		https://mit-license.org
-* @access		private
-* @version 		Started: 11-16-2005, Updated: 4-6-2010
-**/
+ * Module List Class
+ *
+ * @package		phpOpenFW
+ * @author 		Christian J. Clark
+ * @copyright	Copyright (c) Christian J. Clark
+ * @license		https://mit-license.org
+ * @access		private
+ **/
 //**************************************************************************************
 //**************************************************************************************
 
@@ -20,9 +18,6 @@ namespace phpOpenFW\Framework\App\Security;
 //**************************************************************************************
 /**
  * Module List Class
- * @package		phpOpenFW
- * @subpackage	Framework\App\Security
- * @access		private
  */
 //**************************************************************************************
 class ModuleList

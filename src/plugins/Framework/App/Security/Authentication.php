@@ -2,16 +2,14 @@
 //**************************************************************************************
 //**************************************************************************************
 /**
-* Authentication Class
-*
-* @package		phpOpenFW
-* @subpackage	Framework\App\Security
-* @author 		Christian J. Clark
-* @copyright	Copyright (c) Christian J. Clark
-* @license		https://mit-license.org
-* @version 		Started: 3-11-2005, Updated: 8-27-2014
-* @access		private
-**/
+ * Authentication Class
+ *
+ * @package		phpOpenFW
+ * @author 		Christian J. Clark
+ * @copyright	Copyright (c) Christian J. Clark
+ * @license		https://mit-license.org
+ * @access		private
+ **/
 //**************************************************************************************
 //**************************************************************************************
 
@@ -21,9 +19,6 @@ use phpOpenFW\Database\DataTrans;
 //**************************************************************************************
 /**
  * Authentication Class
- * @package		phpOpenFW
- * @subpackage	Framework\App\Security
- * @access		private
  */
 //**************************************************************************************
 class Authentication

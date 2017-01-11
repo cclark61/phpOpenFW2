@@ -2,16 +2,14 @@
 //**************************************************************************************
 //**************************************************************************************
 /**
-* XML Nav Class
-*
-* @package		phpOpenFW
-* @subpackage	Framework\App\Security
-* @author 		Christian J. Clark
-* @copyright	Copyright (c) Christian J. Clark
-* @license		https://mit-license.org
-* @version 		Started: 4-13-2006, Updated: 4-6-2010
-* @access		private
-**/
+ * XML Nav Class
+ *
+ * @package		phpOpenFW
+ * @author 		Christian J. Clark
+ * @copyright	Copyright (c) Christian J. Clark
+ * @license		https://mit-license.org
+ * @access		private
+ **/
 //**************************************************************************************
 //**************************************************************************************
 
@@ -21,9 +19,6 @@ use phpOpenFW\XML\GenElement;
 //**************************************************************************************
 /**
  * XML Nav Class
- * @package		phpOpenFW
- * @subpackage	Framework\App\Security
- * @access		private
  */
 //**************************************************************************************
 class XMLNav

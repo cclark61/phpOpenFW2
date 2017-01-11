@@ -2,15 +2,13 @@
 //************************************************************************************
 //************************************************************************************
 /**
-* Framework Core Class
-*
-* @package		phpOpenFW2
-* @subpackage	Framework
-* @author 		Christian J. Clark
-* @copyright	Copyright (c) Christian J. Clark
-* @license		https://mit-license.org
-* @version 		Started: 1/13/2016, Updated: 12/30/2016
-**/
+ * Framework Core Class
+ *
+ * @package		phpOpenFW2
+ * @author 		Christian J. Clark
+ * @copyright	Copyright (c) Christian J. Clark
+ * @license		https://mit-license.org
+ **/
 //************************************************************************************
 //************************************************************************************
 
@@ -19,8 +17,6 @@ namespace phpOpenFW\Framework;
 //**************************************************************************************
 /**
  * Framework Core Class
- * @package		phpOpenFW2
- * @subpackage	Framework
  */
 //**************************************************************************************
 class Core

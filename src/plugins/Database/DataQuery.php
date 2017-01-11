@@ -27,9 +27,6 @@ namespace phpOpenFW\Database;
  * [order] -> order by phrase<br/>
  * [group] -> group by phrase<br/>
  * [limit] -> limit phrase<br/>
- * 
- * @package		phpOpenFW
- * @subpackage 	Database
  */
 //**************************************************************************************
 class DataQuery {

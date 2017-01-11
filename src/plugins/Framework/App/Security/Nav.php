@@ -2,31 +2,22 @@
 //**************************************************************************************
 //**************************************************************************************
 /**
-* Module Nav Class
-*
-* @package		phpOpenFW
-* @subpackage	Framework\App\Security
-* @author 		Christian J. Clark
-* @copyright	Copyright (c) Christian J. Clark
-* @license		https://mit-license.org
-* @version 		Started: 8-18-2005, Updated: 8-31-2011
-* @access		private
-**/
+ * Module Nav Class
+ *
+ * @package		phpOpenFW
+ * @author 		Christian J. Clark
+ * @copyright	Copyright (c) Christian J. Clark
+ * @license		https://mit-license.org
+ * @access		private
+ **/
 //**************************************************************************************
 //**************************************************************************************
 
 namespace phpOpenFW\Framework\App\Security;
 
 //**************************************************************************************
-// Contributions by Lucas Hoezee ( http://thecodify.com/ )
-// 4/13/2011
-//**************************************************************************************
-//**************************************************************************************
 /**
  * Nav Class
- * @package		phpOpenFW
- * @subpackage	Framework\App\Security
- * @access		private
  */
 //**************************************************************************************
 class Nav

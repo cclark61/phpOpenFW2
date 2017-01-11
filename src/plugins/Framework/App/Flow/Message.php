@@ -2,15 +2,13 @@
 //**************************************************************************************
 //**************************************************************************************
 /**
-* A class to construct a message page
-*
-* @package		phpOpenFW
-* @subpackage	Framework\App\Flow
-* @author 		Christian J. Clark
-* @copyright	Copyright (c) Christian J. Clark
-* @license		https://mit-license.org
-* @version 		Started: 1-19-2006, Updated: 8-27-2014
-**/
+ * A class to construct a message page
+ *
+ * @package		phpOpenFW
+ * @author 		Christian J. Clark
+ * @copyright	Copyright (c) Christian J. Clark
+ * @license		https://mit-license.org
+ **/
 //**************************************************************************************
 //**************************************************************************************
 
@@ -20,8 +18,6 @@ use phpOpenFW\XML\GenElement;
 //**************************************************************************************
 /**
  * Message Page Class
- * @package		phpOpenFW
- * @subpackage	Framework\App\Flow
  */
 //**************************************************************************************
 class Message extends Page

@@ -1,28 +1,24 @@
 <?php
-//**************************************************************************
-//**************************************************************************
+//**************************************************************************************
+//**************************************************************************************
 /**
-* A class for constructing Simple Selects from Array (SSA)
-*
-* @package		phpOpenFW
-* @subpackage	Form_Engine
-* @author 		Christian J. Clark
-* @copyright	Copyright (c) Christian J. Clark
-* @license		https://mit-license.org
-* @version 		Started: 9-19-2005 Updated: 12-31-2013
-**/
-//**************************************************************************
-//**************************************************************************
+ * A class for constructing Simple Selects from Array (SSA)
+ *
+ * @package		phpOpenFW
+ * @author 		Christian J. Clark
+ * @copyright	Copyright (c) Christian J. Clark
+ * @license		https://mit-license.org
+ **/
+//**************************************************************************************
+//**************************************************************************************
 
 namespace phpOpenFW\Form\Elements;
 
-//**************************************************************************
+//**************************************************************************************
 /**
  * Simple Select from Array Class
- * @package		phpOpenFW
- * @subpackage	Form_Engine
  */
-//**************************************************************************
+//**************************************************************************************
 class ssa extends SelectFormElement
 {
 	private $select_vals;	// Values of the select

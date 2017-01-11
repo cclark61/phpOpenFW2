@@ -2,15 +2,13 @@
 //**************************************************************************************
 //**************************************************************************************
 /**
-* A class to construct a module page
-*
-* @package		phpOpenFW
-* @subpackage	Framework\App\Flow
-* @author 		Christian J. Clark
-* @copyright	Copyright (c) Christian J. Clark
-* @license		https://mit-license.org
-* @version 		Started: 1-19-2006, Updated: 1-13-2016
-**/
+ * A class to construct a module page
+ *
+ * @package		phpOpenFW
+ * @author 		Christian J. Clark
+ * @copyright	Copyright (c) Christian J. Clark
+ * @license		https://mit-license.org
+ **/
 //**************************************************************************************
 //**************************************************************************************
 
@@ -22,8 +20,6 @@ use phpOpenFW\XML\Transform;
 //**************************************************************************************
 /**
  * Module Page Class
- * @package		phpOpenFW
- * @subpackage	Framework\App\Flow
  */
 //**************************************************************************************
 class Module extends Page

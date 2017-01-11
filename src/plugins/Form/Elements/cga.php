@@ -1,28 +1,24 @@
 <?php
-//**************************************************************************
-//**************************************************************************
+//**************************************************************************************
+//**************************************************************************************
 /**
-* A class for constructing a Checkbox Group from Array (CGA)
-*
-* @package		phpOpenFW
-* @subpackage	Form_Engine
-* @author 		Christian J. Clark
-* @copyright	Copyright (c) Christian J. Clark
-* @license		https://mit-license.org
-* @version 		Started: 9-22-2005 Updated: 12-28-2012
-**/
-//**************************************************************************
-//**************************************************************************
+ * A class for constructing a Checkbox Group from Array (CGA)
+ *
+ * @package		phpOpenFW
+ * @author 		Christian J. Clark
+ * @copyright	Copyright (c) Christian J. Clark
+ * @license		https://mit-license.org
+ **/
+//**************************************************************************************
+//**************************************************************************************
 
 namespace phpOpenFW\Form\Elements;
 
-//**************************************************************************
+//**************************************************************************************
 /**
  * Checkbox Group from Array Class
- * @package		phpOpenFW
- * @subpackage	Form_Engine
  */
-//**************************************************************************
+//**************************************************************************************
 class cga extends GroupFormElement
 {
 	private $checkboxes;	// Array of Array([Name], [Value], [Desc])

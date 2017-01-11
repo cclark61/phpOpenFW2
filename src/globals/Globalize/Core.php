@@ -1,16 +1,16 @@
 <?php
-//*****************************************************************************
+//**************************************************************************************
+//**************************************************************************************
 /**
-* Load Global Core Functions Plugin
-*
-* @package		phpOpenFW
-* @subpackage	Globals
-* @author 		Christian J. Clark
-* @copyright	Copyright (c) Christian J. Clark
-* @license		https://mit-license.org
-* @version 		Started: 12/28/2016, Updated: 12/28/2016
-**/
-//*****************************************************************************
+ * Load Global Core Functions Plugin
+ *
+ * @package		phpOpenFW
+ * @author 		Christian J. Clark
+ * @copyright	Copyright (c) Christian J. Clark
+ * @license		https://mit-license.org
+ **/
+//**************************************************************************************
+//**************************************************************************************
 
 //=============================================================================
 // Check for Excluded Functions Array

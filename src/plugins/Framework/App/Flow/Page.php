@@ -184,7 +184,9 @@ abstract class Page
 	//************************************************************************************
 	protected function initialize()
 	{
+		//****************************************************
 		// Set Base Variables
+		//****************************************************
 		$this->file_path = PHPOPENFW_APP_FILE_PATH;
 		$this->frame_path = PHPOPENFW_FRAME_PATH;
 		$this->html_path = $_SESSION['html_path'];
@@ -200,7 +202,7 @@ abstract class Page
 		$this->output_type = 'html';
 		$this->xsl_template = false;
 		$this->skip_render = false;
-		
+
 		//****************************************************
 		// Template Directory
 		//****************************************************

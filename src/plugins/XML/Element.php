@@ -96,7 +96,7 @@ abstract class Element
 		if ($this->child_nodes) {
 			// Child Nodes
 			foreach ($this->child_nodes as $node) {
-				if (is_object($node) && get_class($node) == 'gen_element') {
+				if (is_object($node) && get_class($node) == 'phpOpenFW\XML\GenElement') {
 					 $node->set_tabs($this->tabs + 1);
 				}
 				$el_cont .= $node;

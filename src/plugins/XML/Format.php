@@ -13,6 +13,7 @@
 //**************************************************************************************
 
 namespace phpOpenFW\XML;
+use phpOpenFW\XML\GenElement;
 
 //**************************************************************************************
 /**
@@ -134,7 +135,7 @@ class Format
 	{
 	    if ($elm) {
 	        ob_start(); 
-	        $c = new gen_element($elm, $content, $attrs);
+	        $c = new GenElement($elm, $content, $attrs);
 	        $c->render();
 	        return ($escape) ? (self::xml_escape(ob_get_clean())) : (ob_get_clean());
 	    }

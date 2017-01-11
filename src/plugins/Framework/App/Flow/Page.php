@@ -13,8 +13,9 @@
 //**************************************************************************************
 
 namespace phpOpenFW\Framework\App\Flow;
-use phpOpenFW\XML\GenElement;
-use phpOpenFW\XML\Transform;
+use \phpOpenFW\XML\GenElement;
+use \phpOpenFW\XML\Transform;
+use \phpOpenFW\XML\Format;
 
 //**************************************************************************************
 /**
@@ -392,7 +393,7 @@ abstract class Page
 			$tmp->display_tree();
 			$tmp->add_child(new GenElement('userid', $_SESSION['userid']));
 			if (!isset($_SESSION['name'])) { $_SESSION['name'] = ''; }
-			$tmp->add_child(new GenElement('name', xml_escape($_SESSION['name'])));
+			$tmp->add_child(new GenElement('name', Format::xml_escape($_SESSION['name'])));
 			$page->add_child($tmp);
 		
 			// Special links (logout)

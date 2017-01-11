@@ -13,6 +13,8 @@
 //**************************************************************************************
 
 namespace phpOpenFW\HTML;
+use \phpOpenFW\XML\Format;
+use \phpOpenFW\XML\Transform;
 
 //**************************************************************************************
 /**
@@ -510,13 +512,13 @@ class RS_List
 		//---------------------------------------------------
 		// Table Group
 		//---------------------------------------------------
-		if ($this->group_by) { $this->xml = xhe('table_group', $this->xml); }
+		if ($this->group_by) { $this->xml = Format::xhe('table_group', $this->xml); }
 
 		//---------------------------------------------------
 		// Perform XML Transformation
 		//---------------------------------------------------
 		$sxoe = (!empty($_SESSION['show_xml_on_error'])) ? (true) : (false);
-		xml_transform($this->xml, $this->xsl_template, $sxoe);
+		Transform::XSL($this->xml, $this->xsl_template, $sxoe);
 
 		//---------------------------------------------------
 		// Buffer? Return Content
@@ -545,10 +547,10 @@ class RS_List
 		//---------------------------------------------------
 		if (!empty($label)) {
 			if ($this->escape_data) {
-				print xhe('label', xml_escape($label));
+				print Format::xhe('label', Format::xml_escape($label));
 			}
 			else {
-				print xhe('label', htmlentities($label));
+				print Format::xhe('label', htmlentities($label));
 			}
 		}
 
@@ -561,8 +563,8 @@ class RS_List
 			foreach ($this->data_outline as $key => $val) {
 				print $this->header_cell($key, $val);
 			}
-			print xhe('row', ob_get_clean());
-			print xhe('header', ob_get_clean());
+			print Format::xhe('row', ob_get_clean());
+			print Format::xhe('header', ob_get_clean());
 		}
 		
 		//---------------------------------------------------
@@ -571,22 +573,22 @@ class RS_List
 		ob_start();
 		if ($row_count == 0) {
 			$ecols = count($this->data_outline);
-			print xhe('row', xhe('cell', xml_escape($this->empty_msg), array('colspan' => $ecols)));
+			print Format::xhe('row', Format::xhe('cell', Format::xml_escape($this->empty_msg), array('colspan' => $ecols)));
 		}
 		else {
 			print $table_content;
 		}
-		print xhe('content', ob_get_clean());
+		print Format::xhe('content', ob_get_clean());
 
 		//---------------------------------------------------
 		// Row Count
 		//---------------------------------------------------
-		print xhe('count', $row_count);
+		print Format::xhe('count', $row_count);
 
 		//---------------------------------------------------
 		// Return Table
 		//---------------------------------------------------
-		return xhe('table', ob_get_clean(), $attrs);
+		return Format::xhe('table', ob_get_clean(), $attrs);
 	}
 	
 	//***************************************************************************************
@@ -618,7 +620,7 @@ class RS_List
 		//---------------------------------------------------
 		// Return "row" element
 		//---------------------------------------------------
-		return xhe('row', $content, $attrs);
+		return Format::xhe('row', $content, $attrs);
 	}
 	
 	//***************************************************************************************
@@ -660,10 +662,10 @@ class RS_List
 		// Return "cell" element
 		//---------------------------------------------------
 		if ($this->escape_data) {
-			return xhe('cell', xml_escape($content), $attrs);
+			return Format::xhe('cell', Format::xml_escape($content), $attrs);
 		}
 		else {
-			return xhe('cell', htmlentities($content), $attrs);
+			return Format::xhe('cell', htmlentities($content), $attrs);
 		}
 	}
 
@@ -689,10 +691,10 @@ class RS_List
 		// Return "cell" element
 		//---------------------------------------------------
 		if ($this->escape_data) {
-			return xhe('cell', xml_escape($content), $attrs);
+			return Format::xhe('cell', Format::xml_escape($content), $attrs);
 		}
 		else {
-			return xhe('cell', htmlentities($content), $attrs);
+			return Format::xhe('cell', htmlentities($content), $attrs);
 		}
 	}
 	

@@ -534,7 +534,7 @@ abstract class dt_structure {
 	//*************************************************************************
     protected function cache_results()
     {
-    	if (gettype($this->data_result) == 'object' && get_class($this->data_result) == 'data_result') {
+    	if (gettype($this->data_result) == 'object' && get_class($this->data_result) == 'phpOpenFW\Database\DataResult') {
 			if (!$this->results_set) {
 				$this->result = $this->data_result->fetch_all_rows();
 				if (!$this->result && !is_array($this->result)) { $this->result = array(); }

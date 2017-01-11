@@ -13,13 +13,14 @@
 //**************************************************************************************
 
 namespace phpOpenFW\Form\Forms;
+use \phpOpenFW\XML\Format;
 
 //**************************************************************************************
 /**
  * Form Class
  */
 //**************************************************************************************
-class FormToo extends element
+class FormToo extends \phpOpenFW\XML\Element
 {
 	//*************************************************************************
 	// Form class variables
@@ -90,7 +91,7 @@ class FormToo extends element
 		// Form Label
 		//============================================================
 		if (isset($this->form_label)) {
-			 $this->add_child(xhe('form_label', $this->form_label));
+			 $this->add_child(Format::xhe('form_label', $this->form_label));
 		}
 
 		//============================================================
@@ -137,7 +138,7 @@ class FormToo extends element
 			$fe_content = trim($tmp_element);
 			$content_empty = ($fe_content == '') ? (true) : (false);
 			if ($fe_content != '' && !empty($this->xsl_template)) {
-				$fe_content = xml_escape($fe_content);
+				$fe_content = Format::xml_escape($fe_content);
 			}
 			$fe_attrs = (isset($element[2]) && is_array($element[2])) ? ($element[2]) : (array());
 			$tmp_fe = new gen_element($element[1], $fe_content, $fe_attrs);
@@ -207,7 +208,7 @@ class FormToo extends element
 		$form_element = trim($form_element);
 		if (!is_array($attrs)) { $attrs = array(); }
 		if ($container) {
-			$form_element = trim(xhe($container, $form_element, $attrs));
+			$form_element = trim(Format::xhe($container, $form_element, $attrs));
 		}
 		array_push($this->form_elements, array($form_element, 'element'));
 	}
@@ -224,7 +225,7 @@ class FormToo extends element
 		$attrs['type'] = 'hidden';
 		$attrs['name'] = (string)$name;
 		$attrs['value'] = (string)$value;
-		$this->hidden_elements[] = trim(xhe('input', false, $attrs));
+		$this->hidden_elements[] = trim(Format::xhe('input', false, $attrs));
 	}
 
 	//*************************************************************************
@@ -241,9 +242,9 @@ class FormToo extends element
 		$caption = (string)$caption;
 		if (!is_array($attrs)) { $attrs = array(); }
 		if (!is_array($attrs2)) { $attrs2 = array(); }
-		$label = xhe('label', trim($caption), $attrs);
+		$label = Format::xhe('label', trim($caption), $attrs);
 		if ($container) {
-			$label = trim(xhe($container, $label, $attrs2));
+			$label = trim(Format::xhe($container, $label, $attrs2));
 		}
 		array_push($this->form_elements, array(trim($label), 'element'));
 	}	
@@ -262,7 +263,7 @@ class FormToo extends element
 		if (!is_array($fs_attrs)) { $fs_attrs = array(); }
 		if ($legend != '') {
 			if (!is_array($l_attrs)) { $l_attrs = array(); }
-			$fs_content = trim(xhe('legend', $legend, $l_attrs));
+			$fs_content = trim(Format::xhe('legend', $legend, $l_attrs));
 		}
 		
 		$this->start_section('fieldset', $fs_attrs, $fs_content);

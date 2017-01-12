@@ -36,8 +36,13 @@ class Core
 	    if (!defined('PHPOPENFW_FRAME_PATH')) {
 	        $frame_path = realpath(__DIR__ . '/../../../');
 	        define('PHPOPENFW_FRAME_PATH', $frame_path);
-	        //$_SESSION['frame_path'] = PHPOPENFW_FRAME_PATH;
+	        $_SESSION['frame_path'] = PHPOPENFW_FRAME_PATH;
 		}
+
+		//============================================================
+		// Define Templates Path
+		//============================================================
+		define('PHPOPENFW_TEMPLATES_PATH', PHPOPENFW_FRAME_PATH . '/src/templates');
 
 		//============================================================
 		// Define File Path?
@@ -48,7 +53,7 @@ class Core
 				return false;
 			}
 			define('PHPOPENFW_APP_FILE_PATH', $file_path);
-			//$_SESSION['file_path'] = PHPOPENFW_APP_FILE_PATH;
+			$_SESSION['file_path'] = PHPOPENFW_APP_FILE_PATH;
 		}
 
 		//============================================================

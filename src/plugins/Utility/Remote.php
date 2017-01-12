@@ -55,7 +55,7 @@ class Remote
 		$open_states['unfiltered'] = 'unfiltered';
 	
 		if (trim($nmap_xml) != '') {
-		    $sxe = new SimpleXMLElement($nmap_xml);
+		    $sxe = new \SimpleXMLElement($nmap_xml);
 			if (!$sxe) { return false; }
 			if (!$sxe->host->ports) { return false; }
 			else { $scan_kids = $sxe->host->ports->children(); }

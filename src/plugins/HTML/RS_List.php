@@ -159,8 +159,8 @@ class RS_List
 		if (isset($_SESSION['rs_list_template']) && file_exists($_SESSION['rs_list_template'])) {
 			$this->xsl_template = $_SESSION['rs_list_template'];
 		}
-		else if (isset($_SESSION['frame_path'])) {
-			$this->xsl_template = $_SESSION['frame_path'] . '/default_templates/rs_list.xsl';
+		else {
+			$this->xsl_template = PHPOPENFW_TEMPLATES_PATH . '/rs_list.xsl';
 		}
 	}
 

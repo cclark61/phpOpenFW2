@@ -71,12 +71,7 @@ class FormToo extends \phpOpenFW\XML\Element
 		//-------------------------------------------------
 		// Default Form Template
 		//-------------------------------------------------		
-		if (isset($_SESSION['frame_path'])) {
-			$default_template = $_SESSION['frame_path'] . '/default_templates/form_too.xsl';
-			if (file_exists($default_template)) {
-				$this->xsl_template = $default_template;
-			}
-		}
+		$this->xsl_template = PHPOPENFW_TEMPLATES_PATH . '/form_too.xsl';
 	}
 	
 	//************************************************************************

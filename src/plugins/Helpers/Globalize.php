@@ -50,6 +50,9 @@ class Globalize
 		self::Database($excluded, $args);
 		self::Form($excluded, $args);
 		self::HTML($excluded, $args);
+		if (!empty($args['Utility'])) {
+			self::Utility($excluded, $args);
+		}
 		if (!empty($args['App'])) {
 			self::App($excluded, $args);
 		}
@@ -115,6 +118,17 @@ class Globalize
 	{
 		self::Bootstrap();
 		include_once(PHPOPENFW_FRAME_PATH . '/src/globals/Globalize/HTML.php');
+	}
+
+	//*****************************************************************************
+	/**
+	 * Globalize Utility Functions / Classes
+	 */
+	//*****************************************************************************
+	public static function Utility(Array $excluded=[])
+	{
+		self::Bootstrap();
+		include_once(PHPOPENFW_FRAME_PATH . '/src/globals/Globalize/Utility.php');
 	}
 
 	//*****************************************************************************

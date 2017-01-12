@@ -104,9 +104,7 @@ class Form extends \phpOpenFW\XML\Element
 		//--------------------------------------------------------
 		// Default Template
 		//--------------------------------------------------------
-		if (isset($_SESSION['frame_path'])) {
-			$this->xsl_template = $_SESSION['frame_path'] . '/default_templates/form.xsl';
-		}
+		$this->xsl_template = PHPOPENFW_TEMPLATES_PATH . '/form.xsl';
 	}
 	
 	/**

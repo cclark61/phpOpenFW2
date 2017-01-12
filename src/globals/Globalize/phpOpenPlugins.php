@@ -12,6 +12,8 @@
 //**************************************************************************************
 //**************************************************************************************
 
+use \phpOpenFW\Format\Arrays;
+
 //=============================================================================
 // Defaults
 //=============================================================================
@@ -36,13 +38,13 @@ if (!isset($excluded)) {
 // phpOpenFW\Content\FilterOptions
 //********************************************************************
 if (!in_array('save_and_return_filter_data', $excluded)) {
-	function save_and_return_filter_data() { return call_user_func_array('\phpOpenFW\Content\FilterOptions::save_and_return_filter_data', func_get_args()); }
+	function save_and_return_filter_data() { return call_user_func_array('\phpOpenFW\Content\FilterOptions::save_and_return_filter_data', Arrays::RefValues(func_get_args())); }
 }
 if (!in_array('create_select_filter', $excluded)) {
 	function create_select_filter() { return call_user_func_array('\phpOpenFW\Content\FilterOptions::create_select_filter', func_get_args()); }
 }
 if (!in_array('print_list_filter', $excluded)) {
-	function print_list_filter() { return call_user_func_array('\phpOpenFW\Content\FilterOptions::print_list_filter', func_get_args()); }
+	function print_list_filter() { return call_user_func_array('\phpOpenFW\Content\FilterOptions::print_list_filter', Arrays::RefValues(func_get_args())); }
 }
 
 //********************************************************************
@@ -144,10 +146,10 @@ if (!in_array('seo_friendly_str', $excluded)) {
 }
 
 //********************************************************************
-// phpOpenFW\Format\Form
+// phpOpenFW\Helpers\Form
 //********************************************************************
 if (!in_array('check_and_clear_form_key', $excluded)) {
-	function check_and_clear_form_key() { return call_user_func_array('\phpOpenFW\Format\Form::check_and_clear_form_key', func_get_args()); }
+	function check_and_clear_form_key() { return call_user_func_array('\phpOpenFW\Helpers\Form::check_and_clear_form_key', func_get_args()); }
 }
 
 //********************************************************************

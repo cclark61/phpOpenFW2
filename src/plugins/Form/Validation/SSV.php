@@ -101,10 +101,12 @@ class SSV
 		$this->fail_messages = array();
 		$this->debug_mode = false;
 		$this->post_sub_arrays = array();
-		$this->xsl = $_SESSION['frame_path'] . '/default_templates/ssv_messages.xsl';
+		$this->xsl = PHPOPENFW_TEMPLATES_PATH . '/ssv_messages.xsl';
 		$this->xsl_default = $this->xsl;
-		
+
+		//-----------------------------------------------------
 		// Validation Types
+		//-----------------------------------------------------
 		$this->valid_types = array();
 		$this->valid_types['is_empty'] = '';
 		$this->valid_types['is_not_empty'] = '';
@@ -387,4 +389,3 @@ class SSV
 		Transform::XSL($xml, $this->xsl);
 	}
 }
-

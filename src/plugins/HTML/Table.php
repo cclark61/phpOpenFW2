@@ -82,9 +82,7 @@ class Table extends \phpOpenFW\XML\Element
 		//---------------------------------------------------------------
 		// Default Template
 		//---------------------------------------------------------------
-		if (isset($_SESSION['frame_path'])) {
-			$this->xsl_template = $_SESSION['frame_path'] . '/default_templates/table.xsl';
-		}
+		$this->xsl_template = PHPOPENFW_TEMPLATES_PATH . '/table.xsl';
 	}
 	
 	//*************************************************************************

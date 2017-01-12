@@ -14,7 +14,8 @@
 //**************************************************************************************
 
 namespace phpOpenFW\Database;
-use phpOpenFW\Database\DataTrans;
+use \phpOpenFW\Database\DataTrans;
+use \phpOpenFW\Database\DataQuery;
 
 //**************************************************************************************
 /**
@@ -390,7 +391,7 @@ abstract class DIO
             $qa['type'] = 'insert';
         }
 
-        $query = new data_query($qa);
+        $query = new DataQuery($qa);
         $strsql = $query->render();
 
         if ($this->print_trans) {
@@ -470,7 +471,7 @@ abstract class DIO
             else { $qa['table'] = $this->table; }
             $qa['filter_phrase'] = $this->build_where($pkey_values);
 
-            $query = new data_query($qa);
+            $query = new DataQuery($qa);
             $strsql = $query->render();
 
             if ($this->print_trans) {

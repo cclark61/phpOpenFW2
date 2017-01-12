@@ -149,7 +149,7 @@ class Bootstrap3
 		//---------------------------------
 		// Create Form
 		//---------------------------------
-		$form = new form_too($url);
+		$form = new \phpOpenFW\Form\Forms\FormToo($url);
 		$page->clear_mod_var("form_key");
 		$page->set_mod_var("form_key", $form->use_key());
 	

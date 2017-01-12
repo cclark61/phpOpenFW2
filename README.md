@@ -82,4 +82,3 @@ RewriteRule ^([^/\.]+).html$ index.php?page=$1 [L]
 RewriteRule ^(themes|css|img|javascript) - [L]
 RewriteRule ^.*favicon\.ico$ - [L]
 RewriteRule ^.*$ index.php [L,qsa]
-

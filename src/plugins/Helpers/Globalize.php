@@ -50,6 +50,9 @@ class Globalize
 		self::Database($excluded, $args);
 		self::Form($excluded, $args);
 		self::HTML($excluded, $args);
+		if (!empty($args['App'])) {
+			self::App($excluded, $args);
+		}
 		self::phpOpenPlugins($excluded, $args);
 		if (!isset($excluded['LoadHTMLHelpers'])) {
 			self::LoadHTMLHelpers($excluded, $args);
@@ -112,6 +115,17 @@ class Globalize
 	{
 		self::Bootstrap();
 		include_once(PHPOPENFW_FRAME_PATH . '/src/globals/Globalize/HTML.php');
+	}
+
+	//*****************************************************************************
+	/**
+	 * Globalize App Functions / Classes
+	 */
+	//*****************************************************************************
+	public static function App(Array $excluded=[])
+	{
+		self::Bootstrap();
+		include_once(PHPOPENFW_FRAME_PATH . '/src/globals/Globalize/App.php');
 	}
 
 	//*****************************************************************************

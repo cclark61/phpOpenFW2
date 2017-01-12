@@ -2,7 +2,7 @@
 //**************************************************************************************
 //**************************************************************************************
 /**
- * Load Global Core Functions Plugin
+ * Load Global Core Functions / Classes Plugin
  *
  * @package		phpOpenFW
  * @author 		Christian J. Clark
@@ -52,3 +52,4 @@ if (!in_array('unset_plugin_folder', $excluded)) {
 if (!in_array('load_plugin', $excluded)) {
 	function load_plugin() { return call_user_func_array('\phpOpenFW\Framework\Core::load_plugin', func_get_args()); }
 }
+

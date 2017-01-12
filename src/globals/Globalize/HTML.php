@@ -2,7 +2,7 @@
 //**************************************************************************************
 //**************************************************************************************
 /**
- * Load Global Database Functions Plugin
+ * Load Global HTML Functions / Classes Plugin
  *
  * @package		phpOpenFW
  * @author 		Christian J. Clark

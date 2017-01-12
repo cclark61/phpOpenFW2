@@ -212,10 +212,10 @@ if (!in_array('POP_TB', $excluded)) {
 	}
 }
 if (!in_array('POP_content_template', $excluded)) {
-	class_alias('\phpOpenFW\Content\CDN', '\POP_content_template');
+	class_alias('\phpOpenFW\Content\ContentTemplate', '\POP_content_template');
 }
 if (!in_array('POP_cdn', $excluded)) {
-	class_alias('\phpOpenFW\Content\ContentTemplate', '\POP_cdn');
+	class_alias('\phpOpenFW\Content\CDN', '\POP_cdn');
 }
 
 //********************************************************************

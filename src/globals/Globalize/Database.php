@@ -2,7 +2,7 @@
 //**************************************************************************************
 //**************************************************************************************
 /**
- * Load Global Database Functions Plugin
+ * Load Global Database Functions / Classes Plugin
  *
  * @package		phpOpenFW
  * @author 		Christian J. Clark
@@ -39,6 +39,9 @@ if (!in_array('qdb_first_row', $excluded)) {
 }
 if (!in_array('qdb_row', $excluded)) {
 	function qdb_row() { return call_user_func_array('\phpOpenFW\Database\QDB::qdb_row', func_get_args()); }
+}
+if (!in_array('rs_trim', $excluded)) {
+	function rs_trim() { return call_user_func_array('\phpOpenFW\Database\QDB::rs_trim', func_get_args()); }
 }
 
 //=============================================================================

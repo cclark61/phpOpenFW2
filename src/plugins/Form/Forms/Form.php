@@ -2,7 +2,7 @@
 //**************************************************************************************
 //**************************************************************************************
 /**
-* A simple form class to construct XHTML forms
+* A form class to construct (usually) table-based XHTML forms
 *
 * @package		phpOpenFW
 * @author 		Christian J. Clark
@@ -100,8 +100,10 @@ class Form extends \phpOpenFW\XML\Element
 		$this->headers = array();
 		$this->button_cell_attrs = array();
 		$this->row_attrs = array();
-		
+
+		//--------------------------------------------------------
 		// Default Template
+		//--------------------------------------------------------
 		if (isset($_SESSION['frame_path'])) {
 			$this->xsl_template = $_SESSION['frame_path'] . '/default_templates/form.xsl';
 		}
@@ -115,35 +117,47 @@ class Form extends \phpOpenFW\XML\Element
 	//************************************************************************
 	public function render($buffer=false)
 	{
+		//--------------------------------------------------------
 		// Inset Value Buffer
+		//--------------------------------------------------------
 		ob_start();
 
+		//--------------------------------------------------------
 		// Data Output Buffer
+		//--------------------------------------------------------
 		ob_start();
 		
+		//--------------------------------------------------------
 		// Form Label
+		//--------------------------------------------------------
 		if (isset($this->form_label)) {
 			 print new GenElement('form_label', $this->form_label);
 		}
 		
+		//--------------------------------------------------------
 		// Headers
+		//--------------------------------------------------------
 		$headers_arr = array();
 		for ($x = 0; $x < $this->cols; $x++) {
 			if (isset($this->headers[$x])) { $headers_arr[] = $this->headers[$x]; }
 		}
-		print array2xml('headers', $headers_arr);
+		print Format::array2xml('headers', $headers_arr);
 		
+		//--------------------------------------------------------
 		// Button Cell Attributes
-		print array2xml('button_cell_attrs', $this->button_cell_attrs);
+		//--------------------------------------------------------
+		print Format::array2xml('button_cell_attrs', $this->button_cell_attrs);
 		
+		//--------------------------------------------------------
 		// Button(s)
+		//--------------------------------------------------------
 		if (gettype($this->button) == 'array') {
 			$buttons = array();
 			foreach ($this->button as $key => $value) {
 				if (gettype($key) == 'integer') { $key = 'button_' . $key; }
 				$buttons[$key] = array('name' => $key, 'value' => $this->xml_escape($value));
 			}
-			print array2xml('buttons', $buttons);
+			print Format::array2xml('buttons', $buttons);
 		}
 		else {
 			if ($this->button !== NULL) {
@@ -152,32 +166,47 @@ class Form extends \phpOpenFW\XML\Element
 		}
 		print new GenElement('columns', $this->cols);
 
+		//--------------------------------------------------------
 		// Form content
+		//--------------------------------------------------------
 		$curr_cols = 0;
 		$colspan = 0;
 		$row_begin = false;
 		$row_end = false;
 
+		//--------------------------------------------------------
 		// Hidden Form Elements
+		//--------------------------------------------------------
 		$hid_elems = array();
 		foreach ($this->hidden_elements as $he_key => $hid_element) {
 			ob_start();
 			$this->process_element($hid_element);
 			$hid_elems[] = (!empty($this->xsl_template)) ? ($this->xml_escape(ob_get_clean())) : (ob_get_clean());
 		}
-		print array2xml('hidden_elements', $hid_elems);
+		print Format::array2xml('hidden_elements', $hid_elems);
 		
+		//--------------------------------------------------------
 		// Visible Form Elements
+		//--------------------------------------------------------
 		ob_start();
 		$rows = 0;
 		foreach ($this->form_elements as $element) {
-			// Process the element (object -> render, text -> print, array -> process elements)
+
+			//--------------------------------------------------------
+			// Process the element:
+			// -> object -> render, 
+			// -> text -> print, 
+			// -> array -> process elements
+			//--------------------------------------------------------
 			ob_start();
 			$this->process_element($element[0]);
 			$tmp_element = ob_get_clean();
 			
 			if ($element[2] == 'cell') {
+
+				//--------------------------------------------------------
 				// Start ROW
+				//--------------------------------------------------------
 				if ($curr_cols == 0) {
 					ob_start();
 					if ($rows % 2 == 1 && $this->alt_rows) { $this->set_row_attr($rows, 'class', 'alt'); }
@@ -187,14 +216,18 @@ class Form extends \phpOpenFW\XML\Element
 					$rows++;
 				}
 
+				//--------------------------------------------------------
 				// Build Form Element
+				//--------------------------------------------------------
 				$colspan = $element[1] + 0;
 				$fe_attrs = array('colspan' => $element[1]);
 				foreach ($element[3] as $fe_attr_key => $fe_attr_val) { $fe_attrs[$fe_attr_key] = $fe_attr_val; }
 				$fe_content = (!empty($this->xsl_template)) ? ($this->xml_escape($tmp_element)) : ($tmp_element);
 				print new GenElement('form_element', $fe_content, $fe_attrs);
 				
+				//--------------------------------------------------------
 				// End ROW
+				//--------------------------------------------------------
 				if ($curr_cols + $colspan >= $this->cols) {
 					print new GenElement('row', ob_get_clean(), $row_attrs);
 					$row_begin = false;
@@ -207,8 +240,10 @@ class Form extends \phpOpenFW\XML\Element
 				print (!empty($this->xsl_template) && $element[2] != 'fieldset') ? ($this->xml_escape($tmp_element)) : ($tmp_element);
 			}
 		}
-		
+
+		//--------------------------------------------------------
 		// End ROW if not already terminated
+		//--------------------------------------------------------
 		if (!$row_end && $row_begin && count($this->form_elements) > 0) {
 			print new GenElement('row', ob_get_clean(), $row_attrs);
 		}		

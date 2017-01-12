@@ -13,6 +13,7 @@
 //**************************************************************************************
 
 namespace phpOpenFW\Content;
+use \phpOpenFW\XML\Format;
 
 //**************************************************************************************
 /**
@@ -56,7 +57,9 @@ class FilterOptions
 		//---------------------------------------------------------
 		// Label
 		//---------------------------------------------------------
-		if ((string)$label !== "") { print xhe("label", $label); }
+		if ((string)$label !== "") {
+			print Format::xhe("label", $label);
+		}
 		
 		//---------------------------------------------------------
 		// Select
@@ -66,10 +69,10 @@ class FilterOptions
 			$url = $url_stub . $key;
 			$o_attrs = array("value" => $url);
 			if ($selected == $key) { $o_attrs["selected"] = "selected"; }
-			print xhe("option", $display, $o_attrs);
+			print Format::xhe("option", $display, $o_attrs);
 		}
 		
-		print xhe("select", ob_get_clean(), array("class" => "filter"));	
+		print Format::xhe("select", ob_get_clean(), array("class" => "filter"));	
 	}
 	
 	//=============================================================================
@@ -95,7 +98,7 @@ class FilterOptions
 		}
 	
 		ob_start();
-		print xhe('label', $label) . "\n";
+		print Format::xhe('label', $label) . "\n";
 		ob_start();
 		foreach ($options as $key => $option) {
 			$url = add_url_params($base_url, array($get_var => $key));
@@ -104,11 +107,11 @@ class FilterOptions
 				$o_attrs["selected"] = "selected";
 				if (isset($option["group_by"])) { $ret_vals['group_by'] = $option["group_by"]; }
 			}
-			print xhe("option", $option["display"], $o_attrs);
+			print Format::xhe("option", $option["display"], $o_attrs);
 		}
 		
-		print xhe("select", ob_get_clean(), array("class" => "filter"));
-		print xhe('span', ob_get_clean(), array('class' => 'filter_wrapper'));
+		print Format::xhe("select", ob_get_clean(), array("class" => "filter"));
+		print Format::xhe('span', ob_get_clean(), array('class' => 'filter_wrapper'));
 	
 		$ret_vals[$get_var] = $$get_var;
 		return $ret_vals;

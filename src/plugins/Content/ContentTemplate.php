@@ -13,6 +13,8 @@
 //**************************************************************************************
 
 namespace phpOpenFW\Content;
+use \phpOpenFW\XML\Format;
+use \phpOpenFW\XML\Transform;
 
 //**************************************************************************************
 /**
@@ -144,13 +146,13 @@ class ContentTemplate
 	//*************************************************************************
 	public function render()
 	{
-		$xml = array2xml($this->root_node, xml_escape_array($this->data));
+		$xml = array2xml($this->root_node, Format::xml_escape_array($this->data));
 		if ($this->show_data_only) {
 			print $xml;
 			return true;
 		}
 		else if ($this->template) {
-			xml_transform($xml, $this->template);
+			Transform::XSL($xml, $this->template);
 			return true;
 		}
 		return false;

@@ -64,7 +64,7 @@ class Transform
 				restore_error_handler();
 			}
 			else {
-				trigger_error("Error: xml_transform(): XSL Stylesheet '{$xsl_template}' does not exist!");
+				trigger_error("Error: XSL Stylesheet '{$xsl_template}' does not exist!");
 				return false;
 			}
 	
@@ -86,7 +86,7 @@ class Transform
 				else { $proc->importStyleSheet($xsl); }
 			}
 			else {
-				trigger_error('Error: xml_transform(): XSL Stylesheet syntax errors occurred on load!!');
+				trigger_error('Error: XSL Stylesheet syntax errors occurred on load!!');
 				return false;
 			}
 			
@@ -103,7 +103,7 @@ class Transform
 					echo $output;
 				}
 				else {
-					trigger_error('Error: xml_transform(): XML Transformation Error!!');
+					trigger_error('Error: XML Transformation Error!!');
 					echo "<br/>\n{$xml_data}";
 					return false;
 				}
@@ -127,9 +127,6 @@ class Transform
 	public static function HandleXSLError($errno, $errstr, $errfile, $errline)
 	{
 	    if ($errno == E_WARNING && (substr_count($errstr,'DOMDocument::load()') > 0)) {
-			//--------------------------------------------------------------
-	        // Throw new DOMException($errstr);
-			//--------------------------------------------------------------
 	        print "<p>{$errstr}</p>\n";
 	        return true;
 	    }

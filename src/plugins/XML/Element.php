@@ -279,8 +279,6 @@ abstract class Element
 	protected function xml_escape($str_data)
 	{
 		return \phpOpenFW\XML\Format::xml_escape($str_data);
-		//if ($str_data !== '') { return '<![CDATA[' . $str_data . ']]>'; }
-		//else { return false; }
 	}
 
 	//*************************************************************************

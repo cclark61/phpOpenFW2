@@ -13,6 +13,8 @@
 //**************************************************************************************
 
 namespace phpOpenFW\Form\Validation;
+use \phpOpenFW\XML\Format;
+use \phpOpenFW\XML\Transform;
 
 //**************************************************************************************
 /**
@@ -136,7 +138,7 @@ class SSV
 			trigger_error('[Server Side Validation]::add_check() - Invalid field name (1)!');
 		}
 		else {
-			$this->validations[] = array($field_name, $valid_type, xml_escape($valid_txt), $field2_name);
+			$this->validations[] = array($field_name, $valid_type, Format::xml_escape($valid_txt), $field2_name);
 		}
 	}
 
@@ -151,7 +153,7 @@ class SSV
 	public function add_fail($fail_message)
 	{
 		if (empty($fail_message)) { return false; }
-		$this->validations[] = array(false, 'fail', xml_escape($fail_message), false);
+		$this->validations[] = array(false, 'fail', Format::xml_escape($fail_message), false);
 	}
 	
 	//**************************************************************************************
@@ -377,12 +379,12 @@ class SSV
 		//--------------------------------------------------------
 		// Create XML
 		//--------------------------------------------------------
-		$xml = array2xml('failed_checks', $this->fail_messages());
+		$xml = Format::array2xml('failed_checks', $this->fail_messages());
 
 		//--------------------------------------------------------
 		// Transform
 		//--------------------------------------------------------
-		xml_transform($xml, $this->xsl);
+		Transform::XSL($xml, $this->xsl);
 	}
 }
 

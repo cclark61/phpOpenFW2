@@ -2,7 +2,7 @@
 //**************************************************************************************
 //**************************************************************************************
 /**
- * A simple core class to construct the basic page framework
+ * A core class to construct the basic page framework
  *
  * @package		phpOpenFW
  * @author 		Christian J. Clark
@@ -11,6 +11,10 @@
  **/
 //**************************************************************************************
 //**************************************************************************************
+
+namespace phpOpenFW\Framework\Site;
+use \phpOpenFW\XML\Format;
+use \phpOpenFW\XML\Transform;
 
 //**************************************************************************************
 /**
@@ -258,7 +262,7 @@ class Page
 		if ($this->data_format == 'xml') {
 			foreach ($this->data as $dkey => &$dval) {
 				if (!isset($this->no_escape_elements[$dkey])) {
-					$dval = xml_escape_array($dval);
+					$dval = Format::xml_escape_array($dval);
 				}
 			}
 		}
@@ -267,7 +271,7 @@ class Page
 		// Create Data
 		//-------------------------------------------------------------
 		if ($this->data_format == 'xml') {
-			$data = array2xml($this->root_node, $this->data);
+			$data = Format::array2xml($this->root_node, $this->data);
 		}
 		else if ($this->data_format == 'json') {
 			$data = json_encode($this->data);
@@ -300,7 +304,7 @@ class Page
 				}
 				else {
 					if (file_exists($this->template)) {
-						return xml_transform($data, $this->template);
+						return Transform::XSL($data, $this->template);
 					}
 					else {
 						if (empty($this->template)) {

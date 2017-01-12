@@ -13,6 +13,7 @@
 //**************************************************************************************
 
 namespace phpOpenFW\HTML;
+use \phpOpenFW\XML\Format;
 
 //**************************************************************************************
 /**
@@ -21,6 +22,7 @@ namespace phpOpenFW\HTML;
 //**************************************************************************************
 class Table extends \phpOpenFW\XML\Element
 {
+
 	//*************************************************************************
 	// Table class variables
 	//*************************************************************************
@@ -52,11 +54,15 @@ class Table extends \phpOpenFW\XML\Element
 	//*************************************************************************
 	public function __construct()
 	{
+		//---------------------------------------------------------------
 		// Class Data
+		//---------------------------------------------------------------
 		$this->attributes = array();
 		$this->element = 'table';
 		
+		//---------------------------------------------------------------
 		// Table Data
+		//---------------------------------------------------------------
 		$this->table_data = array();
 		$this->table_data['elements'] = array();
 		$this->table_data['elements']['header'] = array();
@@ -65,35 +71,44 @@ class Table extends \phpOpenFW\XML\Element
 		$this->table_data['columns'] = 2;
 		$this->table_data['alt_rows'] = 0;
 		
+		//---------------------------------------------------------------
 		// Temporary Elements
+		//---------------------------------------------------------------
 		$this->table_elements = array();
 		$this->table_elements['header'] = array();
 		$this->table_elements['body'] = array();
 		$this->table_elements['footer'] = array();
 		
+		//---------------------------------------------------------------
 		// Default Template
+		//---------------------------------------------------------------
 		if (isset($_SESSION['frame_path'])) {
 			$this->xsl_template = $_SESSION['frame_path'] . '/default_templates/table.xsl';
 		}
 	}
 	
+	//*************************************************************************
 	/**
 	* Table render function
 	**/
 	//*************************************************************************
-	// Construct and output the table we have gathered info about.
-	//*************************************************************************
 	public function render($buffer=false)
 	{
+		//---------------------------------------------------------------
 		// Build Element Structure
+		//---------------------------------------------------------------
 		$this->build_element_structure($this->table_elements['header'], $this->table_data['elements']['header']);
 		$this->build_element_structure($this->table_elements['body'], $this->table_data['elements']['body']);
 		$this->build_element_structure($this->table_elements['footer'], $this->table_data['elements']['footer']);
 		
+		//---------------------------------------------------------------
 		// Convert Table Data to XML
-		$this->inset_val = array2xml('table_data', $this->table_data);
+		//---------------------------------------------------------------
+		$this->inset_val = Format::array2xml('table_data', $this->table_data);
 
+		//---------------------------------------------------------------
 		// Render Table Element
+		//---------------------------------------------------------------
 		return parent::render($buffer);
 	}
 	
@@ -109,7 +124,9 @@ class Table extends \phpOpenFW\XML\Element
 			$col_name = 'cell_' . $curr_col; 
 			$destination[$row_name][$col_name] = $te;
 			
+			//---------------------------------------------------------------
 			// Increment / Calculate Columns and Rows
+			//---------------------------------------------------------------
 			$curr_col += $te['cols'];
 			if ($curr_col >= $this->table_data['columns']) {
 				$curr_row++;
@@ -158,13 +175,19 @@ class Table extends \phpOpenFW\XML\Element
 	//*************************************************************************
 	private function add_element($table_element, $num_cols=1, $attrs=null, $location='body', $type='data_cell')
 	{
+		//---------------------------------------------------------------
 		// Process Element
+		//---------------------------------------------------------------
 		$processed_content = $this->process_element($table_element);
 
+		//---------------------------------------------------------------
 		// Build Element Array
+		//---------------------------------------------------------------
 		$tmp_element = array('content' => $processed_content, 'cols' => $num_cols, 'type' => $type);
 		
+		//---------------------------------------------------------------
 		// Element Attributes
+		//---------------------------------------------------------------
 		if (!is_null($attrs) && is_array($attrs)) {
 			$new_attrs = array();
 			foreach ($attrs as $key => $val) {
@@ -173,7 +196,9 @@ class Table extends \phpOpenFW\XML\Element
 			if (count($new_attrs) > 0) { $tmp_element['attrs'] = $new_attrs; } 
 		}
 
+		//---------------------------------------------------------------
 		// Push Element onto Array of Elements
+		//---------------------------------------------------------------
 		array_push($this->table_elements[$location], $tmp_element);
 	}
 
@@ -199,8 +224,10 @@ class Table extends \phpOpenFW\XML\Element
 				break;
 		}
 
+		//---------------------------------------------------------------
 		// Return Processed Element
-		if (!empty($this->xsl_template)) { return $processed_content = xml_escape($return_content); }
+		//---------------------------------------------------------------
+		if (!empty($this->xsl_template)) { return $processed_content = Format::xml_escape($return_content); }
 		else { return $return_content; }
 	}
 	
@@ -210,7 +237,7 @@ class Table extends \phpOpenFW\XML\Element
 	* @param string Table Caption
 	**/
 	//*************************************************************************
-	public function caption($caption) { $this->table_data['caption'] = xml_escape($caption); }
+	public function caption($caption) { $this->table_data['caption'] = Format::xml_escape($caption); }
 	
 	//*************************************************************************
 	/**
@@ -220,7 +247,7 @@ class Table extends \phpOpenFW\XML\Element
 	//*************************************************************************
 	public function fieldset($legend='', $id='', $class='')
 	{ 
-		$this->table_data['fieldset']['legend'] = xml_escape($legend);
+		$this->table_data['fieldset']['legend'] = Format::xml_escape($legend);
 		if (!empty($id)) { $this->table_data['fieldset']['id'] = $id; }
 		if (!empty($class)) { $this->table_data['fieldset']['class'] = $class; }
 	}	

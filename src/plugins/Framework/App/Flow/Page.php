@@ -356,7 +356,7 @@ abstract class Page
 		//===========================================================
 		if ($this->site_xml) {
 			if (is_array($this->site_xml)) {
-				$tmp_site_xml = array2xml('site_data', $this->site_xml);
+				$tmp_site_xml = Format::array2xml('site_data', $this->site_xml);
 				$page->add_child("{$tmp_site_xml}\n");
 			}
 			else {
@@ -373,7 +373,7 @@ abstract class Page
 
 			foreach ($this->app_xml as $xml_line) {
 				if (is_array($xml_line[1])) {
-					$new_xml_line = array2xml($xml_line[0], $xml_line[1]);
+					$new_xml_line = Format::array2xml($xml_line[0], $xml_line[1]);
 					$tmp->add_child("{$new_xml_line}\n");	
 				}
 				else {

@@ -33,6 +33,19 @@ if (!isset($excluded)) {
 //=============================================================================
 
 //********************************************************************
+// phpOpenFW\Content\FilterOptions
+//********************************************************************
+if (!in_array('save_and_return_filter_data', $excluded)) {
+	function save_and_return_filter_data() { return call_user_func_array('\phpOpenFW\Content\FilterOptions::save_and_return_filter_data', func_get_args()); }
+}
+if (!in_array('create_select_filter', $excluded)) {
+	function create_select_filter() { return call_user_func_array('\phpOpenFW\Content\FilterOptions::create_select_filter', func_get_args()); }
+}
+if (!in_array('print_list_filter', $excluded)) {
+	function print_list_filter() { return call_user_func_array('\phpOpenFW\Content\FilterOptions::print_list_filter', func_get_args()); }
+}
+
+//********************************************************************
 // phpOpenFW\Format\Content
 //********************************************************************
 if (!in_array('html_sanitize', $excluded)) {

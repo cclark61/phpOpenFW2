@@ -41,6 +41,9 @@ if (!in_array('xhe', $excluded)) {
 //=============================================================================
 // Class Aliases
 //=============================================================================
+if (!in_array('element', $excluded)) {
+	class_alias('\phpOpenFW\XML\Element', '\element');
+}
 if (!in_array('gen_element', $excluded)) {
 	class_alias('\phpOpenFW\XML\GenElement', '\gen_element');
 }

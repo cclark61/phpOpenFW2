@@ -13,6 +13,7 @@
 //**************************************************************************************
 
 namespace phpOpenFW\Content;
+use \phpOpenFW\XML\Format;
 
 //**************************************************************************************
 /**
@@ -157,7 +158,7 @@ class Bootstrap2
 		//---------------------------------
 		// Message
 		//---------------------------------
-		$form->add_element(xhe("h4", $message, array("class" => "del_form_message")));
+		$form->add_element(Format::xhe("h4", $message, array("class" => "del_form_message")));
 	
 		//---------------------------------
 		// Hidden Variables
@@ -202,7 +203,7 @@ class Bootstrap2
 		if (empty($type)) { $type == 'default'; }
 		if (!is_array($attrs)) { $attrs = array(); }
 		$attrs['class'] = (!empty($attrs['class'])) ? ($attrs['class'] . ' label label-' . $type) : ('label label-' . $type);
-		return xhe('span', $contents, $attrs);
+		return Format::xhe('span', $contents, $attrs);
 	}
 
 	//=========================================================================
@@ -223,7 +224,7 @@ class Bootstrap2
 		if (empty($type)) { $type == 'default'; }
 		if (!is_array($attrs)) { $attrs = array(); }
 		$attrs['class'] = (!empty($attrs['class'])) ? ($attrs['class'] . ' badge badge-' . $type) : ('badge badge-' . $type);
-		return xhe('span', $contents, $attrs);
+		return Format::xhe('span', $contents, $attrs);
 	}
 
 	//=========================================================================
@@ -244,7 +245,7 @@ class Bootstrap2
 		if (empty($type)) { $type == 'info'; }
 		if (!is_array($attrs)) { $attrs = array(); }
 		$attrs['class'] = (!empty($attrs['class'])) ? ($attrs['class'] . ' alert alert-' . $type) : ('alert alert-' . $type);
-		return xhe('div', $contents, $attrs);
+		return Format::xhe('div', $contents, $attrs);
 	}
 }
 

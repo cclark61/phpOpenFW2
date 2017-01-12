@@ -42,18 +42,18 @@ class Globalize
 	 * Globalize ALL Functions
 	 */
 	//*****************************************************************************
-	public static function All(Array $excluded=[])
+	public static function All(Array $excluded=[], Array $args=[])
 	{
 		self::Bootstrap();
-		self::XML($excluded);
-		self::Core($excluded);
-		self::UPN($excluded);
-		self::phpOpenPlugins($excluded);
+		self::XML($excluded, $args);
+		self::Core($excluded, $args);
+		self::UPN($excluded, $args);
+		self::phpOpenPlugins($excluded, $args);
 		if (!isset($excluded['LoadHTMLHelpers'])) {
-			self::LoadHTMLHelpers();
+			self::LoadHTMLHelpers($excluded, $args);
 		}
 		if (!isset($excluded['LoadSessionMessageHelpers'])) {
-			self::LoadSessionMessageHelpers();
+			self::LoadSessionMessageHelpers($excluded, $args);
 		}
 	}
 

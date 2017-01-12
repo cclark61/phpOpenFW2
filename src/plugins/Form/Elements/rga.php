@@ -54,7 +54,7 @@ class rga extends GroupFormElement
 	//*************************************************************************
 	// Construct and output the RGA.
 	//*************************************************************************
-	public function render()
+	public function render($buffer=false)
 	{
 		foreach($this->buttons as $value => $desc) {
 			$is_checked = false;

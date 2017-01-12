@@ -52,7 +52,7 @@ class cga extends GroupFormElement
 	//*************************************************************************
 	// Construct and output the CGA.
 	//*************************************************************************
-	public function render()
+	public function render($buffer=false)
 	{
 		foreach ($this->checkboxes as $checkbox) {
 			$is_checked = false;

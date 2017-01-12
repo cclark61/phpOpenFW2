@@ -53,9 +53,6 @@ if (!in_array('data_result', $excluded)) {
 if (!in_array('data_query', $excluded)) {
 	class_alias('\phpOpenFW\Database\DataQuery', '\data_query');
 }
-if (!in_array('data_query', $excluded)) {
-	class_alias('\phpOpenFW\Database\DataQuery', '\data_query');
-}
 if (!in_array('database_interface_object', $excluded)) {
 	class_alias('\phpOpenFW\Database\DIO', '\database_interface_object');
 }

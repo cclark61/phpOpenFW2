@@ -49,7 +49,7 @@ class rgt extends GroupFormElement
 	//*************************************************************************
 	// Construct and output the RGT.
 	//*************************************************************************
-	public function render()
+	public function render($buffer=false)
 	{
 		//============================================
 		// Pull items from database

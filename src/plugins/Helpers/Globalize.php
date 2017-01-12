@@ -39,15 +39,17 @@ class Globalize
 
 	//*****************************************************************************
 	/**
-	 * Globalize ALL Functions
+	 * Globalize ALL Functions / Classes
 	 */
 	//*****************************************************************************
 	public static function All(Array $excluded=[], Array $args=[])
 	{
 		self::Bootstrap();
-		self::XML($excluded, $args);
 		self::Core($excluded, $args);
-		self::UPN($excluded, $args);
+		self::XML($excluded, $args);
+		self::Database($excluded, $args);
+		self::Form($excluded, $args);
+		self::HTML($excluded, $args);
 		self::phpOpenPlugins($excluded, $args);
 		if (!isset($excluded['LoadHTMLHelpers'])) {
 			self::LoadHTMLHelpers($excluded, $args);
@@ -59,18 +61,7 @@ class Globalize
 
 	//*****************************************************************************
 	/**
-	 * Globalize XML Functions
-	 */
-	//*****************************************************************************
-	public static function XML(Array $excluded=[])
-	{
-		self::Bootstrap();
-		include_once(PHPOPENFW_FRAME_PATH . '/src/globals/Globalize/XML.php');
-	}
-
-	//*****************************************************************************
-	/**
-	 * Globalize Core Functions
+	 * Globalize Core Functions / Classes
 	 */
 	//*****************************************************************************
 	public static function Core(Array $excluded=[])
@@ -81,7 +72,51 @@ class Globalize
 
 	//*****************************************************************************
 	/**
-	 * Globalize UPN Functions
+	 * Globalize XML Functions / Classes
+	 */
+	//*****************************************************************************
+	public static function XML(Array $excluded=[])
+	{
+		self::Bootstrap();
+		include_once(PHPOPENFW_FRAME_PATH . '/src/globals/Globalize/XML.php');
+	}
+
+	//*****************************************************************************
+	/**
+	 * Globalize Database Functions / Classes
+	 */
+	//*****************************************************************************
+	public static function Database(Array $excluded=[])
+	{
+		self::Bootstrap();
+		include_once(PHPOPENFW_FRAME_PATH . '/src/globals/Globalize/Database.php');
+	}
+
+	//*****************************************************************************
+	/**
+	 * Globalize Database Functions / Classes
+	 */
+	//*****************************************************************************
+	public static function Form(Array $excluded=[])
+	{
+		self::Bootstrap();
+		include_once(PHPOPENFW_FRAME_PATH . '/src/globals/Globalize/Form.php');
+	}
+
+	//*****************************************************************************
+	/**
+	 * Globalize HTML Functions / Classes
+	 */
+	//*****************************************************************************
+	public static function HTML(Array $excluded=[])
+	{
+		self::Bootstrap();
+		include_once(PHPOPENFW_FRAME_PATH . '/src/globals/Globalize/HTML.php');
+	}
+
+	//*****************************************************************************
+	/**
+	 * Globalize UPN Functions / Classes
 	 */
 	//*****************************************************************************
 	public static function UPN(Array $excluded=[])
@@ -92,7 +127,7 @@ class Globalize
 
 	//*****************************************************************************
 	/**
-	 * Globalize phpOpenPlugins Functions
+	 * Globalize phpOpenPlugins Functions / Classes
 	 */
 	//*****************************************************************************
 	public static function phpOpenPlugins(Array $excluded=[], Array $args=[])

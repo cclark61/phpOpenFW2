@@ -13,6 +13,7 @@
 //**************************************************************************************
 
 namespace phpOpenFW\Form\Elements;
+use \phpOpenFW\XML\GenElement;
 
 //**************************************************************************************
 /**
@@ -75,7 +76,7 @@ class ssa extends SelectFormElement
 			//-----------------------------------------
 			// Create Option Element
 			//-----------------------------------------
-			$o = new gen_element('option', $bv[1], $o_attrs);
+			$o = new GenElement('option', $bv[1], $o_attrs);
 			$o->force_endtag(1);
 
 			//-----------------------------------------
@@ -107,7 +108,7 @@ class ssa extends SelectFormElement
 				$value = (isset($tmp_val_arr[0])) ? ($tmp_val_arr[0]) : (''); 
 				if (isset($tmp_val_arr[1]) && $tmp_val_arr[1] !== $opt_group) {
 					$opt_group = $tmp_val_arr[1];
-					print new gen_element('optgroup', '', array('label' => $tmp_val_arr[1]));
+					print new GenElement('optgroup', '', array('label' => $tmp_val_arr[1]));
 				} 
 			}
 
@@ -129,7 +130,7 @@ class ssa extends SelectFormElement
 			//-----------------------------------------
 			// Create Option Element
 			//-----------------------------------------
-			$o = new gen_element('option', $value, $o_attrs);
+			$o = new GenElement('option', $value, $o_attrs);
 			$o->force_endtag(1);
 
 			//-----------------------------------------

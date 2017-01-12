@@ -27,7 +27,7 @@ class General
 	// Is Valid Username Function
 	//=============================================================================
 	//=============================================================================
-	public static function IsValidUserName($username)
+	public static function is_valid_userid($username)
 	{
 		$userid_regex = '/^[a-z\d_]{4,28}$/i';
 		return (preg_match($userid_regex, $username)) ? (1) : (0);
@@ -38,7 +38,7 @@ class General
 	// Is Function Function :)
 	//=============================================================================
 	//=============================================================================
-	public static function IsFunction($f)
+	public static function is_function($f)
 	{
 		return (gettype($f) == 'object') ? (true) : (false);
 	}

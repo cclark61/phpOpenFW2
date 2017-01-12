@@ -14,6 +14,7 @@
 
 namespace phpOpenFW\Form\Forms;
 use \phpOpenFW\XML\Format;
+use \phpOpenFW\XML\GenElement;
 
 //**************************************************************************************
 /**
@@ -97,7 +98,7 @@ class FormToo extends \phpOpenFW\XML\Element
 		//============================================================
 		// Hidden Form Elements
 		//============================================================
-		$hid_elements = new gen_element('hidden_elements');
+		$hid_elements = new GenElement('hidden_elements');
 		$hid_elements->display_tree();
 
 		foreach ($this->hidden_elements as $hid_element) {
@@ -105,7 +106,7 @@ class FormToo extends \phpOpenFW\XML\Element
 			$this->process_element($hid_element);
 			$tmp_element = (!empty($this->xsl_template)) ? ($this->xml_escape(ob_get_clean())) : (ob_get_clean());
 			$tmp_element = trim($tmp_element);
-			$tmp_he = new gen_element('hid_element', $tmp_element);
+			$tmp_he = new GenElement('hid_element', $tmp_element);
 			$tmp_he->display_tree();
 			$hid_elements->add_child($tmp_he);
 		}
@@ -114,7 +115,7 @@ class FormToo extends \phpOpenFW\XML\Element
 		//============================================================
 		// Process Visible Form Elements
 		//============================================================
-		$elements = new gen_element('form_elements');
+		$elements = new GenElement('form_elements');
 		$elements->display_tree();
 
 		foreach ($this->form_elements as $element) {
@@ -141,7 +142,7 @@ class FormToo extends \phpOpenFW\XML\Element
 				$fe_content = Format::xml_escape($fe_content);
 			}
 			$fe_attrs = (isset($element[2]) && is_array($element[2])) ? ($element[2]) : (array());
-			$tmp_fe = new gen_element($element[1], $fe_content, $fe_attrs);
+			$tmp_fe = new GenElement($element[1], $fe_content, $fe_attrs);
 			if (substr($element[1], 0, 4) != 'end_' && !$content_empty) {
 				$tmp_fe->display_tree();
 			}

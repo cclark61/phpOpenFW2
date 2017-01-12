@@ -29,12 +29,16 @@ class FileSystem
 	public static function clean_dir(&$dir, $front_slashes=false, $rear_slashes=true)
 	{
 		if (strlen($dir) > 0) {
+			//--------------------------------------------------------
 			// Remove Trailing Slashes
+			//--------------------------------------------------------
 			while ($rear_slashes && substr($dir, strlen($dir) - 1, 1) == "/") {
 				$dir = substr($dir, 0, strlen($dir) - 1);
 			}
 	
+			//--------------------------------------------------------
 			// Remove Front Slashes
+			//--------------------------------------------------------
 			while ($front_slashes && substr($dir, 0, 1) == "/") {
 				$dir = substr($dir, 1, strlen($dir));
 			}

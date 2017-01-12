@@ -19,7 +19,7 @@ namespace phpOpenFW\Helpers\Database;
  * MySQL Database Helpers Class
  */
 //**************************************************************************************
-class MySQL extends \phpOpenFW\Cores\StaticCore;
+class MySQL extends \phpOpenFW\Cores\StaticCore
 {
 
 	//#########################################################################

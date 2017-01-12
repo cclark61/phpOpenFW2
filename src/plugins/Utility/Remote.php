@@ -27,7 +27,7 @@ class Remote
 	// Service Availability Function
 	//========================================================================
 	//========================================================================
-	public static function IsServiceAvailable($server, $port, $args=false)
+	public static function is_service_available($server, $port, $args=false)
 	{
 		//-------------------------------------------------------------
 		// Default NMAP executable location

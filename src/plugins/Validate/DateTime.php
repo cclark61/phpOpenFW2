@@ -28,7 +28,7 @@ class DateTime
 	// *** Returns TRUE if $date is a valid MM/DD/YYYY formatted date.
 	//*****************************************************************************
 	//*****************************************************************************
-	public static function IsValidDate($date)
+	public static function is_valid_date($date)
 	{
 		$regex = '/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/';
 		if (preg_match($regex, $date, $parts)) {
@@ -43,7 +43,7 @@ class DateTime
 	// *** Returns TRUE if $date is a valid SQL formatted date.
 	//*****************************************************************************
 	//*****************************************************************************
-	public static function IsValidSQLDate($date)
+	public static function is_valid_sql_date($date)
 	{
 		$regex = '/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/';
 		if (preg_match($regex, $date, $parts)) {
@@ -59,7 +59,7 @@ class DateTime
 	// *** Returns TRUE if $time is HH:MM:SS, none of which are 00.
 	//*****************************************************************************
 	//*****************************************************************************
-	public static function IsValidTime($time)
+	public static function is_valid_time($time)
 	{
 		$regex = '/^([0-1]?\d|2[0-3]):([0-5]?\d):([0-5]?\d)$/';
 		return preg_match($regex, $time);

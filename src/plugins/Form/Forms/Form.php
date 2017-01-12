@@ -14,6 +14,7 @@
 
 namespace phpOpenFW\Form\Forms;
 use \phpOpenFW\XML\Format;
+use \phpOpenFW\XML\GenElement;
 
 //**************************************************************************************
 /**
@@ -122,7 +123,7 @@ class Form extends \phpOpenFW\XML\Element
 		
 		// Form Label
 		if (isset($this->form_label)) {
-			 print new gen_element('form_label', $this->form_label);
+			 print new GenElement('form_label', $this->form_label);
 		}
 		
 		// Headers
@@ -146,10 +147,10 @@ class Form extends \phpOpenFW\XML\Element
 		}
 		else {
 			if ($this->button !== NULL) {
-				print new gen_element('button', $this->xml_escape($this->button));
+				print new GenElement('button', $this->xml_escape($this->button));
 			}
 		}
-		print new gen_element('columns', $this->cols);
+		print new GenElement('columns', $this->cols);
 
 		// Form content
 		$curr_cols = 0;
@@ -191,11 +192,11 @@ class Form extends \phpOpenFW\XML\Element
 				$fe_attrs = array('colspan' => $element[1]);
 				foreach ($element[3] as $fe_attr_key => $fe_attr_val) { $fe_attrs[$fe_attr_key] = $fe_attr_val; }
 				$fe_content = (!empty($this->xsl_template)) ? ($this->xml_escape($tmp_element)) : ($tmp_element);
-				print new gen_element('form_element', $fe_content, $fe_attrs);
+				print new GenElement('form_element', $fe_content, $fe_attrs);
 				
 				// End ROW
 				if ($curr_cols + $colspan >= $this->cols) {
-					print new gen_element('row', ob_get_clean(), $row_attrs);
+					print new GenElement('row', ob_get_clean(), $row_attrs);
 					$row_begin = false;
 					$row_end = true;
 					$curr_cols = 0;
@@ -209,11 +210,11 @@ class Form extends \phpOpenFW\XML\Element
 		
 		// End ROW if not already terminated
 		if (!$row_end && $row_begin && count($this->form_elements) > 0) {
-			print new gen_element('row', ob_get_clean(), $row_attrs);
+			print new GenElement('row', ob_get_clean(), $row_attrs);
 		}		
 
-		print new gen_element('elements', ob_get_clean());
-		print new gen_element('data', ob_get_clean());
+		print new GenElement('elements', ob_get_clean());
+		print new GenElement('data', ob_get_clean());
 		$this->inset_val .= ob_get_clean();
 		return parent::render($buffer);
 	}
@@ -339,7 +340,7 @@ class Form extends \phpOpenFW\XML\Element
 	{
 		if (!is_array($attrs)) { $attrs = array(); }
 		if (!is_array($attrs2)) { $attrs2 = array(); }
-		$obj_label = new gen_element('label', $caption, $attrs);
+		$obj_label = new GenElement('label', $caption, $attrs);
 		$label = $obj_label->render(1);
 		array_push($this->form_elements, array($label, $num_cols, 'cell', $attrs2));
 	}
@@ -383,10 +384,10 @@ class Form extends \phpOpenFW\XML\Element
 		if (!empty($id)) { $fs_attrs['id'] = $id;  }
 		if (!empty($class)) { $fs_attrs['class'] = $class;  }
 		if (!empty($content)) {
-			$obj_legend = new gen_element('legend', $this->xml_escape($content));
+			$obj_legend = new GenElement('legend', $this->xml_escape($content));
 			$fs_content = $obj_legend->render(1);
 		}
-		$fieldset = new gen_element('fieldset', $fs_content, $fs_attrs);
+		$fieldset = new GenElement('fieldset', $fs_content, $fs_attrs);
 		array_push($this->form_elements, array($fieldset->render(1), 0, 'fieldset'));
 	}
 	
@@ -398,7 +399,7 @@ class Form extends \phpOpenFW\XML\Element
 	public function end_fieldset()
 	{
 		$fs_attrs = array('marker' => 'end');
-		$fieldset = new gen_element('fieldset', '', $fs_attrs);
+		$fieldset = new GenElement('fieldset', '', $fs_attrs);
 		array_push($this->form_elements, array($fieldset->render(1), 0, 'fieldset'));
 	}
 	

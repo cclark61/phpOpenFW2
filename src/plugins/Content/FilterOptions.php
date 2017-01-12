@@ -27,7 +27,7 @@ class FilterOptions
 	// Save and Return Filter Data Function
 	//=============================================================================
 	//=============================================================================
-	public static function SaveAndReturnFilterData(&$current_page, $request_index, $cookie_index, $default)
+	public static function save_and_return_filter_data(&$current_page, $request_index, $cookie_index, $default)
 	{
 		$in_var = (isset($_REQUEST[$request_index])) ? ($_REQUEST[$request_index]) : (null);
 	
@@ -51,7 +51,7 @@ class FilterOptions
 	// Create Select Filter Function
 	//=============================================================================
 	//=============================================================================
-	public static function CreateSelectFilter($select_vals, $url_stub, $selected="-1", $label="")
+	public static function create_select_filter($select_vals, $url_stub, $selected="-1", $label="")
 	{
 		//---------------------------------------------------------
 		// Label
@@ -77,7 +77,7 @@ class FilterOptions
 	// Print a List Filter Select Dropdown Function
 	//=============================================================================
 	//=============================================================================
-	public static function PrintListFilter(&$page, $base_url, $options, $get_var, $cookie_mod_var, $label)
+	public static function print_list_filter(&$page, $base_url, $options, $get_var, $cookie_mod_var, $label)
 	{
 		$ret_vals = array();
 		if (isset($_GET[$get_var]) && $_GET[$get_var] != '') { $$get_var = $_GET[$get_var]; }

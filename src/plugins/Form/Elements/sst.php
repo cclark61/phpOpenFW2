@@ -14,6 +14,7 @@
 
 namespace phpOpenFW\Form\Elements;
 use phpOpenFW\Database\DataTrans;
+use \phpOpenFW\XML\GenElement;
 
 //**************************************************************************************
 /**
@@ -91,7 +92,7 @@ class sst extends SelectFormElement
 			//-----------------------------------------
 			// Create Option Element
 			//-----------------------------------------
-			$o = new gen_element('option', $bv[1], $o_attrs);
+			$o = new GenElement('option', $bv[1], $o_attrs);
 			$o->force_endtag(1);
 
 			//-----------------------------------------
@@ -120,7 +121,7 @@ class sst extends SelectFormElement
 			//-----------------------------------------
 			if ($this->opt_group && isset($row[$this->opt_group]) && $row[$this->opt_group] !== $opt_group) {
 				$opt_group = $row[$this->opt_group];
-				print new gen_element('optgroup', '', array('label' => $row[$this->opt_group]));
+				print new GenElement('optgroup', '', array('label' => $row[$this->opt_group]));
 			} 
 			
 			//-----------------------------------------
@@ -148,7 +149,7 @@ class sst extends SelectFormElement
 			//-----------------------------------------
 			// Create Option Element
 			//-----------------------------------------
-			$o = new gen_element('option', $row[$this->opt_val], $o_attrs);
+			$o = new GenElement('option', $row[$this->opt_val], $o_attrs);
 			$o->force_endtag(1);
 
 			//-----------------------------------------

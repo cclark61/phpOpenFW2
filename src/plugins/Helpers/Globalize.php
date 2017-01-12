@@ -48,6 +48,7 @@ class Globalize
 		self::XML($excluded);
 		self::Core($excluded);
 		self::UPN($excluded);
+		self::phpOpenPlugins($excluded);
 		if (!isset($excluded['LoadHTMLHelpers'])) {
 			self::LoadHTMLHelpers();
 		}
@@ -87,6 +88,17 @@ class Globalize
 	{
 		self::Bootstrap();
 		include_once(PHPOPENFW_FRAME_PATH . '/src/globals/Globalize/UPN.php');
+	}
+
+	//*****************************************************************************
+	/**
+	 * Globalize phpOpenPlugins Functions
+	 */
+	//*****************************************************************************
+	public static function phpOpenPlugins(Array $excluded=[], Array $args=[])
+	{
+		self::Bootstrap();
+		include_once(PHPOPENFW_FRAME_PATH . '/src/globals/Globalize/phpOpenPlugins.php');
 	}
 
 	//*****************************************************************************

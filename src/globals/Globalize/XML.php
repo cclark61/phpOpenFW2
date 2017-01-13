@@ -26,7 +26,7 @@ if (!in_array('xml_escape', $excluded)) {
 	function xml_escape() { return call_user_func_array('\phpOpenFW\XML\Format::xml_escape', func_get_args()); }
 }
 if (!in_array('xml_escape_array', $excluded)) {
-	function xml_escape_array() { return call_user_func_array('\phpOpenFW\XML\Format::xml_escapeArray', func_get_args()); }
+	function xml_escape_array() { return call_user_func_array('\phpOpenFW\XML\Format::xml_escape_array', func_get_args()); }
 }
 if (!in_array('strip_cdata_tags', $excluded)) {
 	function strip_cdata_tags() { return call_user_func_array('\phpOpenFW\XML\Format::strip_cdata_tags', func_get_args()); }
@@ -36,6 +36,9 @@ if (!in_array('array2xml', $excluded)) {
 }
 if (!in_array('xhe', $excluded)) {
 	function xhe() { return call_user_func_array('\phpOpenFW\XML\Format::xhe', func_get_args()); }
+}
+if (!in_array('xml_transform', $excluded)) {
+	function xml_transform() { return call_user_func_array('\phpOpenFW\XML\Transform::XSL', func_get_args()); }
 }
 
 //=============================================================================

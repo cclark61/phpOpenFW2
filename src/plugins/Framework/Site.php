@@ -76,9 +76,7 @@ class Site
 		// Start Page Data
 		// Create new Page Object
 		//============================================================
-		require_once(__DIR__ . '/app_logic/logic2/page.class.php');
-		require_once(__DIR__ . '/app_logic/logic2/POFW_SiteController.class.php');
-		$page = new page();
+		$page = new \phpOpenFW\Framework\Site\Page();
 		$controller_args = array();
 		
 		//============================================================
@@ -124,16 +122,15 @@ class Site
 		// Set Local Plugin Folder
 		//============================================================
 		if (is_dir(FILE_PATH . '/plugins')) {
-			set_plugin_folder(FILE_PATH . '/plugins');
+			\phpOpenFW\Framework\Core::set_plugin_folder(FILE_PATH . '/plugins');
 		}
 		
 		//============================================================
 		// Load Database / Config
 		//============================================================
-		$pofw->load_db_engine();
 		if (isset($data_arr) && is_array($data_arr)) {
 			foreach ($data_arr as $key => $data_params) {
-				reg_data_source($key, $data_params);
+				\phpOpenFW\Framework\Core::reg_data_source($key, $data_params);
 			}
 		}
 		
@@ -289,7 +286,7 @@ class Site
 		//============================================================
 		// Execute Page Controller
 		//============================================================
-		$page_status = POFW_SiteController::execute_page_controller($page, $controller_args);
+		$page_status = \phpOpenFW\Framework\Site\PageController::Execute($page, $controller_args);
 		
 		//============================================================
 		// End output buffering if using page buffering turned on

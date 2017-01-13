@@ -146,12 +146,15 @@ class Core
     // Load Configuration Function
 	//************************************************************************
 	//************************************************************************
-    public static function load_config($config_file=false)
+    public static function load_config($config_file=false, Array $args=[])
     {
+	    extract($args);
+
     	//*************************************************************
     	// Initialize the Arrays
     	//*************************************************************
     	$config_arr = array();
+    	$config = array();
     	$data_arr = array();
 
     	//*************************************************************
@@ -183,48 +186,30 @@ class Core
     	}
 
     	//*************************************************************
-    	// Generate / initialize session variables from config.inc.php
-    	//*************************************************************
-
-        //=============================================================
     	// *** Configuration Array
-        //=============================================================
+    	//*************************************************************
     	$key_arr = array_keys($config_arr);
-    	foreach ($key_arr as $key) { $_SESSION[$key] = $config_arr[$key]; }
-
-        //=============================================================
-    	// *** Data Source Array
-        //=============================================================
-    	$key_arr2 = array_keys($data_arr);
-    	foreach ($key_arr2 as $key2) {
-    		$reg_code = self::reg_data_source($key2, $data_arr[$key2]);
-    		if (!$reg_code) { $_SESSION[$key2]['handle'] = 0; }
-    	}
-
-    	//*************************************************************
-    	// Set Authentication Data Source
-    	//*************************************************************
-    	if (!isset($_SESSION['auth_data_source']) || empty($_SESSION['auth_data_source'])) {
-    		$_SESSION['auth_data_source'] = 'none';
-    	}
-
-    	//*************************************************************
-    	// Set Authentication Data Type
-    	//*************************************************************
-    	if ($_SESSION['auth_data_source'] != 'none' && $_SESSION['auth_data_source'] != 'custom') {
-    		 if (!array_key_exists($_SESSION['auth_data_source'], $data_arr) && $_SESSION['auth_data_source'] != 'none') {
-    		 	$_SESSION['auth_data_type'] = 'error';
-    		 }
-    		 else {
-    		 	$_SESSION['auth_data_type'] = $data_arr[$_SESSION['auth_data_source']]['type'];
-    		 }
-    	}
-    	else if ($_SESSION['auth_data_source'] == 'custom') {
-    		$_SESSION['auth_data_type'] = 'custom';
+    	$key_arr2 = array_keys($config);
+    	if (!empty($session_index)) {
+	    	if (!isset($_SESSION[$session_index])) { $_SESSION[$session_index] = []; }
+	    	foreach ($key_arr as $key) { $_SESSION[$session_index][$key] = $config_arr[$key]; }
+	    	foreach ($key_arr2 as $key) { $_SESSION[$session_index][$key] = $config[$key]; }
     	}
     	else {
-    		$_SESSION['auth_data_type'] = 'none';
-    	}
+	    	foreach ($key_arr as $key) { $_SESSION[$key] = $config_arr[$key]; }
+	    	foreach ($key_arr2 as $key) { $_SESSION[$key] = $config[$key]; }
+		}
+
+    	//*************************************************************
+    	// *** Data Source Array
+    	//*************************************************************
+    	if (is_array($data_arr) && !empty($data_arr)) {
+	    	$key_arr = array_keys($data_arr);
+	    	foreach ($key_arr as $key) {
+	    		$reg_code = self::reg_data_source($key, $data_arr[$key]);
+	    		if (!$reg_code) { $_SESSION[$key]['handle'] = 0; }
+	    	}
+		}
     }
 
 	//************************************************************************
@@ -238,27 +223,27 @@ class Core
 	//************************************************************************
     public static function load_db_config($db_config, $force_config=false)
     {
-    	if ((bool)$force_config === true || !empty($_SESSION['db_config_set'])) {
+    	if ((bool)$force_config === true || !empty($_SESSION['PHPOPENFW_DB_CONFIG_SET'])) {
     		if (file_exists($db_config)) {
     			$data_arr = array();
     			require($db_config);
 
     			if (isset($data_arr) && count($data_arr) > 0) {
-    				$key_arr2 = array_keys($data_arr);
-    				foreach ($key_arr2 as $key2){
-    					$reg_code = reg_data_source($key2, $data_arr[$key2]);
-    					if (!$reg_code) { $_SESSION[$key2]['handle'] = 0; }
+    				$key_arr = array_keys($data_arr);
+    				foreach ($key_arr as $key){
+    					$reg_code = self::reg_data_source($key, $data_arr[$key]);
+    					if (!$reg_code) { $_SESSION[$key]['handle'] = 0; }
     				}
-    				$_SESSION['db_config_set'] = true;
+    				$_SESSION['PHPOPENFW_DB_CONFIG_SET'] = true;
     			}
     			else {
     				trigger_error('Error: load_db_config(): No data sources defined!');
-    				$_SESSION['db_config_set'] = false;
+    				$_SESSION['PHPOPENFW_DB_CONFIG_SET'] = false;
     			}
     		}
     		else {
     			trigger_error('Error: load_db_config(): Data Source Configuration file does not exist!');
-    			$_SESSION['db_config_set'] = false;
+    			$_SESSION['PHPOPENFW_DB_CONFIG_SET'] = false;
     		}
     	}
     }

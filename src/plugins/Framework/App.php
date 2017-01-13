@@ -47,6 +47,7 @@ class App
 		//============================================================
 		if (!isset($_SESSION['userid'])) {
 		    \phpOpenFW\Framework\Core::load_config();
+		    self::Configure();
 		}
 
 		//============================================================
@@ -193,5 +194,42 @@ class App
 		//============================================================
 		$page->render();
 	}
+
+	//************************************************************************
+	//************************************************************************
+    /**
+    * Load Configuration Function
+    */
+	//************************************************************************
+    // Load Configuration Function
+	//************************************************************************
+	//************************************************************************
+    protected static function Configure()
+    {
+    	//*************************************************************
+    	// Set Authentication Data Source
+    	//*************************************************************
+    	if (!isset($_SESSION['auth_data_source']) || empty($_SESSION['auth_data_source'])) {
+    		$_SESSION['auth_data_source'] = 'none';
+    	}
+
+    	//*************************************************************
+    	// Set Authentication Data Type
+    	//*************************************************************
+    	if ($_SESSION['auth_data_source'] != 'none' && $_SESSION['auth_data_source'] != 'custom') {
+    		 if (!array_key_exists($_SESSION['auth_data_source'], $data_arr) && $_SESSION['auth_data_source'] != 'none') {
+    		 	$_SESSION['auth_data_type'] = 'error';
+    		 }
+    		 else {
+    		 	$_SESSION['auth_data_type'] = $data_arr[$_SESSION['auth_data_source']]['type'];
+    		 }
+    	}
+    	else if ($_SESSION['auth_data_source'] == 'custom') {
+    		$_SESSION['auth_data_type'] = 'custom';
+    	}
+    	else {
+    		$_SESSION['auth_data_type'] = 'none';
+    	}
+    }
 
 }

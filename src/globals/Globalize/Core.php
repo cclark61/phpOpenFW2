@@ -28,9 +28,6 @@ if (!in_array('get_url_path', $excluded)) {
 if (!in_array('get_html_path', $excluded)) {
 	function get_html_path() { return call_user_func_array('\phpOpenFW\Framework\Core::get_html_path', func_get_args()); }
 }
-if (!in_array('load_config', $excluded)) {
-	function load_config() { return call_user_func_array('\phpOpenFW\Framework\Core::load_config', func_get_args()); }
-}
 if (!in_array('load_db_config', $excluded)) {
 	function load_db_config() { return call_user_func_array('\phpOpenFW\Framework\Core::load_db_config', func_get_args()); }
 }

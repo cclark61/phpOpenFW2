@@ -124,15 +124,16 @@ class Site
 		if (is_dir(FILE_PATH . '/plugins')) {
 			\phpOpenFW\Framework\Core::set_plugin_folder(FILE_PATH . '/plugins');
 		}
-		
+
 		//============================================================
-		// Load Database / Config
+		// Load Database Config
 		//============================================================
-		if (isset($data_arr) && is_array($data_arr)) {
-			foreach ($data_arr as $key => $data_params) {
-				\phpOpenFW\Framework\Core::reg_data_source($key, $data_params);
-			}
-		}
+		\phpOpenFW\Framework\Core::load_config(false, ['session_index' => 'config']);
+
+		//============================================================
+		// Load Database Config
+		//============================================================
+		//\phpOpenFW\Framework\Core::load_db_config();
 		
 		//************************************************************************
 		//************************************************************************

@@ -210,7 +210,12 @@ class Authentication
 		// Custom Login
 		//***********************************************************
 		else if ($this->data_src == 'custom') {
-			if (function_exists('custom_login')) {
+			if (isset($_SESSION['custom_login_function']) && function_exists($_SESSION['custom_login_function'])) {
+				$custom_ret_val = call_user_func($_SESSION['custom_login_function']);
+				$this->status = (bool)$custom_ret_val;
+				if ($this->status) { $_SESSION['userid'] = (string)$custom_ret_val; }
+			}
+			else if (function_exists('custom_login')) {
 				$custom_ret_val = call_user_func('custom_login');
 				$this->status = (bool)$custom_ret_val;
 				if ($this->status) { $_SESSION['userid'] = (string)$custom_ret_val; }

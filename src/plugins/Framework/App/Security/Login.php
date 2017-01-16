@@ -100,9 +100,14 @@ class Login
 	//*************************************************************************
 	private function fail_login($msg)
 	{
-		if (function_exists('failed_login')) {
+		if (isset($_SESSION['failed_login_function']) && function_exists($_SESSION['failed_login_function'])) {
+			$fail_ret_val = call_user_func($_SESSION['failed_login_function']);
+		}
+		else if (function_exists('failed_login')) {
 			$fail_ret_val = call_user_func('failed_login');
-			if ($fail_ret_val) { $msg = $fail_ret_val; }
+		}
+		if (!empty($fail_ret_val)) {
+			$msg = $fail_ret_val;
 		}
 		$page = new Flow\Message($msg);
 		$page->render();

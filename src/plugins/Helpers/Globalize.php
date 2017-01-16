@@ -42,26 +42,27 @@ class Globalize
 	 * Globalize ALL Functions / Classes
 	 */
 	//*****************************************************************************
-	public static function All(Array $excluded=[], Array $args=[])
+	public static function All(Array $args=[])
 	{
+		extract($args);
 		self::Bootstrap();
-		self::Core($excluded, $args);
-		self::XML($excluded, $args);
-		self::Database($excluded, $args);
-		self::Form($excluded, $args);
-		self::HTML($excluded, $args);
+		self::Core($args);
+		self::XML($args);
+		self::Database($args);
+		self::Form($args);
+		self::HTML($args);
 		if (!empty($args['Utility'])) {
-			self::Utility($excluded, $args);
+			self::Utility($args);
 		}
 		if (!empty($args['App'])) {
-			self::App($excluded, $args);
+			self::App($args);
 		}
-		self::phpOpenPlugins($excluded, $args);
+		self::phpOpenPlugins($args);
 		if (!isset($excluded['LoadHTMLHelpers'])) {
-			self::LoadHTMLHelpers($excluded, $args);
+			self::LoadHTMLHelpers($args);
 		}
 		if (!isset($excluded['LoadSessionMessageHelpers'])) {
-			self::LoadSessionMessageHelpers($excluded, $args);
+			self::LoadSessionMessageHelpers($args);
 		}
 	}
 
@@ -70,8 +71,9 @@ class Globalize
 	 * Globalize Core Functions / Classes
 	 */
 	//*****************************************************************************
-	public static function Core(Array $excluded=[])
+	public static function Core(Array $args=[])
 	{
+		extract($args);
 		self::Bootstrap();
 		include_once(PHPOPENFW_FRAME_PATH . '/src/globals/Globalize/Core.php');
 	}
@@ -81,8 +83,9 @@ class Globalize
 	 * Globalize XML Functions / Classes
 	 */
 	//*****************************************************************************
-	public static function XML(Array $excluded=[])
+	public static function XML(Array $args=[])
 	{
+		extract($args);
 		self::Bootstrap();
 		include_once(PHPOPENFW_FRAME_PATH . '/src/globals/Globalize/XML.php');
 	}
@@ -92,8 +95,9 @@ class Globalize
 	 * Globalize Database Functions / Classes
 	 */
 	//*****************************************************************************
-	public static function Database(Array $excluded=[])
+	public static function Database(Array $args=[])
 	{
+		extract($args);
 		self::Bootstrap();
 		include_once(PHPOPENFW_FRAME_PATH . '/src/globals/Globalize/Database.php');
 	}
@@ -103,8 +107,9 @@ class Globalize
 	 * Globalize Database Functions / Classes
 	 */
 	//*****************************************************************************
-	public static function Form(Array $excluded=[])
+	public static function Form(Array $args=[])
 	{
+		extract($args);
 		self::Bootstrap();
 		include_once(PHPOPENFW_FRAME_PATH . '/src/globals/Globalize/Form.php');
 	}
@@ -114,8 +119,9 @@ class Globalize
 	 * Globalize HTML Functions / Classes
 	 */
 	//*****************************************************************************
-	public static function HTML(Array $excluded=[])
+	public static function HTML(Array $args=[])
 	{
+		extract($args);
 		self::Bootstrap();
 		include_once(PHPOPENFW_FRAME_PATH . '/src/globals/Globalize/HTML.php');
 	}
@@ -125,8 +131,9 @@ class Globalize
 	 * Globalize Utility Functions / Classes
 	 */
 	//*****************************************************************************
-	public static function Utility(Array $excluded=[])
+	public static function Utility(Array $args=[])
 	{
+		extract($args);
 		self::Bootstrap();
 		include_once(PHPOPENFW_FRAME_PATH . '/src/globals/Globalize/Utility.php');
 	}
@@ -136,8 +143,9 @@ class Globalize
 	 * Globalize App Functions / Classes
 	 */
 	//*****************************************************************************
-	public static function App(Array $excluded=[])
+	public static function App(Array $args=[])
 	{
+		extract($args);
 		self::Bootstrap();
 		include_once(PHPOPENFW_FRAME_PATH . '/src/globals/Globalize/App.php');
 	}
@@ -147,8 +155,9 @@ class Globalize
 	 * Globalize UPN Functions / Classes
 	 */
 	//*****************************************************************************
-	public static function UPN(Array $excluded=[])
+	public static function UPN(Array $args=[])
 	{
+		extract($args);
 		self::Bootstrap();
 		include_once(PHPOPENFW_FRAME_PATH . '/src/globals/Globalize/UPN.php');
 	}
@@ -158,8 +167,9 @@ class Globalize
 	 * Globalize phpOpenPlugins Functions / Classes
 	 */
 	//*****************************************************************************
-	public static function phpOpenPlugins(Array $excluded=[], Array $args=[])
+	public static function phpOpenPlugins(Array $args=[])
 	{
+		extract($args);
 		self::Bootstrap();
 		include_once(PHPOPENFW_FRAME_PATH . '/src/globals/Globalize/phpOpenPlugins.php');
 	}

@@ -198,6 +198,9 @@ class Authentication
 				return false;
 			}
 
+			//-----------------------------------------------------
+			// Set Session Vars
+			//-----------------------------------------------------
 			$_SESSION['userid'] = $this->user;
 			$_SESSION['passwd'] = sha1($this->pass);
 			$_SESSION['first_name'] = (isset($user_info[0][$_SESSION['auth_fname_field']])) ? ($user_info[0][$_SESSION['auth_fname_field']]) : ('');
@@ -210,20 +213,33 @@ class Authentication
 		// Custom Login
 		//***********************************************************
 		else if ($this->data_src == 'custom') {
-			if (isset($_SESSION['custom_login_function']) && function_exists($_SESSION['custom_login_function'])) {
+
+			//-----------------------------------------------------
+			// Configured Custom Login Method
+			//-----------------------------------------------------
+			if (isset($_SESSION['custom_login_function']) && is_callable($_SESSION['custom_login_function'])) {
 				$custom_ret_val = call_user_func($_SESSION['custom_login_function']);
 				$this->status = (bool)$custom_ret_val;
 				if ($this->status) { $_SESSION['userid'] = (string)$custom_ret_val; }
 			}
+			//-----------------------------------------------------
+			// "custom_login()" function found?
+			//-----------------------------------------------------
 			else if (function_exists('custom_login')) {
 				$custom_ret_val = call_user_func('custom_login');
 				$this->status = (bool)$custom_ret_val;
 				if ($this->status) { $_SESSION['userid'] = (string)$custom_ret_val; }
 			}
+			//-----------------------------------------------------
+			// No Custom Login Handler found. FAIL.
+			//-----------------------------------------------------
 			else {
-				trigger_error('Custom login handler function "custom_login() is not defined. Authentication automatically failed."');
+				trigger_error('Custom login handler function is not defined. Authentication automatically failed."');
 			}
 
+			//-----------------------------------------------------
+			// Set Session Vars if successful login
+			//-----------------------------------------------------
 			if ($this->status) {
 				if (!isset($_SESSION['first_name'])) { $_SESSION['first_name'] = ''; }
 				if (!isset($_SESSION['last_name'])) { $_SESSION['last_name'] = ''; }

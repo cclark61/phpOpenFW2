@@ -234,7 +234,7 @@ class Authentication
 			// No Custom Login Handler found. FAIL.
 			//-----------------------------------------------------
 			else {
-				trigger_error('Custom login handler function is not defined. Authentication automatically failed."');
+				trigger_error('Custom login handler function is not defined. Authentication automatically failed.');
 			}
 
 			//-----------------------------------------------------

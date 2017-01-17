@@ -57,7 +57,9 @@ if (!in_array('html_escape', $excluded)) {
 	function html_escape() { return call_user_func_array('\phpOpenFW\Format\Content::html_escape', func_get_args()); }
 }
 if (!in_array('fill_if_empty', $excluded)) {
-	function fill_if_empty() { return call_user_func_array('\phpOpenFW\Format\Content::fill_if_empty', func_get_args()); }
+	function fill_if_empty(&$data, $empty_val='--') {
+		\phpOpenFW\Format\Content::fill_if_empty($data, $empty_val);
+	}
 }
 if (!in_array('css_icon', $excluded)) {
 	function css_icon() { return call_user_func_array('\phpOpenFW\Format\Content::css_icon', func_get_args()); }
@@ -82,7 +84,9 @@ if (!in_array('GUID', $excluded)) {
 // phpOpenFW\Format\Data
 //********************************************************************
 if (!in_array('format_records', $excluded)) {
-	function format_records() { return call_user_func_array('\phpOpenFW\Format\Data::format_records', func_get_args()); }
+	function format_records(&$recs, $fields) {
+		return \phpOpenFW\Format\Data::format_records($recs, $fields);
+	}
 }
 
 //********************************************************************
@@ -105,7 +109,9 @@ if (!in_array('format_date_pretty', $excluded)) {
 // phpOpenFW\Format\FileSystem
 //********************************************************************
 if (!in_array('clean_dir', $excluded)) {
-	function clean_dir() { return call_user_func_array('\phpOpenFW\Format\DateTime::clean_dir', func_get_args()); }
+	function clean_dir(&$dir, $front_slashes=false, $rear_slashes=true) {
+		return \phpOpenFW\Format\DateTime::clean_dir($dir, $front_slashes, $rear_slashes);
+	}
 }
 if (!in_array('load_file_content', $excluded)) {
 	function load_file_content() { return call_user_func_array('\phpOpenFW\Format\DateTime::load_file_content', func_get_args()); }
@@ -115,10 +121,14 @@ if (!in_array('load_file_content', $excluded)) {
 // phpOpenFW\Format\Form
 //********************************************************************
 if (!in_array('sql_escape_values', $excluded)) {
-	function sql_escape_values() { return call_user_func_array('\phpOpenFW\Format\Form::sql_escape_values', func_get_args()); }
+	function sql_escape_values(&$in_val, $ignore_indices=false) {
+		return \phpOpenFW\Format\Form::sql_escape_values($in_val, $ignore_indices); 
+	}
 }
 if (!in_array('set_category', $excluded)) {
-	function set_category() { return call_user_func_array('\phpOpenFW\Format\Form::set_category', func_get_args()); }
+	function set_category(&$cat, $new_cat) {
+		return \phpOpenFW\Format\Form::set_category($cat, $new_cat);
+	}
 }
 
 //********************************************************************

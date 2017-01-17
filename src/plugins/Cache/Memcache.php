@@ -107,5 +107,21 @@ class Memcache extends \phpOpenFW\Cores\StaticCore
 		return $results;		
 	}
 
-}
+	//=============================================================================
+	//=============================================================================
+	/**
+	* Create and return a cache key for use in MemCache for example.
+	*
+	* @param string Cache Key Stub
+	* @param array The parameters passed to the original function.
+	*
+	* @return string A unique cache key.
+	*/
+	//=============================================================================
+	//=============================================================================
+	public static function make_cache_key($stub, $args)
+	{
+		return \phpOpenFW\Helpers\Cache::make_cache_key($stub, $args);
+	}
 
+}

@@ -35,7 +35,7 @@ class HTTP
 	 */
 	//=============================================================================
 	//=============================================================================
-	function redirect($location=false, $message=false, $message_type='action_message')
+	public static function redirect($location=false, $message=false, $message_type='action_message')
 	{
 		//-----------------------------------------------------
 		// Set flag to stop page render

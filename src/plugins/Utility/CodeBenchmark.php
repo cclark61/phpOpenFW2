@@ -39,7 +39,7 @@ class CodeBenchmark
 	//************************************
 	// Constructor Function
 	//************************************
-	function __construct($start_timer=false)
+	public function __construct($start_timer=false)
 	{
 		$this->start = false;
 		$this->stop = false;

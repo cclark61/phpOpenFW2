@@ -35,7 +35,7 @@ class Image
 	*/
 	//*****************************************************************************
 	//*****************************************************************************
-	function img_resize_save($curr_file, $save_file, $max_width, $max_height, $out_format="jpg")
+	public static function img_resize_save($curr_file, $save_file, $max_width, $max_height, $out_format="jpg")
 	{
 		$ret_code = 0;
 		$out_format = strtolower($out_format);

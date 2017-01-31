@@ -52,6 +52,9 @@ if (!in_array('checkbox', $excluded)) {
 if (!in_array('file', $excluded)) {
 	class_alias('\phpOpenFW\Form\Elements\file', '\file');
 }
+if (!in_array('file_upload', $excluded)) {
+	class_alias('\phpOpenFW\Form\Elements\file', '\file_upload');
+}
 if (!in_array('hidden', $excluded)) {
 	class_alias('\phpOpenFW\Form\Elements\hidden', '\hidden');
 }

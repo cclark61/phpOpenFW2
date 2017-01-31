@@ -217,11 +217,11 @@ class App
     	// Set Authentication Data Type
     	//*************************************************************
     	if ($_SESSION['auth_data_source'] != 'none' && $_SESSION['auth_data_source'] != 'custom') {
-    		 if (!array_key_exists($_SESSION['auth_data_source'], $data_arr) && $_SESSION['auth_data_source'] != 'none') {
+    		 if (!array_key_exists($_SESSION['auth_data_source'], $_SESSION['data_sources']) && $_SESSION['auth_data_source'] != 'none') {
     		 	$_SESSION['auth_data_type'] = 'error';
     		 }
     		 else {
-    		 	$_SESSION['auth_data_type'] = $data_arr[$_SESSION['auth_data_source']]['type'];
+    		 	$_SESSION['auth_data_type'] = $_SESSION[$_SESSION['auth_data_source']]['type'];
     		 }
     	}
     	else if ($_SESSION['auth_data_source'] == 'custom') {

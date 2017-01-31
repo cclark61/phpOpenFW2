@@ -205,9 +205,13 @@ class Core
     	//*************************************************************
     	if (is_array($data_arr) && !empty($data_arr)) {
 	    	$key_arr = array_keys($data_arr);
+	    	$_SESSION['data_sources'] = [];
 	    	foreach ($key_arr as $key) {
 	    		$reg_code = self::reg_data_source($key, $data_arr[$key]);
-	    		if (!$reg_code) { $_SESSION[$key]['handle'] = 0; }
+	    		if (!$reg_code) {
+		    		$_SESSION[$key]['handle'] = 0;
+		    		$_SESSION['data_sources'][$key] = $key;
+		    	}
 	    	}
 		}
     }

@@ -54,7 +54,11 @@ class XMLNav
 		// Nav Type / Format
 		//-------------------------------------------------------------
 		if (isset($_SESSION['nav_xml_format'])) {
-			$valid_formats = array('numeric' => 'numeric', 'rewrite' => 'rewrite', 'long_url' => 'long_url');
+			$valid_formats = array(
+				'numeric' => 'numeric', 
+				'rewrite' => 'rewrite', 
+				'long_url' => 'long_url'
+			);
 			$this->nav_type = (isset($valid_formats[$_SESSION['nav_xml_format']])) ? ($valid_formats[$_SESSION['nav_xml_format']]) : ('numeric');
 		}
 		else { $this->nav_type = 'numeric'; }
@@ -120,30 +124,30 @@ class XMLNav
 				//------------------------------------------------------
 				if ($url == '/') {
 					if ($this->nav_type == 'rewrite') {
-						$new_url = $url . "$tmp_dir/";
+						$new_url = $url . "{$tmp_dir}/";
 						$new_mod_string = $tmp_dir;
 					}
 					else if ($this->nav_type == 'long_url') {
-						$new_url = $url . "index.php/$tmp_dir/";
+						$new_url = $url . "index.php/{$tmp_dir}/";
 						$new_mod_string = $tmp_dir;					
 					}
 					else {
-						$new_url = $url . "?mod=$key";
+						$new_url = $url . "?mod={$key}";
 						$new_mod_string = $key;
 					}
 				}
 				else {
 					if ($this->nav_type == 'rewrite' || $this->nav_type == 'long_url') {
-						$new_url = $url . "$tmp_dir/";
-						$new_mod_string = $mod_string . "/$tmp_dir";
+						$new_url = $url . "{$tmp_dir}/";
+						$new_mod_string = $mod_string . "/{$tmp_dir}";
 					}
 					else if ($this->nav_type == 'long_url') {
-						$new_url = $url . "index.php/$tmp_dir/";
+						$new_url = $url . "index.php/{$tmp_dir}/";
 						$new_mod_string = $tmp_dir;					
 					}
 					else {
-						$new_url = $url . "-$key";
-						$new_mod_string = $mod_string . "-$key";
+						$new_url = $url . "-{$key}";
+						$new_mod_string = $mod_string . "-{$key}";
 					}
 				}
 				$this->build_xml_nav($tmp2, $dir_structure['mods'][$key], $new_url, $depth, $key, $new_mod_string);

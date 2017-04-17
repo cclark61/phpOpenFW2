@@ -73,7 +73,11 @@ class Nav
 		// Nav Type / Format
 		//-------------------------------------------------------------
 		if (isset($_SESSION['nav_xml_format'])) {
-			$valid_formats = array('numeric' => 'numeric', 'rewrite' => 'rewrite', 'long_url' => 'long_url');
+			$valid_formats = array(
+				'numeric' => 'numeric', 
+				'rewrite' => 'rewrite', 
+				'long_url' => 'long_url'
+			);
 			$this->nav_type = (isset($valid_formats[$_SESSION['nav_xml_format']])) ? ($valid_formats[$_SESSION['nav_xml_format']]) : ('numeric');
 		}
 		else { $this->nav_type = 'numeric'; }
@@ -151,9 +155,11 @@ class Nav
 						$local_inc = $dir . $file . '/' . 'local.inc.php';
 						if (file_exists($local_inc)) {
 							include($local_inc);
-							$sub_array = $this->build_nav("$dir/$file/");
-							
+							$sub_array = $this->build_nav("{$dir}/{$file}/");
+
+							//--------------------------------------------------
 							// Sort Modules Array
+							//--------------------------------------------------
 							$tmp_dirs = array();
 							if ($this->sort_type == 'dir') {
 								foreach ($sub_array as $tmp_key => $tmp_val) {
@@ -172,7 +178,9 @@ class Nav
 							}
 							array_multisort($tmp_dirs, SORT_ASC, $sub_array);
 
+							//--------------------------------------------------
 							// Add module to array
+							//--------------------------------------------------
 							if (isset($mod_title)) {
 								$mod_order = (isset($mod_order)) ? ($mod_order) : (100);
 								$mod_array = array(
@@ -182,16 +190,22 @@ class Nav
 									'mods' => $sub_array
 								);
 
+								//--------------------------------------------------
 								// Rewrite / Long URL Nav Style
+								//--------------------------------------------------
 								if ($this->nav_type == 'rewrite' || $this->nav_type == 'long_url') {
 									$main_array[$file] = $mod_array;
 								}
+								//--------------------------------------------------
 								// Numeric Nav Style
+								//--------------------------------------------------
 								else {
 									array_push($main_array, $mod_array);
 								}
 
+								//--------------------------------------------------
 								// Clear variables
+								//--------------------------------------------------
 								unset($mod_title);
 								unset($mod_order);
 							}

@@ -4,7 +4,7 @@
 /**
  * A class to construct a module page
  *
- * @package		phpOpenFW
+ * @package		phpOpenFW2
  * @author 		Christian J. Clark
  * @copyright	Copyright (c) Christian J. Clark
  * @license		https://mit-license.org
@@ -194,7 +194,9 @@ class Module extends Page
 			$this->mod_args = preg_split('/-/', $this->mod, '-1');
 		}
 
+		//************************************************************************************
 		// Set module string to "-1" if empty
+		//************************************************************************************
 		if ($this->mod == '') { $this->mod = '-1'; }
 
 		//************************************************************************************

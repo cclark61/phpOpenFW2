@@ -259,7 +259,7 @@ class Core
     */
 	//************************************************************************
 	//************************************************************************
-    public static function session_kill($plugin)
+    public static function session_kill()
     {
     	if (isset($_SESSION)) {
     		$_SESSION = array();
@@ -272,6 +272,7 @@ class Core
     		    );
     		}
 
+			session_unset();
     		session_destroy();
     		return true;
     	}

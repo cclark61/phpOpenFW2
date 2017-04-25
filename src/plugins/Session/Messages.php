@@ -152,7 +152,7 @@ class Messages
 	// Format Messages
 	//*************************************************************************
 	//*************************************************************************
-	protected static function FormatMessages()
+	public static function FormatMessages()
 	{
 		$messages = [];
 		$args = func_get_args();
@@ -175,7 +175,7 @@ class Messages
 	// Format and XML Escape Messages
 	//*************************************************************************
 	//*************************************************************************
-	protected static function FormatEscapeMessages()
+	public static function FormatEscapeMessages()
 	{
 		$messages = [];
 		$args = func_get_args();

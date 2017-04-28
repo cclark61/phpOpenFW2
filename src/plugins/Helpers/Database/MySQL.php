@@ -71,7 +71,7 @@ class MySQL extends \phpOpenFW\Cores\StaticCore
 		if (!empty($order_by)) { $strsql .= ' ' . $order_by; }
 		$strsql .= ' limit 1';
 		if (!empty($debug)) { var_dump($strsql, $params); }
-		return qdb_first_row($ds, $strsql, $params);
+		return \phpOpenFW\Database\QDB::qdb_first_row($ds, $strsql, $params);
 	}
 
 	//=========================================================================
@@ -89,7 +89,7 @@ class MySQL extends \phpOpenFW\Cores\StaticCore
 		if (!empty($order_by)) { $strsql .= ' ' . $order_by; }
 		if (!empty($limit)) { $strsql .= ' ' . $limit; }
 		if (!empty($debug)) { var_dump($strsql, $params); }
-		return qdb_exec($ds, $strsql, $params);
+		return \phpOpenFW\Database\QDB::qdb_exec($ds, $strsql, $params);
 	}
 
 	//=========================================================================
@@ -109,7 +109,7 @@ class MySQL extends \phpOpenFW\Cores\StaticCore
 		if (!empty($order_by)) { $strsql .= ' ' . $order_by; }
 		if (!empty($limit)) { $strsql .= ' ' . $limit; }
 		if (!empty($debug)) { var_dump($strsql, $params); }
-		return qdb_lookup($ds, $strsql, "count", $params);
+		return \phpOpenFW\Database\QDB::qdb_lookup($ds, $strsql, "count", $params);
 	}
 
 	//============================================================================
@@ -125,7 +125,7 @@ class MySQL extends \phpOpenFW\Cores\StaticCore
 		$strsql = "delete from {$table} where {$where}";
 		if (!empty($limit)) { $strsql .= ' ' . $limit; }
 		if (!empty($debug)) { var_dump($strsql, $params); }
-		return qdb_exec($ds, $strsql, $params);
+		return \phpOpenFW\Database\QDB::qdb_exec($ds, $strsql, $params);
 	}
 
 	//============================================================================
@@ -261,7 +261,7 @@ class MySQL extends \phpOpenFW\Cores\StaticCore
 				and a.table_name = b.table_name
 		";
 
-		return qdb_exec($ds, $strsql, array('ss', $db, $field), 'table_name:table_name');
+		return \phpOpenFW\Database\QDB::qdb_exec($ds, $strsql, array('ss', $db, $field), 'table_name:table_name');
 	}
 
 	//============================================================================
@@ -325,7 +325,7 @@ class MySQL extends \phpOpenFW\Cores\StaticCore
 					$params = array('i', $val);
 				}
 				if ($params[0] == '') { $params = []; }
-				$ret_val[$tbl] = qdb_exec($ds, $strsql, $params);
+				$ret_val[$tbl] = \phpOpenFW\Database\QDB::qdb_exec($ds, $strsql, $params);
 			}
 		}
 
@@ -445,4 +445,3 @@ class MySQL extends \phpOpenFW\Cores\StaticCore
 	}
 
 }
-

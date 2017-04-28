@@ -36,5 +36,5 @@ if (!function_exists('add_gen_message')) {
 	function add_gen_message($msg) { \phpOpenFW\Session\Messages::AddGenMessage($msg); }
 }
 if (!function_exists('add_timer_message')) {
-	function add_timer_message($msg) { \phpOpenFW\Session\Messages::AddMessage($msg); }
+	function add_timer_message($msg) { \phpOpenFW\Session\Messages::AddTimerMessage($msg); }
 }

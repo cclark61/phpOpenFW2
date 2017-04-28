@@ -58,9 +58,9 @@ class HTTP
 		//-----------------------------------------------------
 		// Add a Message?
 		//-----------------------------------------------------
-		$msg_func = 'add_' . $message_type;
-		if (!empty($message) && function_exists($msg_func)) {
-			call_user_func($msg_func, $message);
+		$message_type = (!$message_type) ? ('action') : (strtolower(str_ireplace('_message', '', $message_type)));
+		if (!empty($message)) {
+			\phpOpenFW\Session\Messages::AddMessage($msg, $message_type);
 		}
 	
 		//-----------------------------------------------------

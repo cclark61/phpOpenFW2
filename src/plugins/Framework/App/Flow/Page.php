@@ -126,12 +126,12 @@ abstract class Page
 	protected $app_xml;
 
 	/**
-	* @var string the XSL template to be used to transform the $page_xml into HTML or XHTML
+	* @var string The XSL template to be used to transform the $page_xml into HTML or XHTML
 	**/
 	protected $xsl_template;
 
 	/**
-	* @var string the XSL template directory to be used to transform the $page_xml into HTML or XHTML
+	* @var string The XSL template directory to be used to transform the $page_xml into HTML or XHTML
 	**/
 	protected $templates_dir;
 

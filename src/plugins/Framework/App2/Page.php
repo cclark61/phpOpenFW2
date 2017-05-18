@@ -664,7 +664,6 @@ class Page
 	//************************************************************************************
 	public function get_mod_vars($index=false)
 	{
-		if ($key == '') { return false; }
 		if (!$index) { $index = $this->page_path; }
 		$mod_index = 'mod-' . $index;
 		if (isset($_SESSION[$mod_index]) && !empty($_SESSION[$mod_index])) {

@@ -55,7 +55,7 @@ class MongoDB extends \phpOpenFW\Cores\StaticCore
 		//*****************************************************************
 		$stream = true;
 		if (!empty($output_header)) {
-			$stream = POP_cdn::output_content_type($mongo_file->getFilename());
+			$stream = \phpOpenFW\Content\CDN::output_content_type($mongo_file->getFilename());
 		}
 		if ($stream) {
 			print $mongo_file->getBytes();
@@ -66,7 +66,6 @@ class MongoDB extends \phpOpenFW\Cores\StaticCore
 
 		return true;
 	}
-
 
 }
 

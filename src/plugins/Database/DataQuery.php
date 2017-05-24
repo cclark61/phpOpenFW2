@@ -233,4 +233,3 @@ class DataQuery {
 		if (isset($query_string)) { return $query_string; }
 	}
 }
-

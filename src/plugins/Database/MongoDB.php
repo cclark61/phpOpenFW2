@@ -131,6 +131,21 @@ class MongoDB {
 
 	//*****************************************************************************
 	//*****************************************************************************
+	// Get One By ID
+	//*****************************************************************************
+	//*****************************************************************************
+	public function GetOneByID($collection, $id)
+	{
+		$doc_oid = new \MongoDB\BSON\ObjectId($id);
+		$doc = $this->mongo_client_db->$collection->findOne(['_id' => $doc_oid]);
+		if ($doc) {
+			return (array)$doc->bsonSerialize();
+		}
+		return false;
+	}
+
+	//*****************************************************************************
+	//*****************************************************************************
 	// Get GridFS File By ID
 	//*****************************************************************************
 	//*****************************************************************************
@@ -179,4 +194,123 @@ class MongoDB {
 		return true;
 	}
 
+	//*****************************************************************************
+	//*****************************************************************************
+	// Insert One Document
+	//*****************************************************************************
+	//*****************************************************************************
+	public function InsertOne($collection, $data, array $args=[])
+	{
+		$return_raw_result = false;
+		extract($args);
+
+		$result = $this->mongo_client_db->$collection->insertOne($data);
+		return ($return_raw_result) ? ($result) : ($result->getInsertedId());
+	}
+
+	//*****************************************************************************
+	//*****************************************************************************
+	// Update One Document By ID
+	//*****************************************************************************
+	//*****************************************************************************
+	public function UpdateOneByID($collection, $id, $data, array $args=[])
+	{
+		$return_raw_result = false;
+		extract($args);
+
+		$doc_oid = new \MongoDB\BSON\ObjectId($id);
+		$result = $this->mongo_client_db->$collection->updateOne(
+			['_id' => $doc_oid],
+			['$set' => $data]
+		);
+
+		if ($return_raw_result) {
+			return $result;
+		}
+		else {
+			return $result->getMatchedCount();
+		}
+	}
+
+	//*****************************************************************************
+	//*****************************************************************************
+	// Upsert One Document By ID
+	//*****************************************************************************
+	//*****************************************************************************
+	public function UpsertOneByID($collection, $id, $data, array $args=[])
+	{
+		$return_raw_result = false;
+		extract($args);
+
+		$doc_oid = new \MongoDB\BSON\ObjectId($id);
+		$result = $this->mongo_client_db->$collection->updateOne(
+			['_id' => $doc_oid],
+			['$set' => $data],
+			['upsert' => true]
+		);
+
+		if ($return_raw_result) {
+			return $result;
+		}
+		else {
+			$upsert_id = $result->getUpsertedId();
+			return ($upsert_id) ? ($upsert_id) : ($id);
+		}
+	}
+
+	//*****************************************************************************
+	//*****************************************************************************
+	// Delete One Document By ID
+	//*****************************************************************************
+	//*****************************************************************************
+	public function DeleteOneByID($collection, $id, array $args=[])
+	{
+		$return_raw_result = false;
+		extract($args);
+
+		$doc_oid = new \MongoDB\BSON\ObjectId($id);
+		$result = $this->mongo_client_db->$collection->deleteOne(
+			['_id' => $doc_oid]
+		);
+
+		return ($return_raw_result) ? ($result) : ($result->getDeletedCount());
+	}
+
+	//*****************************************************************************
+	//*****************************************************************************
+	// Add GridFS File
+	//*****************************************************************************
+	//*****************************************************************************
+	public function AddGridFSFile($file, Array $args=[])
+	{
+		extract($args);
+
+		if (file_exists($file)) {
+			$fhandle = fopen($file, 'rb');
+			if (empty($file_name)) {
+				$file_name = basename($file);
+			}
+			$result = $this->mongo_client_db_gridfs->uploadFromStream($file_name, $fhandle);
+			return $result;
+		}
+		
+		return false;
+	}
+
+	//*****************************************************************************
+	//*****************************************************************************
+	// Delete GridFS File
+	//*****************************************************************************
+	//*****************************************************************************
+	public function DeleteGridFSFileByID($id, Array $args=[])
+	{
+		$file_data = $this->GetGridFSFileByID($id);
+		if ($file_data) {
+			$fileId = new \MongoDB\BSON\ObjectId($id);
+			$this->mongo_client_db_gridfs->delete($fileId);
+			return true;
+		}
+
+		return false;
+	}
 }

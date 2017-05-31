@@ -89,7 +89,7 @@ class MongoDB {
 	// Get MongoDB Client Connection
 	//*****************************************************************************
 	//*****************************************************************************
-	protected static function Connect($data_source)
+	public static function Connect($data_source)
 	{
 		$conn_str = self::ConnectionString($data_source);
 		return new \MongoDB\Client($conn_str);
@@ -100,7 +100,7 @@ class MongoDB {
 	// Get MongoDB Connection String
 	//*****************************************************************************
 	//*****************************************************************************
-	protected static function ConnectionString($data_source)
+	public static function ConnectionString($data_source)
 	{
 		//=================================================================
 		// Validate Data Source
@@ -119,46 +119,203 @@ class MongoDB {
 
 	//*****************************************************************************
 	//*****************************************************************************
-	// Get Document By ID
+	// Create Object ID
 	//*****************************************************************************
 	//*****************************************************************************
-	public function GetDocumentByID($collection, $id)
+	public static function CreateObjectID($id)
 	{
-		$doc_oid = new \MongoDB\BSON\ObjectId($id);
-		$doc = $this->mongo_client_db->$collection->findOne(['_id' => $doc_oid]);
-		return $doc;
+		try {
+			return new \MongoDB\BSON\ObjectId($id);
+		}
+		catch (\MongoDB\Driver\Exception\InvalidArgumentException $e) {
+			trigger_error($e);
+			return false;
+		}
 	}
 
 	//*****************************************************************************
 	//*****************************************************************************
-	// Get One By ID
+	// Build Find Options
 	//*****************************************************************************
 	//*****************************************************************************
-	public function GetOneByID($collection, $id)
+	public static function BuildFindOptions(Array $args=[])
 	{
-		$doc_oid = new \MongoDB\BSON\ObjectId($id);
-		$doc = $this->mongo_client_db->$collection->findOne(['_id' => $doc_oid]);
-		if ($doc) {
-			return (array)$doc->bsonSerialize();
+		$opts = [];
+
+		//--------------------------------------------------
+		// Type Map
+		//--------------------------------------------------
+		if (!isset($args['typeMap'])) {
+			$opts['typeMap'] = ['root' => 'array', 'document' => 'array'];
 		}
-		return false;
+
+		return $opts;
 	}
+
+	//*****************************************************************************
+	//*****************************************************************************
+	// Get MongoDB Client
+	//*****************************************************************************
+	//*****************************************************************************
+	public function GetClient()
+	{
+		return $this->mongo_client;
+	}
+
+	//*****************************************************************************
+	//*****************************************************************************
+	// Get MongoDB Database Object
+	//*****************************************************************************
+	//*****************************************************************************
+	public function GetDatabase()
+	{
+		return $this->mongo_client_db;
+	}
+
+	//*****************************************************************************
+	//*****************************************************************************
+	// Get MongoDB Collection Object
+	//*****************************************************************************
+	//*****************************************************************************
+	public function GetCollection($collection)
+	{
+		return $this->mongo_client_db->$collection;
+	}
+
+	//*****************************************************************************
+	//*****************************************************************************
+	// Get MongoDB Database GridFS Object
+	//*****************************************************************************
+	//*****************************************************************************
+	public function GetGridFS()
+	{
+		return $this->$this->mongo_client_db_gridfs;
+	}
+
+	//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	// Document Methods
+	//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+	//*****************************************************************************
+	//*****************************************************************************
+	// Get One Document By ID
+	//*****************************************************************************
+	//*****************************************************************************
+	public function GetDocumentByID($collection, $id, Array $args=[])
+	{
+		if (!$collection) { return false; }
+		$find_opts = self::BuildFindOptions($args);
+
+		$doc_oid = self::CreateObjectID($id);
+		if (!$doc_oid) { return false; }
+
+		return $this->mongo_client_db->$collection->findOne(['_id' => $doc_oid], $find_opts);
+	}
+
+	//*****************************************************************************
+	//*****************************************************************************
+	// Insert One Document
+	//*****************************************************************************
+	//*****************************************************************************
+	public function InsertDocument($collection, $data, array $args=[])
+	{
+		if (!$collection) { return false; }
+		extract($args);
+
+		$result = $this->mongo_client_db->$collection->insertOne($data);
+		return (empty($return_raw_result)) ? ($result->getInsertedId()) : ($result);
+	}
+
+	//*****************************************************************************
+	//*****************************************************************************
+	// Update One Document By ID
+	//*****************************************************************************
+	//*****************************************************************************
+	public function UpdateDocumentByID($collection, $id, $data, array $args=[])
+	{
+		if (!$collection) { return false; }
+		extract($args);
+
+		$doc_oid = self::CreateObjectID($id);
+		if (!$doc_oid) { return false; }
+
+		$result = $this->mongo_client_db->$collection->updateOne(
+			['_id' => $doc_oid],
+			['$set' => $data]
+		);
+
+		return (empty($return_raw_result)) ? ($result->getMatchedCount()) : ($result);
+	}
+
+	//*****************************************************************************
+	//*****************************************************************************
+	// Upsert One Document By ID
+	//*****************************************************************************
+	//*****************************************************************************
+	public function UpsertDocumentByID($collection, $id, $data, array $args=[])
+	{
+		if (!$collection) { return false; }
+		extract($args);
+
+		$doc_oid = self::CreateObjectID($id);
+		if (!$doc_oid) { return false; }
+
+		$result = $this->mongo_client_db->$collection->updateOne(
+			['_id' => $doc_oid],
+			['$set' => $data],
+			['upsert' => true]
+		);
+
+		if (!empty($return_raw_result)) {
+			return $result;
+		}
+		$upsert_id = $result->getUpsertedId();
+		return ($upsert_id) ? ($upsert_id) : ($id);
+	}
+
+	//*****************************************************************************
+	//*****************************************************************************
+	// Delete One Document By ID
+	//*****************************************************************************
+	//*****************************************************************************
+	public function DeleteDocumentByID($collection, $id)
+	{
+		if (!$collection) { return false; }
+		$doc_oid = self::CreateObjectID($id);
+		if (!$doc_oid) { return false; }
+
+		$result = $this->mongo_client_db->$collection->deleteOne(
+			['_id' => $doc_oid]
+		);
+
+		return $result->getDeletedCount();
+	}
+
+	//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	// Grid FS Methods
+	//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 	//*****************************************************************************
 	//*****************************************************************************
 	// Get GridFS File By ID
 	//*****************************************************************************
 	//*****************************************************************************
-	public function GetGridFSFileByID($id)
+	public function GetGridFSFileByID($id, Array $args=[])
 	{
-		$oid = new \MongoDB\BSON\ObjectId($id);
-		$gridfs_file = $this->mongo_client_db_gridfs->findOne(['_id' => $oid]);
-		if ($gridfs_file) {
-			$file_data = (array)$gridfs_file->bsonSerialize();
-			return $file_data;
-		}
-		
-		return false;
+		$find_opts = self::BuildFindOptions($args);
+
+		$oid = self::CreateObjectID($id);
+		if (!$oid) { return false; }
+
+		return $this->mongo_client_db_gridfs->findOne(['_id' => $oid], $find_opts);
 	}
 
 	//*****************************************************************************
@@ -196,95 +353,15 @@ class MongoDB {
 
 	//*****************************************************************************
 	//*****************************************************************************
-	// Insert One Document
-	//*****************************************************************************
-	//*****************************************************************************
-	public function InsertOne($collection, $data, array $args=[])
-	{
-		$return_raw_result = false;
-		extract($args);
-
-		$result = $this->mongo_client_db->$collection->insertOne($data);
-		return ($return_raw_result) ? ($result) : ($result->getInsertedId());
-	}
-
-	//*****************************************************************************
-	//*****************************************************************************
-	// Update One Document By ID
-	//*****************************************************************************
-	//*****************************************************************************
-	public function UpdateOneByID($collection, $id, $data, array $args=[])
-	{
-		$return_raw_result = false;
-		extract($args);
-
-		$doc_oid = new \MongoDB\BSON\ObjectId($id);
-		$result = $this->mongo_client_db->$collection->updateOne(
-			['_id' => $doc_oid],
-			['$set' => $data]
-		);
-
-		if ($return_raw_result) {
-			return $result;
-		}
-		else {
-			return $result->getMatchedCount();
-		}
-	}
-
-	//*****************************************************************************
-	//*****************************************************************************
-	// Upsert One Document By ID
-	//*****************************************************************************
-	//*****************************************************************************
-	public function UpsertOneByID($collection, $id, $data, array $args=[])
-	{
-		$return_raw_result = false;
-		extract($args);
-
-		$doc_oid = new \MongoDB\BSON\ObjectId($id);
-		$result = $this->mongo_client_db->$collection->updateOne(
-			['_id' => $doc_oid],
-			['$set' => $data],
-			['upsert' => true]
-		);
-
-		if ($return_raw_result) {
-			return $result;
-		}
-		else {
-			$upsert_id = $result->getUpsertedId();
-			return ($upsert_id) ? ($upsert_id) : ($id);
-		}
-	}
-
-	//*****************************************************************************
-	//*****************************************************************************
-	// Delete One Document By ID
-	//*****************************************************************************
-	//*****************************************************************************
-	public function DeleteOneByID($collection, $id, array $args=[])
-	{
-		$return_raw_result = false;
-		extract($args);
-
-		$doc_oid = new \MongoDB\BSON\ObjectId($id);
-		$result = $this->mongo_client_db->$collection->deleteOne(
-			['_id' => $doc_oid]
-		);
-
-		return ($return_raw_result) ? ($result) : ($result->getDeletedCount());
-	}
-
-	//*****************************************************************************
-	//*****************************************************************************
 	// Add GridFS File
 	//*****************************************************************************
 	//*****************************************************************************
 	public function AddGridFSFile($file, Array $args=[])
 	{
-		extract($args);
+		if (!$file) { return false; }
 
+		extract($args);
+		
 		if (file_exists($file)) {
 			$fhandle = fopen($file, 'rb');
 			if (empty($file_name)) {
@@ -306,7 +383,8 @@ class MongoDB {
 	{
 		$file_data = $this->GetGridFSFileByID($id);
 		if ($file_data) {
-			$fileId = new \MongoDB\BSON\ObjectId($id);
+			$fileId = self::CreateObjectID($id);
+			if (!$fileId) { return false; }
 			$this->mongo_client_db_gridfs->delete($fileId);
 			return true;
 		}

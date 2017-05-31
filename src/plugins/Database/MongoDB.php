@@ -138,14 +138,28 @@ class MongoDB {
 	// Build Find Options
 	//*****************************************************************************
 	//*****************************************************************************
-	public static function BuildFindOptions(Array $args=[])
+	public static function BuildFindOptions(Array $args=[], Array $opts=[])
 	{
-		$opts = [];
+		$possibles = [
+			'projection', 'sort', 'skip', 'limit', 'batchSize', 'collation', 'comment',
+			'cursorType', 'maxTimeMS', 'readConcern', 'readPreference', 'noCursorTimeout', 
+			'allowPartialResults', 'typeMap', 'modifiers'
+		];
 
 		//--------------------------------------------------
-		// Type Map
+		// Check For Find Option Parameters
 		//--------------------------------------------------
-		if (!isset($args['typeMap'])) {
+		foreach ($possibles as $p) {
+			if (!empty($args[$p])) { $opts[$p] = $args[$p]; }
+			else if (array_key_exists($p, $opts) && $opts[$p] == '') {
+				unset($opts[$p]);
+			}
+		}
+
+		//--------------------------------------------------
+		// Default Type Map
+		//--------------------------------------------------
+		if (!isset($opts['typeMap'])) {
 			$opts['typeMap'] = ['root' => 'array', 'document' => 'array'];
 		}
 

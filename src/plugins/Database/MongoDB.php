@@ -339,6 +339,11 @@ class MongoDB {
 	//*****************************************************************************
 	public function StreamGridFSFileByID($id, Array $args=[])
 	{
+		//=================================================================
+		// Default Args / Extract Args
+		//=================================================================
+		$output_header = false;
+		$content_type = false;
 		extract($args);
 
 		//=================================================================
@@ -346,21 +351,17 @@ class MongoDB {
 		//=================================================================
 		$file_data = $this->GetGridFSFileByID($id);
 		if (!$file_data) { return false; }
-		
+		$file_data['stream'] = $this->mongo_client_db_gridfs->openDownloadStream($file_data['_id']);
+		if (!$file_data['stream']) { return false; }
+
 		//=================================================================
-		// Output Content Type / Content
+		// Stream
 		//=================================================================
-		$stream = true;
-		if (!empty($output_header)) {
-			$stream = \phpOpenFW\Content\CDN::OutputContentType($file_data['filename']);
-		}
-		if ($stream) {
-			$file_data['stream'] = $this->mongo_client_db_gridfs->openDownloadStream($file_data['_id']);
-			print stream_get_contents($file_data['stream']);
-		}
-		else {
-			return false;
-		}
+		\phpOpenFW\Content\CDN::OutputStream($file_data['stream'], [
+			'file_name' => $file_data['filename'],
+			'output_header' => $output_header,
+			'content_type' => $content_type
+		]);
 
 		return true;
 	}

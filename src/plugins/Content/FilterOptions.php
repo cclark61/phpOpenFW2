@@ -60,7 +60,7 @@ class FilterOptions
 		if ((string)$label !== "") {
 			print Format::xhe("label", $label);
 		}
-		
+
 		//---------------------------------------------------------
 		// Select
 		//---------------------------------------------------------
@@ -83,37 +83,67 @@ class FilterOptions
 	public static function print_list_filter(&$page, $base_url, $options, $get_var, $cookie_mod_var, $label)
 	{
 		$ret_vals = array();
-		if (isset($_GET[$get_var]) && $_GET[$get_var] != '') { $$get_var = $_GET[$get_var]; }
-	
-		if (!isset($$get_var)) {
-			$$get_var = $page->get_mod_var($cookie_mod_var);
-			if ($$get_var === false) {
-				if (isset($_COOKIE[$cookie_mod_var])) { $$get_var = $_COOKIE[$cookie_mod_var]; }
-				else { $$get_var = 0; }
+		$tmp_val = false;
+
+		//---------------------------------------------------------
+		// Is filter set in a GET parameter?
+		//---------------------------------------------------------
+		if (array_key_exists($get_var, $_GET) && $_GET[$get_var] != '') {
+			$tmp_val = $_GET[$get_var];
+		}
+
+		//---------------------------------------------------------
+		// Is filter saved in the Session?
+		//---------------------------------------------------------
+		if ($tmp_val == '') {
+			$tmp_val = $page->get_mod_var($cookie_mod_var);
+		}
+
+		//---------------------------------------------------------
+		// Is filter saved in a Cookie?
+		//---------------------------------------------------------
+		if ($tmp_val == '') {
+			if (array_key_exists($cookie_mod_var, $_COOKIE) && $_COOKIE[$cookie_mod_var] != '') {
+				$tmp_val = $_COOKIE[$cookie_mod_var];
+			}
+			else {
+				$tmp_val = 0;
 			}
 		}
-		else {
-			$page->set_mod_var($cookie_mod_var, $$get_var);
-			setcookie($cookie_mod_var, $$get_var, time() + 604800);
+
+		//---------------------------------------------------------
+		// Save Filter to Session and Cookie
+		//---------------------------------------------------------
+		if ($tmp_val != '') {
+			$page->set_mod_var($cookie_mod_var, $tmp_val);
+			setcookie($cookie_mod_var, $tmp_val, time() + 604800);
 		}
-	
+
+		//---------------------------------------------------------
+		// Output Filter
+		//---------------------------------------------------------
 		ob_start();
 		print Format::xhe('label', $label) . "\n";
 		ob_start();
 		foreach ($options as $key => $option) {
 			$url = add_url_params($base_url, array($get_var => $key));
 			$o_attrs = array("value" => $url);
-			if (isset($$get_var) && $$get_var == $key) {
+			if ($tmp_val && $tmp_val == $key) {
 				$o_attrs["selected"] = "selected";
-				if (isset($option["group_by"])) { $ret_vals['group_by'] = $option["group_by"]; }
+				if (isset($option["group_by"])) {
+					$ret_vals['group_by'] = $option["group_by"];
+				}
 			}
 			print Format::xhe("option", $option["display"], $o_attrs);
 		}
-		
+
 		print Format::xhe("select", ob_get_clean(), array("class" => "filter"));
 		print Format::xhe('span', ob_get_clean(), array('class' => 'filter_wrapper'));
-	
-		$ret_vals[$get_var] = $$get_var;
+
+		//---------------------------------------------------------
+		// Return Results / Selected Value
+		//---------------------------------------------------------
+		$ret_vals[$get_var] = $tmp_val;
 		return $ret_vals;
 	}
 	

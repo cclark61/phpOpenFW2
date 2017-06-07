@@ -128,7 +128,7 @@ class FilterOptions
 		foreach ($options as $key => $option) {
 			$url = add_url_params($base_url, array($get_var => $key));
 			$o_attrs = array("value" => $url);
-			if ($tmp_val && $tmp_val == $key) {
+			if ($tmp_val != '' && $tmp_val == $key) {
 				$o_attrs["selected"] = "selected";
 				if (isset($option["group_by"])) {
 					$ret_vals['group_by'] = $option["group_by"];

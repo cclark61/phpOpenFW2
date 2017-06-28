@@ -407,7 +407,7 @@ abstract class DIO
 			                    // Force quotes
 								//-------------------------------------------------
 			                    case 'force':
-			                        $qa['fields'][$field] = "'$value'";
+			                        $qa['fields'][$field] = "'{$value}'";
 			                        break;
 
 								//-------------------------------------------------
@@ -422,7 +422,7 @@ abstract class DIO
 			                    //-------------------------------------------------
 			                    default:
 			                        if (isset($this->quoted_types[$this->db_type][$this->table_info[$field]['data_type']])) {
-			                            $qa['fields'][$field] = "'$value'";
+			                            $qa['fields'][$field] = "'{$value}'";
 			                        }
 			                        else {
 			                            $qa['fields'][$field] = $value;
@@ -452,7 +452,7 @@ abstract class DIO
 	                    // Force quotes
 						//-------------------------------------------------
 	                    case 'force':
-	                        $qa['fields'][$field] = "'$value'";
+	                        $qa['fields'][$field] = "'{$value}'";
 	                        break;
 
 						//-------------------------------------------------
@@ -467,7 +467,7 @@ abstract class DIO
 	                    //-------------------------------------------------
 	                    default:
 	                        if (isset($this->quoted_types[$this->db_type][$this->table_info[$field]['data_type']])) {
-	                            $qa['fields'][$field] = "'$value'";
+	                            $qa['fields'][$field] = "'{$value}'";
 	                        }
 	                        else {
 	                            $qa['fields'][$field] = $value;
@@ -591,7 +591,7 @@ abstract class DIO
 			//-------------------------------------------------
             // Set Table
             //-------------------------------------------------
-            if (isset($this->schema)) { $qa['table'] = "$this->schema.$this->table"; }
+            if (isset($this->schema)) { $qa['table'] = "{$this->schema}.{$this->table}"; }
             else { $qa['table'] = $this->table; }
             $qa['filter_phrase'] = $this->build_where($pkey_values);
 
@@ -995,7 +995,7 @@ abstract class DIO
 		}
 		else {
 			if (isset($this->table_info[$field])) { $this->table_info[$field]['load_default'] = $value; }
-			else { trigger_error("set_load_default(): Field '$field' does not exist.", E_USER_ERROR); }
+			else { trigger_error("set_load_default(): Field '{$field}' does not exist.", E_USER_ERROR); }
 		}
 	}
 
@@ -1011,7 +1011,7 @@ abstract class DIO
 		}
 		else {
 			if (isset($this->table_info[$field])) { $this->table_info[$field]['save_default'] = $value; }
-			else { trigger_error("set_save_default(): Field '$field' does not exist.", E_USER_ERROR); }
+			else { trigger_error("set_save_default(): Field '{$field}' does not exist.", E_USER_ERROR); }
 		}
 	}
 
@@ -1044,7 +1044,7 @@ abstract class DIO
 	public function set_field_data($field, $value, $use_quotes='auto')
 	{
 		if (isset($this->table_info[$field])) { $this->data[$field] = $value; }
-		else { trigger_error("set_field_data(): Field '$field' does not exist.", E_USER_ERROR); }
+		else { trigger_error("set_field_data(): Field '{$field}' does not exist.", E_USER_ERROR); }
 	}
 
 	//***********************************************************************
@@ -1055,7 +1055,7 @@ abstract class DIO
 	public function set_field_alias($field, $alias)
 	{
 		if (isset($this->table_info[$field])) { $this->table_info[$field]['alias'] = $alias; }
-		else { trigger_error("set_field_alias(): Field '$field' does not exist.", E_USER_ERROR); }
+		else { trigger_error("set_field_alias(): Field '{$field}' does not exist.", E_USER_ERROR); }
 	}
 
 	//***********************************************************************
@@ -1076,7 +1076,7 @@ abstract class DIO
                     break;
             }
         }
-		else { trigger_error("set_field_quotes(): Field '$field' does not exist.", E_USER_ERROR); }
+		else { trigger_error("set_field_quotes(): Field '{$field}' does not exist.", E_USER_ERROR); }
 	}
 
 	//***********************************************************************
@@ -1099,7 +1099,7 @@ abstract class DIO
 	{
 		$flag = (bool)$flag;
 		if (isset($this->table_info[$field])) { $this->table_info[$field]['can_bind_param'] = $flag; }
-		else { trigger_error("set_use_bind_param(): Field '$field' does not exist.", E_USER_ERROR); }
+		else { trigger_error("set_use_bind_param(): Field '{$field}' does not exist.", E_USER_ERROR); }
 	}
 
 	//***********************************************************************
@@ -1110,7 +1110,7 @@ abstract class DIO
 	public function no_save($field)
 	{
 		if (isset($this->table_info[$field])) { $this->table_info[$field]['no_save'] = true; }
-		else { trigger_error("no_save(): Field '$field' does not exist.", E_USER_ERROR); }
+		else { trigger_error("no_save(): Field '{$field}' does not exist.", E_USER_ERROR); }
 	}
 
 	//***********************************************************************
@@ -1121,7 +1121,7 @@ abstract class DIO
 	public function no_save_empty($field)
 	{
 		if (isset($this->table_info[$field])) { $this->table_info[$field]['no_save_empty'] = true; }
-		else { trigger_error("no_save_empty(): Field '$field' does not exist.", E_USER_ERROR); }
+		else { trigger_error("no_save_empty(): Field '{$field}' does not exist.", E_USER_ERROR); }
 	}
 
 	//***********************************************************************
@@ -1152,7 +1152,7 @@ abstract class DIO
 	public function no_load($field)
 	{
 		if (isset($this->table_info[$field])) { $this->table_info[$field]['no_load'] = true; }
-		else { trigger_error("no_load(): Field '$field' does not exist.", E_USER_ERROR); }
+		else { trigger_error("no_load(): Field '{$field}' does not exist.", E_USER_ERROR); }
 	}
 
 	//***********************************************************************
@@ -1178,7 +1178,9 @@ abstract class DIO
 		//===============================================================
 		// If string passed transform into an array
 		//===============================================================
-        if (!is_array($pkey_values)) { $pkey_values = array($this->primary_key => $pkey_values); }
+        if (!is_array($pkey_values)) {
+	        $pkey_values = array($this->primary_key => $pkey_values);
+	    }
 
 		foreach ($pkey_values as $key => &$value) {
             if (!$ll_where) {
@@ -1313,7 +1315,7 @@ abstract class DIO
 			else { return false; }
 		}
 		else {
-			trigger_error("get_field_data(): Field '$field' does not exist.", E_USER_ERROR);
+			trigger_error("get_field_data(): Field '{$field}' does not exist.", E_USER_ERROR);
 			return false;
 		}
 	}

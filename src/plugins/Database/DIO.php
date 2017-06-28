@@ -65,7 +65,7 @@ abstract class DIO
             $ll_where = false;
 			$strsql = 'select * from';
 			if (isset($this->schema)) { $strsql .= " {$this->schema}.{$this->table}"; }
-			else { $strsql .= " $this->table"; }
+			else { $strsql .= " {$this->table}"; }
 
             //-----------------------------------------------------------------
 			// Build where clause
@@ -368,11 +368,14 @@ abstract class DIO
 		                case 'mysqli':
 		                	$qa['fields'][$field] = '?';
 		                	$this->bind_param_count++;
-		                	$this->bind_params[] = &$value;
 		                	$tmp_type = (isset($GLOBALS['mysql_bind_types'][strtoupper($this->table_info[$field]['data_type'])]))
 		                		? ($GLOBALS['mysql_bind_types'][strtoupper($this->table_info[$field]['data_type'])])
 		                		: ('s');
+		                	if (!array_key_exists(0, $this->bind_params)) {
+			                	$this->bind_params[0] = '';
+		                	}
 		                	$this->bind_params[0] .= $tmp_type;
+		                	$this->bind_params[] = &$value;
 		                    break;
 
 						case 'sqlsrv':
@@ -787,6 +790,25 @@ abstract class DIO
             }
 
 			//-------------------------------------------------
+            // Use Bind Parameters by Default?
+            //-------------------------------------------------
+            switch ($this->db_type) {
+                	
+                case 'mysqli':
+                case 'pgsql':
+				case 'oracle':
+				case 'sqlsrv':
+				case 'db2':
+					$this->use_bind_params = true;
+					break;
+
+				default:
+					$this->use_bind_params = false;
+					break;
+
+            }
+
+			//-------------------------------------------------
             // Pull Table Info
             //-------------------------------------------------
             $data1 = new DataTrans($this->data_source);
@@ -1173,26 +1195,29 @@ abstract class DIO
 				switch ($this->db_type) {
 
 	                case 'mysqli':
-	                	$strsql .= " $key = ?";
+	                	$strsql .= " {$key} = ?";
 	                	$this->bind_param_count++;
-	                	$this->bind_params[] = &$value;
 	                	$tmp_type = (isset($GLOBALS['mysql_bind_types'][strtoupper($this->table_info[$key]['data_type'])]))
 	                		? ($GLOBALS['mysql_bind_types'][strtoupper($this->table_info[$key]['data_type'])])
 	                		: ('s');
+	                	if (!array_key_exists(0, $this->bind_params)) {
+		                	$this->bind_params[0] = '';
+	                	}
 	                	$this->bind_params[0] .= $tmp_type;
+	                	$this->bind_params[] = &$value;
 	                    break;
 
 	                case 'pgsql':
 	                	$this->bind_param_count++;
 	                	$tmp_param = '$' . $this->bind_param_count;
-	                	$strsql .= " $key = {$tmp_param}";
+	                	$strsql .= " {$key} = {$tmp_param}";
 	                	$this->bind_params[] = $value;
 	                    break;
 
 					case 'oracle':
 	                	$this->bind_param_count++;
 						$tmp_param = ':p' . $this->bind_param_count;
-	                	$strsql .= " $key = {$tmp_param}";
+	                	$strsql .= " {$key} = {$tmp_param}";
 	                	$this->bind_params[$tmp_param] = $value;
 						break;
 
@@ -1200,16 +1225,16 @@ abstract class DIO
 					case 'mysql':
 					case 'sqlite':
 						if (isset($this->quoted_types[$this->db_type][$this->table_info[$key]['data_type']])) {
-							$strsql .= " $key = '$value'";
+							$strsql .= " {$key} = '{$value}'";
 						}
 						else {
-							$strsql .= " $key = $value";
+							$strsql .= " {$key} = {$value}";
 						}
 						break;
 
 					case 'db2':
 					case 'sqlsrv':
-	                	$strsql .= " $key = ?";
+	                	$strsql .= " {$key} = ?";
 	                	$this->bind_params[] = $value;
 	                	$this->bind_param_count++;
 						break;
@@ -1223,10 +1248,10 @@ abstract class DIO
 			// No Bind Parameters
 			//-------------------------------------------------
 			else if (isset($this->quoted_types[$this->db_type][$this->table_info[$key]['data_type']])) {
-				$strsql .= " $key = '$value'";
+				$strsql .= " {$key} = '{$value}'";
 			}
 			else {
-				$strsql .= " $key = $value";
+				$strsql .= " {$key} = {$value}";
 			}
         }
 

@@ -32,7 +32,7 @@ abstract class DIO
 	protected $db_type;
 	protected $schema;
 	protected $table;
-	protected $primary_key;
+	protected $primary_key = 'id';
 	protected $data;
 	protected $table_info;
 	protected $quoted_types;

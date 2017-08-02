@@ -27,10 +27,12 @@ class SQL
     // Select Method
     //=========================================================================
     //=========================================================================
-    public static function Select($table, $db_type=false)
+    public static function Select($fields=false, $table=false, $where=false)
     {
-		$obj = new SQL\Select($db_type);
-		$obj->table($table);
+		$obj = new SQL\Select();
+		$obj->Fields($fields);
+		$obj->From($table);
+		$obj->Where($where);
 		return $obj;
 	}
 
@@ -39,10 +41,11 @@ class SQL
     // Insert Method
     //=========================================================================
     //=========================================================================
-    public static function Insert($table, $db_type=false)
+    public static function Insert($fields=false, $table=false)
     {
-		$obj = new SQL\Insert($db_type);
-		$obj->table($table);
+		$obj = new SQL\Insert();
+		$obj->Fields($fields);
+		$obj->From($table);
 		return $obj;
 	}
 
@@ -51,10 +54,12 @@ class SQL
     // Update Method
     //=========================================================================
     //=========================================================================
-    public static function Update($table, $db_type=false)
+    public static function Update($fields=false, $table=false, $where=false)
     {
-		$obj = new SQL\Update($db_type);
-		$obj->table($table);
+		$obj = new SQL\Update();
+		$obj->Fields($fields);
+		$obj->From($table);
+		$obj->Where($where);
 		return $obj;
 	}
 
@@ -63,10 +68,11 @@ class SQL
     // Delete Method
     //=========================================================================
     //=========================================================================
-    public static function Delete($table, $db_type=false)
+    public static function Delete($table=false, $where=false)
     {
-		$obj = new SQL\Delete($db_type);
-		$obj->table($table);
+		$obj = new SQL\Delete();
+		$obj->From($table);
+		$obj->Where($where);
 		return $obj;
 	}
 

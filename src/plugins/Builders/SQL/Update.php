@@ -27,10 +27,9 @@ class Update extends Core
     // Constructor Method
     //=========================================================================
     //=========================================================================
-    public function __construct($db_type=false)
+    public function __construct()
     {
 	    $this->sql_type = 'update';
-		parent::__construct($db_type);
 	}
 
     //=========================================================================
@@ -38,8 +37,11 @@ class Update extends Core
     // Get Method
     //=========================================================================
     //=========================================================================
-    public function Get()
+    public function GetSQL()
     {
+		$strsql = 'UPDATE ' . $this->from . ' SET ';
+		//$where = 
+		return $strsql;
 
 	}
 

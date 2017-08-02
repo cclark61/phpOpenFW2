@@ -27,10 +27,9 @@ class Insert extends Core
     // Constructor Method
     //=========================================================================
     //=========================================================================
-    public function __construct($db_type=false)
+    public function __construct()
     {
 	    $this->sql_type = 'insert';
-		parent::__construct($db_type);
 	}
 
     //=========================================================================
@@ -38,9 +37,13 @@ class Insert extends Core
     // Get Method
     //=========================================================================
     //=========================================================================
-    public function Get()
+    public function GetSQL()
     {
-
+		$strsql = 'INSERT INTO ' . implode(', ', $this->from) . ' (';
+		$strsql .= implode(', ', $this->fields) . ') VALUES (';
+		$strsql .= ')';
+		//$where = 
+		return $strsql;
 	}
 
 }

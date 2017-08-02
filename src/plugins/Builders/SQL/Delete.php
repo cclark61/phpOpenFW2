@@ -27,10 +27,9 @@ class Delete extends Core
     // Constructor Method
     //=========================================================================
     //=========================================================================
-    public function __construct($db_type=false)
+    public function __construct($table)
     {
 	    $this->sql_type = 'delete';
-		parent::__construct($db_type);
 	}
 
     //=========================================================================
@@ -38,8 +37,11 @@ class Delete extends Core
     // Get Method
     //=========================================================================
     //=========================================================================
-    public function Get()
+    public function GetSQL()
     {
+		$strsql = 'DELETE FROM ' . implode(', ', $this->from) . ' ';
+		//$where = 
+		return $strsql;
 
 	}
 

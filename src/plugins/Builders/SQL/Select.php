@@ -27,10 +27,9 @@ class Select extends Core
     // Constructor Method
     //=========================================================================
     //=========================================================================
-    public function __construct($db_type=false)
+    public function __construct()
     {
 	    $this->sql_type = 'select';
-		parent::__construct($db_type);
 	}
 
     //=========================================================================
@@ -38,9 +37,12 @@ class Select extends Core
     // Get Method
     //=========================================================================
     //=========================================================================
-    public function Get()
+    public function GetSQL()
     {
-
+		$strsql = 'SELECT ' . implode(', ', $this->fields) . ' ';
+		$strsql .= ' FROM ' . implode(', ', $this->from) . ' ';
+		//$where = 
+		return $strsql;
 	}
 
 }

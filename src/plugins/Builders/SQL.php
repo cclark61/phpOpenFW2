@@ -41,11 +41,11 @@ class SQL
     // Insert Method
     //=========================================================================
     //=========================================================================
-    public static function Insert($fields=false, $table=false)
+    public static function Insert($table=false, $fields=false)
     {
 		$obj = new SQL\Insert();
+		$obj->Into($table);
 		$obj->Fields($fields);
-		$obj->From($table);
 		return $obj;
 	}
 
@@ -54,7 +54,7 @@ class SQL
     // Update Method
     //=========================================================================
     //=========================================================================
-    public static function Update($fields=false, $table=false, $where=false)
+    public static function Update($table=false, $fields=false, $where=false)
     {
 		$obj = new SQL\Update();
 		$obj->Fields($fields);
@@ -75,6 +75,5 @@ class SQL
 		$obj->Where($where);
 		return $obj;
 	}
-
 
 }

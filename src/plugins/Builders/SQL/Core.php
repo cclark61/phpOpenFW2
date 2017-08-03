@@ -28,14 +28,14 @@ abstract class Core
 	protected $opts = [];
     protected $sql_type = false;
 	protected $db_type = 'mysql';
+	protected $bind_params = [];
+	protected $bp_index = 0;
+	protected $table = false;
 	protected $fields = [];
 	protected $from = [];
-	protected $where = [];
-	protected $group_by = false;
-	protected $having = [];
-	protected $order_by = false;
-	protected $limit = false;
-
+	protected $where = [0 => []];
+	protected $where_pos = 0;
+	
     //=========================================================================
     //=========================================================================
     // Constructor Method
@@ -72,6 +72,7 @@ abstract class Core
     {
 	    if ($key == '') { return false; }
 	    $this->opts[$key] = $val;
+	    return $this;
     }
 
     //=========================================================================
@@ -90,7 +91,7 @@ abstract class Core
 
     //=========================================================================
     //=========================================================================
-    // Get Method
+    // Get SQL Method
     //=========================================================================
     //=========================================================================
     public function GetSQL()
@@ -101,13 +102,32 @@ abstract class Core
 
     //=========================================================================
     //=========================================================================
+    // Get Bind Parameters Method
+    //=========================================================================
+    //=========================================================================
+    public function GetBindParams()
+    {
+		return $this->bind_params;
+	}
+
+    //=========================================================================
+    //=========================================================================
     // Execute Method
     //=========================================================================
     //=========================================================================
-    public function Execute()
+    public function Execute($data_source=false, Array $args=[])
     {
-		trigger_error('The Execute() method has not been implemented.');
-		return false;
+	    $return_format = false;
+	    $return_handle = false;
+	    extract($args);
+	    $sql = $this->GetSQL();
+	    $params = $this->bind_params;
+	    if ($return_handle) {
+		    return qdb_result($data_source, $sql, $this->bind_params);
+	    }
+	    else {
+			return \phpOpenFW\Database\QDB::qdb_exec($data_source, $sql, $this->bind_params, $return_format);
+		}
 	}
 
     //=========================================================================
@@ -117,18 +137,7 @@ abstract class Core
     //=========================================================================
 	public function Fields($fields)
 	{
-		if (is_null($fields)) {
-			$this->fields = [];
-		}
-		else {
-			if (is_array($fields)) {
-				$this->fields = array_merge($this->fields, $fields);
-			}
-			else {
-				$this->fields[] = $fields;
-			}
-		}
-		return $this;
+    	return $this->AddItem($this->fields, $fields);
 	}
 
     //=========================================================================
@@ -138,18 +147,7 @@ abstract class Core
     //=========================================================================
 	public function From($from)
 	{
-		if (is_null($from)) {
-			$this->from = [];
-		}
-		else {
-			if (is_array($from)) {
-				$this->from = array_merge($this->from, $from);
-			}
-			else {
-				$this->from[] = $from;
-			}
-		}
-		return $this;
+    	return $this->AddItem($this->from, $from);
 	}
 
     //=========================================================================
@@ -157,87 +155,141 @@ abstract class Core
 	// Where Clause Method
     //=========================================================================
     //=========================================================================
-	public function Where($where)
+	public function Where()
 	{
+    	$args = func_get_args();
+    	if (count($args) == 1 && $args[0] == '') {
+        	return $this;
+    	}
+    	foreach ($args as $arg) {
+        	if (!is_array($arg)) {
+            	trigger_error('Each Where() method parameter must be passed as an array.', E_USER_ERROR);
+        	}
+        	if (!$arg) { continue; }
 
+    	}
+        return $this;
 	}
 
     //=========================================================================
     //=========================================================================
-	// Format Group By Clause Method
+	// And Where Clause Method
     //=========================================================================
     //=========================================================================
-	public function GroupBy($group_by)
+	public function AndWhere($field, $op, $val)
 	{
-		if (is_null($group_by)) {
-			$this->group_by = false;
-			return $this;
+    	
+        return $this;
+	}
+
+    //=========================================================================
+    //=========================================================================
+	// OrWhere Clause Method
+    //=========================================================================
+    //=========================================================================
+	public function OrWhere($field, $op, $val)
+	{
+    	
+        return $this;
+	}
+
+    //=========================================================================
+    //=========================================================================
+	// Where Group Clause Method
+    //=========================================================================
+    //=========================================================================
+	public function WhereGroup($field, $op, $val)
+	{
+    	
+        return $this;
+	}
+
+    //#####################################################################################
+    //#####################################################################################
+    // Protected Methods
+    //#####################################################################################
+    //#####################################################################################
+
+    //=========================================================================
+    //=========================================================================
+	// Add Item Method
+    //=========================================================================
+    //=========================================================================
+	protected function AddItem(&$var, $val)
+	{
+		if (is_null($val)) {
+			$var = [];
 		}
-		if (is_array($group_by)) {
-			$group_by = implode(', ', $group_by);
+		else {
+			if (is_array($val)) {
+				$var = array_merge($var, $val);
+			}
+			else if ($val != '') {
+				$var[] = $val;
+			}
 		}
-		$this->group_by = 'GROUP BY ' . $group_by;
 		return $this;
 	}
 
     //=========================================================================
     //=========================================================================
-	// Format Order By Clause Method
+	// Add Bind Parameter Method
     //=========================================================================
     //=========================================================================
-	public function OrderBy($order_by)
+	protected function AddBindParam($value, $type='i')
 	{
-		if (is_null($order_by)) {
-			$this->order_by = false;
-			return $this;
-		}
-		if (is_array($order_by)) {
-			$order_by = implode(', ', $order_by);
-		}
-		$this->order_by = 'ORDER BY ' . $order_by;
-		return $this;
-	}
+        //-------------------------------------------------------
+        // Default Placeholder
+        //-------------------------------------------------------
+        $placeholder = '?';
+
+        //-------------------------------------------------------
+        // Some DBs handle bind parameters a little different...
+        //-------------------------------------------------------
+        switch ($this->db_type) {
+
+            case 'mysql':
+                if (!isset($this->bind_params[0])) {
+                    $this->bind_params[0] = '';
+                }
+                $this->bind_params[0] .= $type;
+                break;
+
+            case 'pgsql':
+            case 'sqlsrv':
+                $this->bind_params[] = $value;
+                break;
+
+            case 'oracle':
+                $placeholder = ':p' . $this->bp_index;
+                $this->bp_index++;
+                break;
+                
+        }
+
+        //-------------------------------------------------------
+        // Add Value to Bind Parameters
+        //-------------------------------------------------------
+        $this->bind_params[] = $value;
+
+        //-------------------------------------------------------
+        // Return the placeholder
+        //-------------------------------------------------------
+        return $placeholder;
+    }
+
+    //#####################################################################################
+    //#####################################################################################
+    // Formatting Methods
+    //#####################################################################################
+    //#####################################################################################
 
     //=========================================================================
     //=========================================================================
-	// Format Limit Clause Method
+	// Format Where Clause Method
     //=========================================================================
     //=========================================================================
-	public function Limit($limit, &$params, $args=false)
-	{
-		if (is_null($limit)) {
-			$this->limit = false;
-			return this;
-		}
-
-		//==================================================================
-		// Parameters?
-		//==================================================================
-		if (!is_array($params)) {
-			$params = ($this->db_type == 'mysql') ? (['']) : ([]);
-		}
-
-		//==================================================================
-		// Build Limit Clause
-		//==================================================================
-		if ($this->db_type == 'mysql') {
-			$params[0] .= 'i';
-		}
-		$params[] = $limit;
-		$this->limit = 'LIMIT ?';
-
-		//==================================================================
-		// Return Current Object
-		//==================================================================
-		return $this;
-	}
-
-    //=========================================================================
-    //=========================================================================
-	// Format Having Clause Method
-    //=========================================================================
-    //=========================================================================
-	public function Having($condition)
+	protected function FormatWhere()
 	{
 
 	}

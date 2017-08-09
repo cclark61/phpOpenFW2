@@ -27,13 +27,9 @@ class SQL
     // Select Method
     //=========================================================================
     //=========================================================================
-    public static function Select(Array $args=[])
+    public static function Select($data_source=false)
     {
-		$obj = new SQL\Select();
-		$obj->Fields($fields);
-		$obj->From($table);
-		$obj->Where($where);
-		return $obj;
+		return new SQL\Select($data_source);
 	}
 
     //=========================================================================
@@ -41,12 +37,9 @@ class SQL
     // Insert Method
     //=========================================================================
     //=========================================================================
-    public static function Insert(Array $args=[])
+    public static function Insert($data_source=false)
     {
-		$obj = new SQL\Insert();
-		$obj->Into($table);
-		$obj->Fields($fields);
-		return $obj;
+		return new SQL\Insert($data_source);
 	}
 
     //=========================================================================
@@ -54,13 +47,9 @@ class SQL
     // Update Method
     //=========================================================================
     //=========================================================================
-    public static function Update(Array $args=[])
+    public static function Update($data_source=false)
     {
-		$obj = new SQL\Update();
-		$obj->Fields($fields);
-		$obj->From($table);
-		$obj->Where($where);
-		return $obj;
+		return new SQL\Update($data_source);
 	}
 
     //=========================================================================
@@ -68,12 +57,9 @@ class SQL
     // Delete Method
     //=========================================================================
     //=========================================================================
-    public static function Delete(Array $args=[])
+    public static function Delete($data_source=false)
     {
-		$obj = new SQL\Delete();
-		$obj->From($table);
-		$obj->Where($where);
-		return $obj;
+		return new SQL\Delete($data_source);
 	}
 
 }

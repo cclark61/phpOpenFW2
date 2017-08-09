@@ -58,8 +58,12 @@ class Insert extends Core
     //=========================================================================
     public function GetSQL()
     {
-        if (!$this->table || !$this->values) {
+        if (!$this->table) {
 	    	trigger_error('No table has been specified with the Into() method.');
+	        return false;
+	    }
+        if (!$this->values) {
+	    	trigger_error('No insert values have been specified with the Values() method.');
 	        return false;
 	    }
 

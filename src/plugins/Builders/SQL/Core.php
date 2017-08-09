@@ -21,16 +21,15 @@ namespace phpOpenFW\Builders\SQL;
 //**************************************************************************************
 abstract class Core
 {
-
     //=========================================================================
 	// Class Memebers
     //=========================================================================
 	protected $opts = [];
     protected $sql_type = false;
 	protected $db_type = 'mysql';
+	protected $data_source = false;
 	protected $bind_params = [];
 	protected $bp_index = 0;
-	protected $table = false;
 	protected $fields = [];
 	protected $from = [];
 	protected $where = [0 => []];
@@ -41,7 +40,13 @@ abstract class Core
     // Constructor Method
     //=========================================================================
     //=========================================================================
-    public function __construct() {}
+    public function __construct($data_source=false)
+    {
+        //-------------------------------------------------------
+        // Data Source Specified?
+        //-------------------------------------------------------
+        $this->SetDataSource($data_source);
+    }
 
     //=========================================================================
     //=========================================================================
@@ -62,6 +67,41 @@ abstract class Core
     {
 		return $this->GetSQL();
 	}
+
+    //=========================================================================
+    //=========================================================================
+    // Set Data Source Method
+    //=========================================================================
+    //=========================================================================
+    public function SetDataSource($ds)
+    {
+        if ($ds != '') {
+            $ds_info = \phpOpenFW\Framework\Core\DataSources::GetOne($ds);
+            var_dump($ds_info);
+            if ($ds_info && isset($ds_info['type'])) {
+                if ($this->SetDbType($ds_info['type'])) {
+                    $this->data_source = $ds;
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    //=========================================================================
+    //=========================================================================
+    // Set Database Type Method
+    //=========================================================================
+    //=========================================================================
+    public function SetDbType($type)
+    {
+        $db_types = ['mysql', 'pgsql', 'sqlsrv', 'oracle'];
+        if (in_array($type, $db_types)) {
+            $this->db_type = $type;
+            return true;
+        }
+        return false;
+    }
 
     //=========================================================================
     //=========================================================================
@@ -115,13 +155,13 @@ abstract class Core
     // Execute Method
     //=========================================================================
     //=========================================================================
-    public function Execute($data_source=false, Array $args=[])
+    public function Execute(Array $args=[])
     {
+	    $data_source = $this->data_source;
 	    $return_format = false;
 	    $return_handle = false;
 	    extract($args);
 	    $sql = $this->GetSQL();
-	    $params = $this->bind_params;
 	    if ($return_handle) {
 		    return qdb_result($data_source, $sql, $this->bind_params);
 	    }

@@ -205,13 +205,8 @@ class Core
     	//*************************************************************
     	if (is_array($data_arr) && !empty($data_arr)) {
 	    	$key_arr = array_keys($data_arr);
-	    	$_SESSION['data_sources'] = [];
 	    	foreach ($key_arr as $key) {
-	    		$reg_code = self::reg_data_source($key, $data_arr[$key]);
-	    		if (!$reg_code) {
-		    		$_SESSION[$key]['handle'] = 0;
-		    		$_SESSION['data_sources'][$key] = $key;
-		    	}
+	    		$reg_code = Core\DataSources::Register($key, $data_arr[$key]);
 	    	}
 		}
     }
@@ -235,7 +230,7 @@ class Core
     			if (isset($data_arr) && count($data_arr) > 0) {
     				$key_arr = array_keys($data_arr);
     				foreach ($key_arr as $key){
-    					$reg_code = self::reg_data_source($key, $data_arr[$key]);
+    					$reg_code = Core\DataSources::Register($key, $data_arr[$key]);
     					if (!$reg_code) { $_SESSION[$key]['handle'] = 0; }
     				}
     				$_SESSION['PHPOPENFW_DB_CONFIG_SET'] = true;
@@ -282,252 +277,45 @@ class Core
 	//************************************************************************
 	//************************************************************************
     /**
-    * Register Data Source Function
-    * Register a new data source in the Session
-    * @param string Data source index name
-    * @param array Data source parameter array
+    * Passthrough methods to Data Sources Class
     */
-	//************************************************************************
-    // reg_data_source() function
-    // Register a new data source in the Session
 	//************************************************************************
 	//************************************************************************
     public static function reg_data_source($ds_index, $ds_params)
     {
-    	$known_params = array(
-    		'type',
-    		'server',
-    		'port',
-    		'source',
-    		'user',
-    		'pass',
-    		'instance',
-    		'conn_str',
-    		'options',
-    		'persistent',
-    		'reuse_connection',
-    		'charset'
-    	);
-    	$optional_params = array(
-    		'port',
-    		'user',
-    		'pass',
-    		'instance',
-    		'conn_str',
-    		'options',
-    		'persistent',
-    		'reuse_connection',
-    		'charset'
-    	);
-    	settype($ds_index, 'string');
-    	if (!is_array($ds_params)) {
-    		trigger_error("Error: reg_data_source(): Index: '{$ds_index}', Second parameter must be an array.");
-    		return 2;
-    	}
-    	else {
-    		$param_count = count($known_params);
-    		$new_data_source = array();
-    		foreach ($known_params as $param_index) {
-    			if (isset($ds_params[$param_index])) {
-    				$new_data_source[$param_index] = $ds_params[$param_index];
-    				$param_count--;
-    			}
-    			else if (in_array($param_index, $optional_params)) {
-    				$param_count--;
-    			}
-    		}
-
-    		if ($param_count > 0) {
-    			trigger_error("Error: reg_data_source(): Index: '{$ds_index}', Incorrect parameter count in parameter array.");
-    			return 4;
-    		}
-    		else {
-    			$_SESSION[$ds_index] = $new_data_source;
-    			return 0;
-    		}
-    	}
+        return Core\DataSources::Register($ds_index, $ds_params);
     }
-
-	//************************************************************************
-	//************************************************************************
-    /**
-    * Set Default Data Source Function
-    * @param string Data Source Index
-    */
-	//************************************************************************
-    // default_data_source() function
-    // Set Default Data Source
-	//************************************************************************
-	//************************************************************************
     public static function default_data_source($index)
     {
-    	settype($index, 'string');
-    	if ($index != '') {
-    		if (isset($_SESSION[$index])) {
-    			$_SESSION['default_data_source'] = $index;
-    			return 0;
-    		}
-    		else {
-    			trigger_error("Error: default_data_source(): The data source '{$index}' does not exist.");
-    			return 2;
-    		}
-    	}
-    	else {
-    		trigger_error('Error: default_data_source(): Data source index cannot be empty.');
-    		return 1;
-    	}
+        return Core\DataSources::SetDefault($index);
+    }
+    public static function get_default_data_source()
+    {
+        return Core\DataSources::GetDefault();
+    }
+    public static function get_data_source($index)
+    {
+        return Core\DataSources::GetOne($index);
     }
 
 	//************************************************************************
 	//************************************************************************
     /**
-    * Set External Plugin Folder
-    * @param string File path to plugin folder
+    * Passthrough methods to Plugins Class
     */
 	//************************************************************************
 	//************************************************************************
     public static function set_plugin_folder($dir)
     {
-        //=================================================================
-        // Validate Directory
-        //=================================================================
-        if (!$dir || !is_dir($dir)) {
-        	trigger_error('Error: set_plugin_folder(): Invalid directory passed.');
-        	return false;
-        }
-
-        //=================================================================
-        // Get the MD5 Hash for indexing
-        //=================================================================
-        $pf_hash = md5($dir);
-
-        //=================================================================
-        // Does App Plugin Index Exist?
-        //=================================================================
-        if (!isset($_SESSION['app_plugin_folder'])) {
-            $_SESSION['app_plugin_folder'] = array();
-        }
-        //=================================================================
-        // Check if plugin folder is already set
-        //=================================================================
-        else if (isset($_SESSION['app_plugin_folder'][$pf_hash])) {
-            return true;
-        }
-
-        //=================================================================
-        // Addd New Plugin Folder
-        //=================================================================
-    	$_SESSION['app_plugin_folder'][$pf_hash] = $dir;
-    	return true;
+        return Core\Plugins::SetPluginFolder($dir);
     }
-
-	//************************************************************************
-    //************************************************************************
-    /**
-    * Unset External Plugin Folder
-    * @param string File path to plugin folder
-    */
-	//************************************************************************
-    //************************************************************************
     public static function unset_plugin_folder($dir)
     {
-        //=================================================================
-        // Validate Directory
-        //=================================================================
-        if (!$dir || !is_dir($dir)) {
-        	trigger_error('Error: unset_plugin_folder(): Invalid directory passed.');
-        	return false;
-        }
-
-        //=================================================================
-        // Get the MD5 Hash for indexing
-        //=================================================================
-        $pf_hash = md5($dir);
-
-        //=================================================================
-        // Does App Plugin Index Exist?
-        //=================================================================
-        if (!isset($_SESSION['app_plugin_folder'])) {
-            return false;
-        }
-        //=================================================================
-        // Check if plugin folder is already set
-        //=================================================================
-        else if (isset($_SESSION['app_plugin_folder'][$pf_hash])) {
-            unset($_SESSION['app_plugin_folder'][$pf_hash]);
-            return true;
-        }
-
-    	return false;
+        return Core\Plugins::UnsetPluginFolder($dir);
     }
-
-	//************************************************************************
-    //************************************************************************
-    /**
-    * Load Plugin Function
-    * @param string The Name of the plugin without the ".inc.php"
-    */
-    //************************************************************************
-    // Load a Plugin from the "plugins" directory
-	//************************************************************************
-    //************************************************************************
     public static function load_plugin($plugin)
     {
-        //=================================================================
-        // Are there plugin folders defined?
-        //=================================================================
-        if (empty($_SESSION['app_plugin_folder'])) {
-        	//trigger_error("Error: load_plugin(): No plugin folders are set!");
-        	return false;
-        }
-
-        //=================================================================
-        // Create a plugin hash
-        // Adjust plugin for Namespaces
-        //=================================================================
-        $plugin_hash = md5($plugin);
-        $plugin = str_replace('\\', '/', $plugin);
-
-        //=================================================================
-        // Is the location of the plugin cached?
-        //=================================================================
-        if (isset($_SESSION['app_plugin_folder_cache'][$plugin_hash])) {
-            require_once($_SESSION['app_plugin_folder_cache'][$plugin_hash]);
-            return true;
-        }
-
-        //=================================================================
-        // Attempt to locate and load the plugin
-        //=================================================================
-    	foreach ($_SESSION['app_plugin_folder'] as $pf) {
-        	$plugin_opts = array(
-    		    "{$pf}/{$plugin}.inc.php",
-                "{$pf}/{$plugin}.php",
-                "{$pf}/{$plugin}.class.php"
-            );
-            foreach ($plugin_opts as $tmp_plugin) {
-        		if (file_exists($tmp_plugin)) {
-            		$_SESSION['app_plugin_folder_cache'][$plugin_hash] = $tmp_plugin;
-        			require_once($tmp_plugin);
-        			return true;
-        		}
-    	    }
-        }
-
-        //=================================================================
-        // Does the plugin exist as a full qualified file path?
-        //=================================================================
-    	if (file_exists($plugin)) {
-        	$_SESSION['app_plugin_folder_cache'][$plugin_hash] = $plugin;
-    		require_once($plugin);
-    		return true;
-    	}
-
-        //=================================================================
-        // Plugin Not Found
-        //=================================================================
-    	//trigger_error("Error: load_plugin(): Plugin \"{$plugin}\" does not exist!");
-    	return false;
+        return Core\Plugins::Load($plugin);
     }
 
     //================================================================================

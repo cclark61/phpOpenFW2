@@ -27,7 +27,7 @@ class SQL
     // Select Method
     //=========================================================================
     //=========================================================================
-    public static function Select($fields=false, $table=false, $where=false)
+    public static function Select(Array $args=[])
     {
 		$obj = new SQL\Select();
 		$obj->Fields($fields);
@@ -41,7 +41,7 @@ class SQL
     // Insert Method
     //=========================================================================
     //=========================================================================
-    public static function Insert($table=false, $fields=false)
+    public static function Insert(Array $args=[])
     {
 		$obj = new SQL\Insert();
 		$obj->Into($table);
@@ -54,7 +54,7 @@ class SQL
     // Update Method
     //=========================================================================
     //=========================================================================
-    public static function Update($table=false, $fields=false, $where=false)
+    public static function Update(Array $args=[])
     {
 		$obj = new SQL\Update();
 		$obj->Fields($fields);
@@ -68,7 +68,7 @@ class SQL
     // Delete Method
     //=========================================================================
     //=========================================================================
-    public static function Delete($table=false, $where=false)
+    public static function Delete(Array $args=[])
     {
 		$obj = new SQL\Delete();
 		$obj->From($table);

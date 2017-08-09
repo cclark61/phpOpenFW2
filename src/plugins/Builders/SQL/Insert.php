@@ -25,6 +25,7 @@ class Insert extends Core
 	// Class Memebers
     //=========================================================================
     protected $sql_type = 'insert';
+    protected $table = false;
     protected $values = [];
 
     //=========================================================================
@@ -57,7 +58,10 @@ class Insert extends Core
     //=========================================================================
     public function GetSQL()
     {
-        if (!$this->table || !$this->values) { return false; }
+        if (!$this->table || !$this->values) {
+	    	trigger_error('No table has been specified with the Into() method.');
+	        return false;
+	    }
 
         //-------------------------------------------------------
         // Parse 

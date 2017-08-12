@@ -22,16 +22,19 @@ namespace phpOpenFW\Builders\SQL;
 abstract class Core
 {
     //=========================================================================
+    // Traits
+    //=========================================================================
+    use \phpOpenFW\Traits\Opts;
+
+    //=========================================================================
 	// Class Memebers
     //=========================================================================
-	protected $opts = [];
     protected $sql_type = false;
 	protected $db_type = 'mysql';
 	protected $data_source = false;
 	protected $bind_params = [];
 	protected $bp_index = 0;
-	protected $fields = [];
-	protected $from = [];
+	protected $table = false;
 	protected $where = [0 => []];
 	protected $where_pos = 0;
 	
@@ -40,8 +43,17 @@ abstract class Core
     // Constructor Method
     //=========================================================================
     //=========================================================================
-    public function __construct($data_source=false)
+    public function __construct($table, $data_source=false)
     {
+        //-------------------------------------------------------
+        // Validate Table
+        //-------------------------------------------------------
+        if (!$table) {
+	    	trigger_error('Invalid database table name passed.');
+	        return false;
+	    }
+	    $this->table = $table;
+
         //-------------------------------------------------------
         // Data Source Specified?
         //-------------------------------------------------------
@@ -53,9 +65,9 @@ abstract class Core
     // Get Instance Method
     //=========================================================================
     //=========================================================================
-    public static function Instance()
+    public static function Instance($table, $data_source=false)
     {
-        return new static();
+        return new static($table, $data_source);
     }
 
     //=========================================================================
@@ -101,32 +113,6 @@ abstract class Core
             return true;
         }
         return false;
-    }
-
-    //=========================================================================
-    //=========================================================================
-    // Set Option Method
-    //=========================================================================
-    //=========================================================================
-    public function SetOpt($key, $val)
-    {
-	    if ($key == '') { return false; }
-	    $this->opts[$key] = $val;
-	    return $this;
-    }
-
-    //=========================================================================
-    //=========================================================================
-    // Get Option Method
-    //=========================================================================
-    //=========================================================================
-    public function GetOpt($key)
-    {
-	    if ($key == '') { return false; }
-	    if (isset($this->opts[$key])) {
-		    return $this->opts[$key];
-	    }
-	    return false;
     }
 
     //=========================================================================

@@ -25,21 +25,7 @@ class Insert extends Core
 	// Class Memebers
     //=========================================================================
     protected $sql_type = 'insert';
-    protected $table = false;
     protected $values = [];
-
-    //=========================================================================
-    //=========================================================================
-    // Into Method
-    //=========================================================================
-    //=========================================================================
-    public function Into($table)
-    {
-        if ($table) {
-            $this->table = $table;
-        }
-        return $this;
-    }
 
     //=========================================================================
     //=========================================================================
@@ -58,10 +44,6 @@ class Insert extends Core
     //=========================================================================
     public function GetSQL()
     {
-        if (!$this->table) {
-	    	trigger_error('No table has been specified with the Into() method.');
-	        return false;
-	    }
         if (!$this->values) {
 	    	trigger_error('No insert values have been specified with the Values() method.');
 	        return false;

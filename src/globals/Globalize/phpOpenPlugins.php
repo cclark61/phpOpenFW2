@@ -110,7 +110,7 @@ if (!in_array('format_date_pretty', $excluded)) {
 //********************************************************************
 if (!in_array('clean_dir', $excluded)) {
 	function clean_dir(&$dir, $front_slashes=false, $rear_slashes=true) {
-		return \phpOpenFW\Format\DateTime::clean_dir($dir, $front_slashes, $rear_slashes);
+		return \phpOpenFW\Format\FileSystem::clean_dir($dir, $front_slashes, $rear_slashes);
 	}
 }
 if (!in_array('load_file_content', $excluded)) {

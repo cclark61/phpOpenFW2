@@ -39,9 +39,12 @@ class Delete extends Core
     //=========================================================================
     public function GetSQL()
     {
-		$strsql = "DELETE FROM {$this->table} ";
-		$strsql .= $this->FormatWhere() . "\n";
-		return $strsql;
+		$where = $this->FormatWhere();
+		if ($where) {
+    		return "DELETE FROM {$this->table} {$where}";
+        }
+
+        return false;
 	}
 
 }

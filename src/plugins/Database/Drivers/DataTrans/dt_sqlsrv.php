@@ -35,34 +35,47 @@ class dt_sqlsrv extends dt_structure
 	{
 		if (!$this->handle) {
 
+            //---------------------------------------------------------------
 			// Setup Connection Parameters
+            //---------------------------------------------------------------
 			$host = $this->server;
 			if (!empty($this->port)) { $host .= ',' . $this->port; }
 	
+            //---------------------------------------------------------------
 			// Connection Parameters
+            //---------------------------------------------------------------
 			$connectionInfo = array();
 			if (!empty($this->user)) { $connectionInfo['UID'] = $this->user; }
 			if (!empty($this->pass)) { $connectionInfo['PWD'] = $this->pass; }
 			if (!empty($this->source)) { $connectionInfo['Database'] = $this->source; }
 	
+            //---------------------------------------------------------------
 			// Attempt Connection
+            //---------------------------------------------------------------
 			if ($this->persistent) { $this->handle = sqlsrv_connect($host, $connectionInfo); }
 	        else { $this->handle = sqlsrv_connect($host, $connectionInfo); }
 		}
 
         if (!$this->handle) {
             $this->connection_error('SQLSRV: There was an error connecting to the database server.');
+            $this->check_and_print_error();
             $this->handle = false;
             return false;
         }
 
+        //---------------------------------------------------------------
 		// Keep track of the number of connections we create
+        //---------------------------------------------------------------
 		$this->increment_counters();
 
+        //---------------------------------------------------------------
 		// Flag Connection as Open       
+        //---------------------------------------------------------------
         $this->conn_open = true;
 
+        //---------------------------------------------------------------
 		// Start Transaction?
+        //---------------------------------------------------------------
 		if (!$this->auto_commit && !$this->trans_started) { $this->start_trans(); }
 
         return true;
@@ -171,7 +184,7 @@ class dt_sqlsrv extends dt_structure
 	//*************************************************************************
 	private function check_and_print_error()
 	{
-		if ($error=sqlsrv_errors(SQLSRV_ERR_ERRORS)) {
+		if ($error = sqlsrv_errors(SQLSRV_ERR_ERRORS)) {
 			$this->print_error($error);
 			return true;
 		}
@@ -186,7 +199,7 @@ class dt_sqlsrv extends dt_structure
 	//*************************************************************************
 	// Print Database Error
 	//*************************************************************************
-	private function print_error($error=false)
+	protected function print_error($error=false, $errno=false, $sqlstate=false)
 	{
 		if (!$error) { return false; }
 		else {
@@ -199,7 +212,7 @@ class dt_sqlsrv extends dt_structure
 						parent::print_error($tmp);
 					}
 					else {
-						parent::print_error($error['message'], $error['code'], $error['SQLSTATE']);
+						parent::print_error($tmp['message'], $tmp['code'], $tmp['SQLSTATE']);
 					}
 				}
 			}

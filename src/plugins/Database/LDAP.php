@@ -55,7 +55,7 @@ class LDAP {
         //--------------------------------------------------------------------
         // Get or Open Connection to LDAP Server
         //--------------------------------------------------------------------
-    	$this->handle = $this->GetDataSourceHandle();
+    	$this->handle = $this->GetConnectionHandle();
     	if (!$this->handle) {
             if (!$this->Open()) {
                 throw new \Exception("Unable to connect to LDAP Server.");
@@ -133,7 +133,7 @@ class LDAP {
     public function Close()
 	{
 		if (!$this->persistent && $this->handle && !$this->data_result) {
-			return @ldap_close($this->handle);
+			return ldap_close($this->handle);
 		}
         return false;
 	}
@@ -406,7 +406,7 @@ class LDAP {
 	public function Add($dn, $values)
 	{
     	if (!$this->handle) { return false; }
-        $result = @ldap_add($this->handle, $query['dn'], $query['values']);
+        $result = ldap_add($this->handle, $dn, $values);
         $this->CheckAndPrintError();
         return $result;
     }
@@ -423,7 +423,7 @@ class LDAP {
 	public function Update($dn, $values)
 	{
     	if (!$this->handle) { return false; }
-        $result = @ldap_modify($this->handle, $query['dn'], $query['values']);
+        $result = ldap_modify($this->handle, $dn, $values);
         $this->CheckAndPrintError();
         return $result;
     }
@@ -439,7 +439,7 @@ class LDAP {
 	public function Delete($dn)
 	{
     	if (!$this->handle) { return false; }
-        $result = @ldap_delete($this->handle, $query['dn']);
+        $result = ldap_delete($this->handle, $dn);
         $this->CheckAndPrintError();
         return $result;
     }

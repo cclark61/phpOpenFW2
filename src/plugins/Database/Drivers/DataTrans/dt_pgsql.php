@@ -35,8 +35,8 @@ class dt_pgsql extends dt_structure
 	{
 		if (!$this->handle) {
 			if (!$this->port) { $this->port = 5432; }
-			$str_conn = "host=$this->server port=$this->port dbname=$this->source user=$this->user password=$this->pass";
-	
+			$str_conn = "host={$this->server} port={$this->port} dbname={$this->source} user={$this->user} password={$this->pass}";
+
 			if ($this->persistent) {
 				$this->handle = pg_pconnect($str_conn);
 			}

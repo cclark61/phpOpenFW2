@@ -44,9 +44,9 @@ if (!in_array('set_plugin_folder', $excluded)) {
 	function set_plugin_folder() { return call_user_func_array('\phpOpenFW\Framework\Core\Plugins::SetPluginFolder', func_get_args()); }
 }
 if (!in_array('unset_plugin_folder', $excluded)) {
-	function unset_plugin_folder() { return call_user_func_array('\phpOpenFW\Framework\Core::UnsetPluginFolder', func_get_args()); }
+	function unset_plugin_folder() { return call_user_func_array('\phpOpenFW\Framework\Core\Plugins::UnsetPluginFolder', func_get_args()); }
 }
 if (!in_array('load_plugin', $excluded)) {
-	function load_plugin() { return call_user_func_array('\phpOpenFW\Framework\Core::Load', func_get_args()); }
+	function load_plugin() { return call_user_func_array('\phpOpenFW\Framework\Core\Plugins::Load', func_get_args()); }
 }
 

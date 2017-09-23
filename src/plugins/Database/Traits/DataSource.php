@@ -35,9 +35,6 @@ trait DataSource
 	protected $user = false;
 	protected $pass = false;
 	protected $persistent = true;
-    protected $records = false;
-    protected $num_recs = false;
-    protected $fetch_pos = 0;
 
 	//*****************************************************************************
 	//*****************************************************************************
@@ -88,13 +85,17 @@ trait DataSource
 	//*****************************************************************************
     public function SetConnectionParameters()
     {
-        $this->handle = (!isset($this->data_src['handle'])) ? (false) : ($this->data_src['handle']);
-        $this->server = (!isset($this->data_src['server'])) ? ('127.0.0.1') : ($this->data_src['server']);
-        $this->port = (!isset($this->data_src['port'])) ? (389) : ($this->data_src['port']);
-        $this->source = (!isset($this->data_src['source'])) ? ('') : ($this->data_src['source']);
-        $this->user = (!isset($this->data_src['user'])) ? ('') : ($this->data_src['user']);
-        $this->pass = (!isset($this->data_src['pass'])) ? ('') : ($this->data_src['pass']);
-        $this->persistent = (!isset($this->data_src['persistent'])) ? (true) : ($this->data_src['pass']);
+        $data_src_data = $this->GetDataSource($this->data_src);
+        if (!$data_src_data) {
+            return false;
+        }
+        $this->handle = (!isset($data_src_data['handle'])) ? (false) : ($data_src_data['handle']);
+        $this->server = (!isset($data_src_data['server'])) ? ('127.0.0.1') : ($data_src_data['server']);
+        $this->port = (!isset($data_src_data['port'])) ? (389) : ($data_src_data['port']);
+        $this->source = (!isset($data_src_data['source'])) ? ('') : ($data_src_data['source']);
+        $this->user = (!isset($data_src_data['user'])) ? ('') : ($data_src_data['user']);
+        $this->pass = (!isset($data_src_data['pass'])) ? ('') : ($data_src_data['pass']);
+        $this->persistent = (!isset($data_src_data['persistent'])) ? (true) : ($data_src_data['pass']);
     }
 
 	//*****************************************************************************
@@ -139,18 +140,6 @@ trait DataSource
     public function GetResource()
     {
         return $this->resource;
-    }
-
-	//*****************************************************************************
-	//*****************************************************************************
-	// Reset Function
-	//*****************************************************************************
-	//*****************************************************************************
-	public function Reset()
-	{
-        $this->records = false;
-        $this->num_recs = false;
-        $this->fetch_pos = 0;
     }
 
 }

@@ -269,11 +269,14 @@ class LDAP {
     protected function BuildSearchParams(Array $query)
 	{
         $params = [];
-        if (isset($query['base_dn'])) {
+        if (!empty($query['base_dn'])) {
             $params['base_dn'] = $query['base_dn'];
             if ($this->source) {
                 $params['base_dn'] = $params['base_dn'] . ',' . $this->source;
             }
+        }
+        else {
+            $params['base_dn'] = $this->source;
         }
         $params['filter'] = (isset($query['filter'])) ? ($query['filter']) : ('*');
         $params['attributes'] = (!isset($query['attributes']) || !is_array($query['attributes'])) ? (array('*')) : ($query['attributes']);

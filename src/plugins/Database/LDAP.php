@@ -106,14 +106,9 @@ class LDAP {
         ldap_set_option($this->handle, LDAP_OPT_REFERRALS, 0);
 
         //--------------------------------------------------------------------
-        // Bind To LDAP Directory with Credentials
+        // Bind To LDAP Directory
         //--------------------------------------------------------------------
-        if (!empty($this->user)) {
-            ldap_bind($this->handle, $this->user, $this->pass);
-        }
-        else {
-            ldap_bind($this->handle);
-        }
+        $this->Bind($this->user, $this->pass);
 
         //--------------------------------------------------------------------
         // Save the Connection Handle
@@ -141,6 +136,35 @@ class LDAP {
 	//*****************************************************************************
 	//*****************************************************************************
 	/**
+	* LDAP Bind
+	**/
+	//*****************************************************************************
+	//*****************************************************************************
+    public function Bind($user, $pass)
+	{
+        if (!empty($user)) {
+            return ldap_bind($this->handle, $this->user, $this->pass);
+        }
+        else {
+            return ldap_bind($this->handle);
+        }
+    }
+
+	//*****************************************************************************
+	//*****************************************************************************
+	/**
+	* LDAP Unbind
+	**/
+	//*****************************************************************************
+	//*****************************************************************************
+    public function Unbind($user, $pass)
+	{
+        return ldap_unbind($this->handle);
+    }
+
+	//*****************************************************************************
+	//*****************************************************************************
+	/**
 	* LDAP Search
 	**/
 	//*****************************************************************************
@@ -148,6 +172,17 @@ class LDAP {
     public function Search(Array $query)
 	{
     	if (!$this->handle) { return false; }
+
+        //--------------------------------------------------------------------
+        // Scope (subtree (Default), onelevel, base)
+        //--------------------------------------------------------------------
+    	if (!isset($query['scope'])) {
+        	$query['scope'] = 'subtree';
+    	}
+    	$query['scope'] = strtolower($query['scope']);
+    	if (!in_array($query['scope'], ['subtree', 'onelevel', 'base'])) {
+        	$query['scope'] = 'subtree';
+    	}
 
         //--------------------------------------------------------------------
         // Reset
@@ -164,7 +199,15 @@ class LDAP {
         //--------------------------------------------------------------------
         // Search
         //--------------------------------------------------------------------
-    	$this->resource = ldap_search($this->handle, $base_dn, $filter, $attributes);
+        if ($query['scope'] = 'subtree') {
+        	$this->resource = ldap_search($this->handle, $base_dn, $filter, $attributes);
+        }
+        else if ($query['scope'] = 'onelevel') {
+            $this->resource = ldap_list($this->handle, $base_dn, $filter, $attributes);
+        }
+        else if ($query['scope'] = 'base') {
+            $this->resource = ldap_read($this->handle, $base_dn, $filter, $attributes);
+        }
 
         //--------------------------------------------------------------------
         // Set Number of Rows
@@ -179,7 +222,7 @@ class LDAP {
         $this->CheckAndPrintError();
 
         //--------------------------------------------------------------------
-        // Sort
+        // Sort?
         //--------------------------------------------------------------------
         if ($this->resource && isset($sort)) {
             foreach ($sort as $eachSortAttribute) {
@@ -199,47 +242,21 @@ class LDAP {
 	//*****************************************************************************
     public function SearchOneLevel(Array $query)
 	{
-    	if (!$this->handle) { return false; }
+    	$query['scope'] = 'onelevel';
+    	return $this->Search($query);
+    }
 
-        //--------------------------------------------------------------------
-        // Reset
-        //--------------------------------------------------------------------
-        $this->Reset();
-
-        //--------------------------------------------------------------------
-        // Build Search Parameters
-        //--------------------------------------------------------------------
-    	$args = $this->BuildSearchParams($query);
-    	if ($args) { extract($args); }
-    	else { return false; }
-
-        //--------------------------------------------------------------------
-        // Search
-        //--------------------------------------------------------------------
-    	$this->resource = ldap_list($this->handle, $base_dn, $filter, $attributes);
-
-        //--------------------------------------------------------------------
-        // Set Number of Rows
-        //--------------------------------------------------------------------
-    	if ($this->resource) {
-        	$this->SetNumRows();
-    	}
-
-        //--------------------------------------------------------------------
-        // Check For Error
-        //--------------------------------------------------------------------
-        $this->CheckAndPrintError();
-
-        //--------------------------------------------------------------------
-        // Sort
-        //--------------------------------------------------------------------
-        if ($this->resource && isset($ldapSortAttributes)) {
-            foreach ($ldapSortAttributes as $eachSortAttribute) {
-                ldap_sort($this->handle, $this->resource, $eachSortAttribute);
-            }
-        }
-
-        return $this->resource;
+	//*****************************************************************************
+	//*****************************************************************************
+	/**
+	* LDAP Get Entry
+	**/
+	//*****************************************************************************
+	//*****************************************************************************
+    public function GetEntry(Array $query)
+	{
+    	$query['scope'] = 'base';
+    	return $this->Search($query);
     }
 
 	//*****************************************************************************
@@ -302,7 +319,12 @@ class LDAP {
 	public function SetNumRows()
 	{
     	if (!$this->handle) { return false; }
-		$this->num_recs = ldap_count_entries($this->handle, $this->resource);
+        if ($this->resource) {
+    		$this->num_recs = ldap_count_entries($this->handle, $this->resource);
+        }
+        else {
+            $this->num_recs = 0;
+        }
 	}
 
 	//*****************************************************************************

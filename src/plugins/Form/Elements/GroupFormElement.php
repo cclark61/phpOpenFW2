@@ -27,14 +27,19 @@ abstract class GroupFormElement extends \phpOpenFW\XML\Element
 	protected $elements_attrs;
 
 	/**
-	* @var mixed The selected value.
+	* @var mixed Checked item or items.
 	**/
-	protected $select_value;
+	protected $checked_value;
 
 	/**
-	* @var Array An array of values to be prepended to the list of added items.
+	* @var string The display style for the group of items (inline, newline (default))
 	**/
-	protected $blank;
+	protected $style;
+
+	/**
+	* @var string The Custom Style to be used to separate each element
+	**/
+	protected $custom_style;
 
 	//*************************************************************************
 	// String Conversion Function
@@ -47,24 +52,48 @@ abstract class GroupFormElement extends \phpOpenFW\XML\Element
 	}
 
 	//*************************************************************************
-	// Set the selected value
+	/**
+	* Set the value of the checked item
+	* @param mixed The value of the checked item
+	**/
 	//*************************************************************************
-	public function selected_value($value)
+	// Set the checked value
+	//*************************************************************************
+	public function checked_value($value)
 	{
-		if (is_array($value)) {
-			$this->select_value = array_flip($value);		
-		}
-		else {
-			$this->select_value = (string)$value;
-		}
+		$this->checked_value = $value;
+	}
+
+	//*************************************************************************
+	/**
+	* Set the value of the checked item
+	* @param mixed The value of the checked item
+	**/
+	//*************************************************************************
+	// Set the checked value
+	//*************************************************************************
+	public function checked($checked)
+	{
+		$this->checked_value = $checked;
 	}
 	
 	//*************************************************************************
-	// Add a Blank or Default Select Option
+	/**
+	* Set the display style of item group
+	* @param string The display style of the item group (inline, newline (default))
+	**/
 	//*************************************************************************
-	public function add_blank($value='', $desc='')
+	// Set the style
+	//*************************************************************************
+	public function style($style, $custom_format=false)
 	{
-		$this->blank[] = array($value, $desc);
+		$style = strtolower($style);
+		if ($style == 'inline' || $style == 'newline' || $style == 'custom') {
+			$this->style = $style;
+			if ($style == 'custom') {
+				$this->custom_style = $custom_format;
+			}
+		}
 	}
 
 	//*************************************************************************
@@ -84,5 +113,4 @@ abstract class GroupFormElement extends \phpOpenFW\XML\Element
 		$this->elements_attrs = $elem_attrs;
 		return true;
 	}
-
 }

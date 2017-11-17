@@ -60,7 +60,7 @@ class HTTP
 		//-----------------------------------------------------
 		$message_type = (!$message_type) ? ('action') : (strtolower(str_ireplace('_message', '', $message_type)));
 		if (!empty($message)) {
-			\phpOpenFW\Session\Messages::AddMessage($msg, $message_type);
+			\phpOpenFW\Session\Messages::AddMessage($message, $message_type);
 		}
 	
 		//-----------------------------------------------------

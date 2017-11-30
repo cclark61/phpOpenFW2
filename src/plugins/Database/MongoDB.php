@@ -92,7 +92,13 @@ class MongoDB {
 	public static function Connect($data_source)
 	{
 		$conn_str = self::ConnectionString($data_source);
-		return new \MongoDB\Client($conn_str);
+		if (!$data_source || !isset($_SESSION[$data_source])) {
+			throw new \Exception('Invalid data source.');
+			return false;
+		}
+		$ds = $_SESSION[$data_source];
+		$opts = (isset($ds['options']) && is_array($ds['options'])) ? ($ds['options']) : ([]);
+		return new \MongoDB\Client($conn_str, $opts);
 	}
 
 	//*****************************************************************************

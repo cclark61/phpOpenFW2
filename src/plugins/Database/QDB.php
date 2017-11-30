@@ -200,7 +200,7 @@ class QDB
 	* @return Array Record Set
 	*/
 	//**************************************************************************************
-	public static function qdb_exec($db_config, $strsql, $bind_params, $return_format='', $opts=false)
+	public static function qdb_exec($db_config, $strsql, $bind_params, $return_format='', Array $opts=[])
 	{
 		//------------------------------------------------------------------
 		// New Data Transaction
@@ -223,6 +223,19 @@ class QDB
 		//------------------------------------------------------------------
 		$exec_status = $data1->execute($bind_params);
 
+		//------------------------------------------------------------------
+        // Return Execute Result?
+		//------------------------------------------------------------------
+        if (!empty($opts['return_result'])) {
+            return $exec_status;
+        }
+		//------------------------------------------------------------------
+        // Return Last Insert ID?
+		//------------------------------------------------------------------
+        else if (!empty($opts['return_insert_id'])) {
+            return $data1->last_insert_id();
+        }
+        
 		//------------------------------------------------------------------
 		// Return Result Set
 		//------------------------------------------------------------------

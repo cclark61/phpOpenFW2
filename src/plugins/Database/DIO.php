@@ -793,7 +793,7 @@ abstract class DIO
             // Use Bind Parameters by Default?
             //-------------------------------------------------
             switch ($this->db_type) {
-                	
+
                 case 'mysqli':
                 case 'pgsql':
 				case 'oracle':

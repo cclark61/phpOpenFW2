@@ -130,7 +130,7 @@ class DataQuery {
 			$this->fields = ' ';
 			$field_count = 0;
 			if (is_array($in_qa['fields'])) {
-				foreach ($in_qa['fields'] as $key=>$val) {
+				foreach ($in_qa['fields'] as $key => $val) {
 					switch ($this->type) {
 						case 'select':
 							if (isset($this->fields) && $this->fields != ' ') { $this->fields .= ', '; }
@@ -150,7 +150,7 @@ class DataQuery {
 			
 						case 'update':
 							if (isset($this->fields) && $field_count != 0) { $this->fields .= ', '; }
-							$this->fields .= "$key = $val";
+							$this->fields .= "{$key} = {$val}";
 							break;
 					}
 					$field_count++;
@@ -204,7 +204,7 @@ class DataQuery {
 	{
 		switch ($this->type) {
 			case 'select':
-				$query_string = "select $this->fields from $this->table";
+				$query_string = "select {$this->fields} from {$this->table}";
 				if (isset($this->filter_phrase)) { $query_string .= $this->filter_phrase; }
 				if (isset($this->order)) { $query_string .= $this->order; }
 				if (isset($this->group)) { $query_string .= $this->group; }
@@ -212,19 +212,19 @@ class DataQuery {
 				break;
 			
 			case 'insert':
-				$query_string = "insert into $this->table";
+				$query_string = "insert into {$this->table}";
 				if (isset($this->fields)) { $query_string .= $this->fields; }
 				break;
 			
 			case 'update':
-				$query_string = "update $this->table set";
+				$query_string = "update {$this->table} set";
 				if (isset($this->fields)) { $query_string .= $this->fields; }
 				if (isset($this->filter_phrase)) { $query_string .= $this->filter_phrase; }
 				if (isset($this->limit)) { $query_string .= $this->limit; }
 				break;
 			
 			case 'delete':
-				$query_string = "delete from $this->table";
+				$query_string = "delete from {$this->table}";
 				if (isset($this->filter_phrase)) { $query_string .= $this->filter_phrase; }
 				if (isset($this->limit)) { $query_string .= $this->limit; }
 				break;

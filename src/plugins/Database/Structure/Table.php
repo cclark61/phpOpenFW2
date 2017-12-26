@@ -143,8 +143,14 @@ class Table
 	 * @return array An array of column types that require quotes (non-bind parameters)
 	 */
 	//**************************************************************************************
-	public static function QuotedTypes(String $db_type, $strict=false)
+	public static function QuotedTypes($db_type, $strict=false)
 	{
+        //=======================================================================
+        // Cast $db_type as string and validate
+        //=======================================================================
+        settype($db_type, 'string');
+        if (!$db_type) { return false; }
+
         //=======================================================================
         // Return Quoted Column Types based on Database Type
         //=======================================================================

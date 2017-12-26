@@ -64,8 +64,12 @@ abstract class DIO
 		if (!empty($pkey_values)) {
             $ll_where = false;
 			$strsql = 'select * from';
-			if (isset($this->schema)) { $strsql .= " {$this->schema}.{$this->table}"; }
-			else { $strsql .= " {$this->table}"; }
+			if (isset($this->schema)) {
+    			$strsql .= " {$this->schema}.{$this->table}";
+            }
+			else {
+    			$strsql .= " {$this->table}";
+            }
 
             //-----------------------------------------------------------------
 			// Build where clause
@@ -421,7 +425,7 @@ abstract class DIO
 			                    // Auto detect if quotes are needed
 			                    //-------------------------------------------------
 			                    default:
-			                        if (isset($this->quoted_types[$this->db_type][$this->table_info[$field]['data_type']])) {
+			                        if (isset($this->quoted_types[$this->table_info[$field]['data_type']])) {
 			                            $qa['fields'][$field] = "'{$value}'";
 			                        }
 			                        else {
@@ -466,7 +470,7 @@ abstract class DIO
 	                    // Auto detect if quotes are needed
 	                    //-------------------------------------------------
 	                    default:
-	                        if (isset($this->quoted_types[$this->db_type][$this->table_info[$field]['data_type']])) {
+	                        if (isset($this->quoted_types[$this->table_info[$field]['data_type']])) {
 	                            $qa['fields'][$field] = "'{$value}'";
 	                        }
 	                        else {
@@ -591,8 +595,12 @@ abstract class DIO
 			//-------------------------------------------------
             // Set Table
             //-------------------------------------------------
-            if (isset($this->schema)) { $qa['table'] = "{$this->schema}.{$this->table}"; }
-            else { $qa['table'] = $this->table; }
+            if (isset($this->schema)) {
+                $qa['table'] = "{$this->schema}.{$this->table}";
+            }
+            else {
+                $qa['table'] = $this->table;
+            }
             $qa['filter_phrase'] = $this->build_where($pkey_values);
 
             $query = new DataQuery($qa);
@@ -680,72 +688,6 @@ abstract class DIO
         $this->print_trans = false;
 
 		//===============================================================
-        // Set Quoted Types
-		//===============================================================
-        $this->quoted_types = array();
-        $this->quoted_types['mysqli'] = array(
-        	'char' => '',
-        	'date' => '',
-        	'text' => '',
-        	'tinytext' => '',
-        	'mediumtext' => '',
-        	'longtext' => '',
-        	'varchar' => '',
-        	'enum' => '',
-        	'timestamp' => '',
-        	'datetime' => '',
-        	'time' => '',
-        	'year' => ''
-        );
-		$this->quoted_types['mysql'] = $this->quoted_types['mysqli'];
-        $this->quoted_types['pgsql'] = array(
-        	'char' => '',
-        	'date' => '',
-        	'text' => '',
-        	'varchar' => '',
-        	'time' => '',
-        	'timestamp' => '',
-        	'xml' => ''
-        );
-        $this->quoted_types['oracle'] = array(
-        	'CHAR' => '',
-        	'NCHAR' => '',
-        	'VARCHAR' => '',
-        	'VARCHAR2' => '',
-        	'VARCHAR2' => '',
-        	'DATE' => '',
-        	'TIMESTAMP' => '',
-        	'CLOB' => '',
-        	'NCLOB' => ''
-        );
-		$this->quoted_types['sqlsrv'] = array(
-        	'char' => '',
-        	'varchar' => '',
-        	'text' => '',
-        	'nchar' => '',
-        	'nvarchar' => '',
-        	'ntext' => '',
-        	'date' => '',
-        	'datetimeoffset' => '',
-        	'datetime' => '',
-        	'datetime2' => '',
-        	'smalldatetime' => '',
-        	'time' => '',
-        	'xml' => ''
-		);
-		$this->quoted_types['mssql'] = $this->quoted_types['sqlsrv'];
-		$this->quoted_types['sqlite'] = array(
-			'TEXT' => ''
-		);
-		$this->quoted_types['db2'] = array(
-        	'CHARACTER' => '',
-        	'VARCHAR' => '',
-        	'DATE' => '',
-        	'TIME' => '',
-        	'TIMESTAMP' => ''
-		);
-
-		//===============================================================
         // Initialize No Save Empty Data Types 
         // and Save Default Data Types Arrays
 		//===============================================================
@@ -758,186 +700,58 @@ abstract class DIO
 		$this->reset_bind_vars();
 
 		//===============================================================
-        // Set Data Source
+        // Validate / Set Data Source
 		//===============================================================
-		$this->data_source = $data_source;
-		settype($data_source, 'string');
-		if (!isset($_SESSION[$this->data_source])) {
-            trigger_error('Data Source does not exist.', E_USER_ERROR);
+		$this->data_source = (string)$data_source;
+		$ds_data = \phpOpenFW\Framework\Core\Datasources::GetOne($this->data_source);
+		if (!$ds_data) {
+    		trigger_error('Data Source does not exist.', E_USER_ERROR);
+    		return false;
+		}
+
+		//-------------------------------------------------
+        // Set Database / Database Type
+        //-------------------------------------------------
+        $this->database = $ds_data['source'];
+        $this->db_type = $ds_data['type'];
+
+		//-------------------------------------------------
+        // Set Quoted Types
+		//-------------------------------------------------
+        $this->quoted_types = Structure\Table::QuotedTypes($this->db_type, true);
+
+		//-------------------------------------------------
+        // Set Table and Schema
+        //-------------------------------------------------
+        $tmp = Structure\Table::DetermineSchema($this->data_source, $table);
+        $this->table = $tmp['table'];
+        if ($tmp['schema'] != '') {
+            $this->schema = $tmp['schema'];
         }
-		else {
-			//-------------------------------------------------
-            // Set Database
-            //-------------------------------------------------
-            $this->database = $_SESSION[$this->data_source]['source'];
 
-			//-------------------------------------------------
-            // Set Database Type
-            //-------------------------------------------------
-            $this->db_type = (isset($_SESSION[$this->data_source]['type'])) ? ($_SESSION[$this->data_source]['type']) : (false);
+		//-------------------------------------------------
+        // Use Bind Parameters by Default?
+        //-------------------------------------------------
+        switch ($this->db_type) {
 
-			//-------------------------------------------------
-            // Set Table and schema
-            //-------------------------------------------------
-            $this->table = $table;
-            settype($table, 'string');
-            $table_parts = explode('.', $this->table);
-            if (is_array($table_parts)) {
-                $this->table = $table_parts[count($table_parts) - 1];
-                if (isset($table_parts[count($table_parts) - 2])) {
-                    $this->schema = $table_parts[count($table_parts) - 2];
-                }
-            }
+            case 'mysqli':
+            case 'pgsql':
+			case 'oracle':
+			case 'sqlsrv':
+			case 'db2':
+				$this->use_bind_params = true;
+				break;
 
-			//-------------------------------------------------
-            // Use Bind Parameters by Default?
-            //-------------------------------------------------
-            switch ($this->db_type) {
+			default:
+				$this->use_bind_params = false;
+				break;
 
-                case 'mysqli':
-                case 'pgsql':
-				case 'oracle':
-				case 'sqlsrv':
-				case 'db2':
-					$this->use_bind_params = true;
-					break;
-
-				default:
-					$this->use_bind_params = false;
-					break;
-
-            }
-
-			//-------------------------------------------------
-            // Pull Table Info
-            //-------------------------------------------------
-            $data1 = new DataTrans($this->data_source);
-
-            switch ($this->db_type) {
-                case 'mysql':
-                case 'mysqli':
-                    $strsql = "SHOW COLUMNS FROM {$this->table}";
-                    $data1->data_query($strsql);
-                    $meta_data = $data1->data_assoc_result();
-                    foreach ($meta_data as $field) {
-                        $this->table_info[$field['Field']] = array();
-                        $fld_type = explode('(', $field['Type']);
-                        if (count($fld_type) > 1) {
-                            $this->table_info[$field['Field']]['data_type'] = $fld_type[0];
-                            if ($fld_type[0] != 'enum') {
-                                $this->table_info[$field['Field']]['length'] = substr($fld_type[1], 0, strlen($fld_type[1]) - 1);
-                            }
-                        }
-                        else {
-                            $this->table_info[$field['Field']]['data_type'] = $field['Type'];
-                            $this->table_info[$field['Field']]['length'] = NULL;
-                        }
-                        $this->table_info[$field['Field']]['nullable'] = (strtoupper($field['Null']) == 'YES') ? (1) : (0);
-                        $this->table_info[$field['Field']]['load_default'] = $field['Default'];
-                        $this->table_info[$field['Field']]['no_save'] = false;
-                        $this->table_info[$field['Field']]['no_load'] = false;
-                        $this->table_info[$field['Field']]['quotes'] = 'auto';
-                        $this->table_info[$field['Field']]['can_bind_param'] = true;
-                    }
-                    break;
-
-                case 'pgsql':
-                    $strsql = 'SELECT * FROM information_schema.columns';
-                    $strsql .= " WHERE table_catalog = '{$this->database}'";
-                    if (!empty($this->schema)) { $strsql .= " and table_schema = '{$this->schema}'"; };
-                    $strsql .= " and table_name = '{$this->table}' order by ordinal_position";
-                    $data1->data_query($strsql);
-                    $meta_data = $data1->data_assoc_result();
-                    foreach ($meta_data as $field) {
-                        $this->table_info[$field['column_name']] = array();
-                        $this->table_info[$field['column_name']]['data_type'] = $field['udt_name'];
-                        $this->table_info[$field['column_name']]['length'] = $field['character_maximum_length'];
-                        $this->table_info[$field['column_name']]['nullable'] = (strtoupper($field['is_nullable']) == 'YES') ? (1) : (0);
-                        $this->table_info[$field['column_name']]['load_default'] = $field['column_default'];
-                        $this->table_info[$field['column_name']]['no_save'] = false;
-                        $this->table_info[$field['column_name']]['no_load'] = false;
-                        $this->table_info[$field['column_name']]['quotes'] = 'auto';
-                        $this->table_info[$field['column_name']]['can_bind_param'] = true;
-                    }
-                    break;
-
-				case 'oracle':
-					$tmp_tbl = strtoupper($this->table);
-					$strsql = "select * from ALL_TAB_COLUMNS where table_name = '{$tmp_tbl}'";
-					$data1->data_query($strsql);
-                    $meta_data = $data1->data_assoc_result();
-                    foreach ($meta_data as $field) {
-                        $this->table_info[$field['COLUMN_NAME']] = array();
-                        $this->table_info[$field['COLUMN_NAME']]['data_type'] = $field['DATA_TYPE'];
-                        $this->table_info[$field['COLUMN_NAME']]['length'] = $field['DATA_LENGTH'];
-                        $this->table_info[$field['COLUMN_NAME']]['nullable'] = (strtoupper($field['NULLABLE']) == 'YES') ? (1) : (0);
-                        $this->table_info[$field['COLUMN_NAME']]['load_default'] = $field['DATA_DEFAULT'];
-                        $this->table_info[$field['COLUMN_NAME']]['no_save'] = false;
-                        $this->table_info[$field['COLUMN_NAME']]['no_load'] = false;
-                        $this->table_info[$field['COLUMN_NAME']]['quotes'] = 'auto';
-                        $this->table_info[$field['COLUMN_NAME']]['can_bind_param'] = true;
-                    }
-					break;
-
-				case 'sqlsrv':
-				case 'mssql':
-					$strsql = "select * from information_schema.columns where table_name = '{$this->table}'";
-					if (!empty($this->schema)) { $strsql .= " and table_schema = '{$this->schema}'"; };
-					$data1->data_query($strsql);
-                    $meta_data = $data1->data_assoc_result();
-                    foreach ($meta_data as $field) {
-                        $this->table_info[$field['COLUMN_NAME']] = array();
-                        $this->table_info[$field['COLUMN_NAME']]['data_type'] = $field['DATA_TYPE'];
-                        $this->table_info[$field['COLUMN_NAME']]['length'] = $field['CHARACTER_MAXIMUM_LENGTH'];
-                        $this->table_info[$field['COLUMN_NAME']]['nullable'] = (strtoupper($field['IS_NULLABLE']) == 'YES') ? (1) : (0);
-                        $this->table_info[$field['COLUMN_NAME']]['load_default'] = $field['COLUMN_DEFAULT'];
-                        $this->table_info[$field['COLUMN_NAME']]['no_save'] = false;
-                        $this->table_info[$field['COLUMN_NAME']]['no_load'] = false;
-                        $this->table_info[$field['COLUMN_NAME']]['quotes'] = 'auto';
-                        $this->table_info[$field['COLUMN_NAME']]['can_bind_param'] = true;
-                    }
-					break;
-
-				case 'sqlite':
-					break;
-
-				case 'db2':
-					if (!strstr($this->table, '/')) {
-						trigger_error('Table and schema must be specified in the format of [SCHEMA]/[TABLE]');
-					}
-					else {
-						list($schema, $table) = explode('/', $this->table);
-						$strsql = "
-							SELECT
-								*
-							FROM
-								QSYS2/SYSCOLUMNS
-							WHERE
-								TABLE_NAME = '{$table}'
-								and TABLE_SCHEMA = '{$schema}'
-						";
-						$data1->data_query($strsql);
-	                    $meta_data = rs_trim($data1->data_assoc_result(), true, true);
-	                    foreach ($meta_data as $field) {
-	                        $this->table_info[$field['COLUMN_NAME']] = array();
-	                        $this->table_info[$field['COLUMN_NAME']]['data_type'] = $field['DATA_TYPE'];
-	                        $this->table_info[$field['COLUMN_NAME']]['length'] = $field['LENGTH'];
-	                        $this->table_info[$field['COLUMN_NAME']]['nullable'] = (strtoupper($field['IS_NULLABLE']) == 'Y') ? (1) : (0);
-	                        $this->table_info[$field['COLUMN_NAME']]['load_default'] = (strtoupper($field['HAS_DEFAULT']) == 'Y') ? ($field['COLUMN_DEFAULT']) : ('');
-							$load_def = &$this->table_info[$field['COLUMN_NAME']]['load_default'];
-							if ($load_def[0] == "'") { $load_def = substr($load_def, 1); }
-							if ($load_def[strlen($load_def) - 1] == "'") { $load_def = substr($load_def, 0, strlen($load_def) - 1); }
-							$load_def = trim($load_def);
-	                        $this->table_info[$field['COLUMN_NAME']]['no_save'] = false;
-	                        $this->table_info[$field['COLUMN_NAME']]['no_load'] = false;
-	                        $this->table_info[$field['COLUMN_NAME']]['quotes'] = 'auto';
-	                        $this->table_info[$field['COLUMN_NAME']]['can_bind_param'] = true;
-						}
-					}
-					break;
-
-            }
         }
+
+		//-------------------------------------------------
+        // Pull Table Info
+        //-------------------------------------------------
+        $this->table_info = Structure\Table::TableStructure($this->data_source, $table);
 
         return true;
 	}
@@ -1226,7 +1040,7 @@ abstract class DIO
 					case 'mssql':
 					case 'mysql':
 					case 'sqlite':
-						if (isset($this->quoted_types[$this->db_type][$this->table_info[$key]['data_type']])) {
+						if (isset($this->quoted_types[$this->table_info[$key]['data_type']])) {
 							$strsql .= " {$key} = '{$value}'";
 						}
 						else {
@@ -1249,7 +1063,7 @@ abstract class DIO
 			//-------------------------------------------------
 			// No Bind Parameters
 			//-------------------------------------------------
-			else if (isset($this->quoted_types[$this->db_type][$this->table_info[$key]['data_type']])) {
+			else if (isset($this->quoted_types[$this->table_info[$key]['data_type']])) {
 				$strsql .= " {$key} = '{$value}'";
 			}
 			else {

@@ -38,7 +38,9 @@ abstract class DIO
 	protected $table_info;
 	protected $quoted_types;
 	protected $load_prefix;
-	protected $print_trans;
+	protected $execute_queries;
+	protected $execute_pre_methods;
+	protected $execute_post_methods;
 	protected $unset_fields;
 	protected $class_name;
 	protected $no_save_empty_types;
@@ -47,6 +49,7 @@ abstract class DIO
 	protected $bind_params;
 	protected $bind_param_count;
 	protected $charset;
+	protected $last_query = false;
 
 	//=====================================================================
 	// Member Functions
@@ -63,32 +66,26 @@ abstract class DIO
 		// Load data from database
 		//===============================================================
 		if (!empty($pkey_values)) {
-            $ll_where = false;
-			$strsql = 'select * from';
-			if (isset($this->schema)) {
-    			$strsql .= " {$this->schema}{$this->schema_separator}{$this->table}";
-            }
-			else {
-    			$strsql .= " {$this->table}";
-            }
 
             //-----------------------------------------------------------------
-			// Build where clause
+			// Build SQL
             //-----------------------------------------------------------------
+			$strsql = 'select * from ' . $this->full_table_name();
 			$strsql .= $this->build_where($pkey_values);
 
             //-----------------------------------------------------------------
-            // Print Query if Necessary
+            // Store last query
             //-----------------------------------------------------------------
-			if ($this->print_trans) {
-                print $strsql;
-	            if ($this->use_bind_params) {
-	            	ob_start();
-	            	print "<br/><pre>\n";
-	            	print_r($this->bind_params);
-	            	print "</pre>\n";
-	            	$ret_val .= ob_get_clean();
-	            }
+            $this->last_query = ['strsql' => $strsql];
+            if ($this->use_bind_params) {
+                $this->last_query['bind_params'] = $this->bind_params;
+            }
+
+            //-----------------------------------------------------------------
+            // Is query execution disabled?
+            //-----------------------------------------------------------------
+            if (!$this->execute_queries) {
+                return false;
             }
 
             //-----------------------------------------------------------------
@@ -102,13 +99,9 @@ abstract class DIO
 			if ($this->use_bind_params) {
 
 				//-------------------------------------------------
-				// Prepare Query
+				// Prepare / Execute Query
 				//-------------------------------------------------
 				$prep_status = $data1->prepare($strsql);
-
-				//-------------------------------------------------
-				// Execute Query
-				//-------------------------------------------------
 				$exec_status = $data1->execute($this->bind_params);
 
 				//-------------------------------------------------
@@ -186,7 +179,7 @@ abstract class DIO
 		//===============================================================
 		// Check for pre_export()
 		//===============================================================
-		if (method_exists($this, 'pre_export')) {
+		if ($this->execute_pre_methods && method_exists($this, 'pre_export')) {
 			if (!is_array($pre_args)) {
 				$pre_args = array($pre_args);
 			}
@@ -224,7 +217,7 @@ abstract class DIO
 		//===============================================================
 		// Check for pre_import()
 		//===============================================================
-		if (method_exists($this, 'pre_import')) {
+		if ($this->execute_pre_methods && method_exists($this, 'pre_import')) {
 			if (!is_array($pre_args)) {
 				$pre_args = array($pre_args);
 			}
@@ -301,25 +294,23 @@ abstract class DIO
 		//===============================================================
 		// Check for pre_save()
 		//===============================================================
-		if (method_exists($this, 'pre_save')) {
+		if ($this->execute_pre_methods && method_exists($this, 'pre_save')) {
 			if (!is_array($pre_args)) {
 				$pre_args = array($pre_args);
 			}
 			call_user_func_array(array($this, 'pre_save'), $pre_args);
 		}
 
+		//===============================================================
+        // Variable Declarations
+		//===============================================================
         $qa = array();
         $ret_val = false;
 
 		//===============================================================
         // Set Table
 		//===============================================================
-        if (isset($this->schema)) {
-	        $qa['table'] = "{$this->schema}{$this->schema_separator}{$this->table}";
-	    }
-        else {
-	        $qa['table'] = $this->table;
-	    }
+        $qa['table'] = $this->full_table_name();
 
 		//===============================================================
 		// Check / Set Field Values
@@ -506,75 +497,76 @@ abstract class DIO
             $qa['type'] = 'insert';
         }
 
+		//===============================================================
+        // Render Query
+		//===============================================================
         $query = new DataQuery($qa);
         $strsql = $query->render();
 
-        if ($this->print_trans) {
-            $ret_val = $strsql;
-            if ($this->use_bind_params) {
-            	ob_start();
-            	print "<br/><pre>\n";
-            	print_r($this->bind_params);
-            	print "</pre>\n";
-            	$ret_val .= ob_get_clean();
-            }
+		//===============================================================
+        // Store last query
+		//===============================================================
+        $this->last_query = ['strsql' => $strsql];
+        if ($this->use_bind_params) {
+            $this->last_query['bind_params'] = $this->bind_params;
         }
-        else {
-	        //-------------------------------------------------
+
+		//===============================================================
+        // Execute Query
+		//===============================================================
+        if ($this->execute_queries) {
+
+	        //-----------------------------------------------------------
             // Create a new data transaction and execute query
-            //-------------------------------------------------
+	        //-----------------------------------------------------------
             $data1 = new DataTrans($this->data_source);
 
-			//-------------------------------------------------
+	        //-----------------------------------------------------------
 			// Set Character set?
-			//-------------------------------------------------
+	        //-----------------------------------------------------------
 			if (!empty($this->charset)) {
 				$data1->set_opt('charset', $this->charset);
 			}
 
-			//-------------------------------------------------
+	        //-----------------------------------------------------------
 			// Use Bind Parameters
-			//-------------------------------------------------
+	        //-----------------------------------------------------------
 			if ($this->use_bind_params) {
 
-				//-------------------------------------------------
-				// Prepare Query
-				//-------------------------------------------------
+				//-------------------------------------------------------
+				// Prepare / Execute Query
+				//-------------------------------------------------------
 				$prep_status = $data1->prepare($strsql);
+				$ret_val = $data1->execute($this->bind_params);
 
-				//-------------------------------------------------
-				// Execute Query
-				//-------------------------------------------------
-				$exec_status = $data1->execute($this->bind_params);
-				$ret_val = $exec_status;
-
-				//-------------------------------------------------
+				//-------------------------------------------------------
 				// Reset Bind Variables
-				//-------------------------------------------------
+				//-------------------------------------------------------
 				$this->reset_bind_vars();
             }
-			//-------------------------------------------------
+	        //-----------------------------------------------------------
             // Do NOT Use Bind Parameters
-            //-------------------------------------------------
+	        //-----------------------------------------------------------
             else {
-	            $query_result = $data1->data_query($strsql);
-	            $ret_val = $query_result;
+	            $ret_val = $data1->data_query($strsql);
 			}
 
-			//-------------------------------------------------
-			// Lsat Insert ID if Insert Statement performed 
+	        //-----------------------------------------------------------
+			// Last Insert ID if Insert Statement performed 
 			// and a valid ID is returned
-			//-------------------------------------------------
+	        //-----------------------------------------------------------
             if ($qa['type'] == 'insert') {
             	$lii = $data1->last_insert_id();
-            	if ($lii !== false) { $ret_val = $lii; }
+            	if ($lii !== false) {
+                	$ret_val = $lii;
+                }
             }
         }
 
 		//===============================================================
         // Check for post_save()
 		//===============================================================
-		if (method_exists($this, 'post_save')) {
+		if ($this->execute_post_methods && method_exists($this, 'post_save')) {
 			if (!is_array($post_args)) {
 				$post_args = array($post_args);
 			}
@@ -591,91 +583,93 @@ abstract class DIO
 	//***********************************************************************
 	public function delete($pkey_values='', $pre_args=array(), $post_args=array())
 	{
+    	$ret_val = false;
+
 		//===============================================================
 		// Check for pre_delete()
 		//===============================================================
-		if (method_exists($this, 'pre_delete')) {
+		if ($this->execute_pre_methods && method_exists($this, 'pre_delete')) {
 			if (!is_array($pre_args)) {
 				$pre_args = array($pre_args);
 			}
 			call_user_func_array(array($this, 'pre_delete'), $pre_args);
 		}
 
-        if (!empty($pkey_values)) {
-            $qa = array();
-            $qa['type'] = 'delete';
-
-			//-------------------------------------------------
-            // Set Table
-            //-------------------------------------------------
-            if (isset($this->schema)) {
-                $qa['table'] = "{$this->schema}{$this->schema_separator}{$this->table}";
-            }
-            else {
-                $qa['table'] = $this->table;
-            }
-            $qa['filter_phrase'] = $this->build_where($pkey_values);
-
-            $query = new DataQuery($qa);
-            $strsql = $query->render();
-
-            if ($this->print_trans) {
-                print $strsql;
-	            if ($this->use_bind_params) {
-	            	ob_start();
-	            	print "<br/><pre>\n";
-	            	print_r($this->bind_params);
-	            	print "</pre>\n";
-	            	$ret_val .= ob_get_clean();
-	            }
-            }
-            else {
-	            //-------------------------------------------------
-	            // Create a new data transaction and execute query
-	            //-------------------------------------------------
-	            $data1 = new DataTrans($this->data_source);
-
-				//-------------------------------------------------
-				// Use Bind Parameters
-				//-------------------------------------------------
-				if ($this->use_bind_params) {
-
-					//-------------------------------------------------
-					// Prepare Query
-					//-------------------------------------------------
-					$prep_status = $data1->prepare($strsql);
-
-					//-------------------------------------------------
-					// Execute Query
-					//-------------------------------------------------
-					$exec_status = $data1->execute($this->bind_params);
-
-					//-------------------------------------------------
-					// Reset Bind Variables
-					//-------------------------------------------------
-					$this->reset_bind_vars();
-	            }
-	            //-------------------------------------------------
-	            // Do NOT Use Bind Parameters
-	            //-------------------------------------------------
-	            else {
-		            $query_result = $data1->data_query($strsql);
-				}
-            }
-        }
-        else {
+        //===============================================================
+        // Validate Keys / Filtering Values
+        //===============================================================
+        if (empty($pkey_values)) {
             trigger_error("Error: [$this->class_name]::delete(): No primary key(s) given.", E_USER_ERROR);
+        }
+
+        //===============================================================
+        // Build Query
+        //===============================================================
+        $qa = [
+            'type' => 'delete',
+            'table' => $this->full_table_name(),
+            'filter_phrase' => $this->build_where($pkey_values)
+        ];
+        if (!$qa['filter_phrase']) {
+            trigger_error("Error: [$this->class_name]::delete(): Invalid primary key(s) given.", E_USER_ERROR);
+            return false;
+        }
+        $query = new DataQuery($qa);
+        $strsql = $query->render();
+
+        //===============================================================
+        // Store last query
+        //===============================================================
+        $this->last_query = ['strsql' => $strsql];
+        if ($this->use_bind_params) {
+            $this->last_query['bind_params'] = $this->bind_params;
+        }
+
+        //===============================================================
+        // Execute Query
+        //===============================================================
+        if ($this->execute_queries) {
+
+            //-----------------------------------------------------------
+            // Create a new data transaction and execute query
+            //-----------------------------------------------------------
+            $data1 = new DataTrans($this->data_source);
+
+            //-----------------------------------------------------------
+			// Use Bind Parameters
+            //-----------------------------------------------------------
+			if ($this->use_bind_params) {
+
+				//-------------------------------------------------------
+				// Prepare / Execute Query
+				//-------------------------------------------------------
+				$prep_status = $data1->prepare($strsql);
+				$ret_val = $data1->execute($this->bind_params);
+
+				//-------------------------------------------------------
+				// Reset Bind Variables
+				//-------------------------------------------------------
+				$this->reset_bind_vars();
+            }
+            //-----------------------------------------------------------
+            // Do NOT Use Bind Parameters
+            //-----------------------------------------------------------
+            else {
+	            $ret_val = $data1->data_query($strsql);
+			}
         }
 
 		//===============================================================
         // Check for post_delete()
 		//===============================================================
-		if (method_exists($this, 'post_delete')) {
+		if ($this->execute_post_methods && method_exists($this, 'post_delete')) {
 			if (!is_array($post_args)) {
 				$post_args = array($post_args);
 			}
 			call_user_func_array(array($this, 'post_delete'), $post_args);
 		}
+
+        return $ret_val;
 	}
 
 	//***********************************************************************
@@ -696,9 +690,11 @@ abstract class DIO
 		$this->class_name = get_class($this);
 
 		//===============================================================
-        // Set Transaction default to run
+        // Set default execution statuses
 		//===============================================================
-        $this->print_trans = false;
+        $this->execute_queries = true;
+        $this->execute_pre_methods = true;
+        $this->execute_post_methods = true;
 
 		//===============================================================
         // Initialize No Save Empty Data Types 
@@ -1032,7 +1028,61 @@ abstract class DIO
 	//***********************************************************************
 	public function print_only()
 	{
-	   $this->print_trans = true;
+        $this->no_execute_all();
+        trigger_error('This method has been deprecated. Please use the no_execute_all() method instead.', E_USER_DEPRECATED);
+	}
+
+	//***********************************************************************
+	//***********************************************************************
+	// Set database queries to NOT execute
+	//***********************************************************************
+	//***********************************************************************
+	public function no_execute_queries($no_execute=true)
+	{
+        $this->execute_queries = !$no_execute;
+	}
+
+	//***********************************************************************
+	//***********************************************************************
+	// Set Pre methods to NOT execute
+	//***********************************************************************
+	//***********************************************************************
+	public function no_execute_pre_methods($no_execute=true)
+	{
+        $this->execute_pre_methods = !$no_execute;
+	}
+
+	//***********************************************************************
+	//***********************************************************************
+	// Set Post methods to NOT execute
+	//***********************************************************************
+	//***********************************************************************
+	public function no_execute_post_methods($no_execute=true)
+	{
+        $this->execute_post_methods = !$no_execute;
+	}
+
+	//***********************************************************************
+	//***********************************************************************
+	// Set Pre and Post methods to NOT execute
+	//***********************************************************************
+	//***********************************************************************
+	public function no_execute_pre_post($no_execute=true)
+	{
+        $this->execute_pre_methods = !$no_execute;
+        $this->execute_post_methods = !$no_execute;
+	}
+
+	//***********************************************************************
+	//***********************************************************************
+	// Set database transactions and Pre and Post methods to NOT execute
+	//***********************************************************************
+	//***********************************************************************
+	public function no_execute_all($no_execute=true)
+	{
+    	$this->execute_queries = !$no_execute;
+        $this->execute_pre_methods = !$no_execute;
+        $this->execute_post_methods = !$no_execute;
 	}
 
 	//***********************************************************************
@@ -1147,6 +1197,21 @@ abstract class DIO
 
 	//***********************************************************************
 	//***********************************************************************
+	// Build Full Table Name
+	//***********************************************************************
+	//***********************************************************************
+	public function full_table_name()
+	{
+        if (isset($this->schema)) {
+	        return "{$this->schema}{$this->schema_separator}{$this->table}";
+	    }
+        else {
+	        return $this->table;
+	    }
+    }
+
+	//***********************************************************************
+	//***********************************************************************
 	// Get Structural Table Information
 	//***********************************************************************
 	//***********************************************************************
@@ -1184,6 +1249,16 @@ abstract class DIO
 			trigger_error("get_field_data(): Field '{$field}' does not exist.", E_USER_ERROR);
 			return false;
 		}
+	}
+
+	//***********************************************************************
+	//***********************************************************************
+	// Get Last Query
+	//***********************************************************************
+	//***********************************************************************
+	public function get_last_query()
+	{
+		return $this->last_query;
 	}
 
 	//***********************************************************************

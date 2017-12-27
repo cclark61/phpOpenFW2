@@ -122,4 +122,63 @@ class MySQL
         ];
     }
 
+	//**********************************************************************************
+	/**
+	 * Return the bind types map for MySQL field types
+	 *
+	 * @return Array The field type to bind type mapping array
+	 */
+	//**********************************************************************************
+	public static function BindTypes()
+	{
+        return [
+        	//-------------------------------------------------
+        	// Integer
+        	//-------------------------------------------------
+        	'TINYINT' => 'i',
+        	'SMALLINT' => 'i',
+        	'MEDIUMINT' => 'i',
+        	'INT' => 'i',
+        	'BIGINT' => 'i',
+        
+        	'BIT' => 'i',
+        	'BOOL' => 'i',
+        	'SERIAL' => 'i',
+        
+        	//-------------------------------------------------
+        	// Double
+        	//-------------------------------------------------
+        	'DECIMAL' => 'd',
+        	'FLOAT' => 'd',
+        	'DOUBLE' => 'd',
+        	'REAL' => 'd',
+        
+        	//-------------------------------------------------
+        	// Blob
+        	//-------------------------------------------------
+        	'TINYBLOB' => 'b',
+        	'MEDIUMBLOB' => 'b',
+        	'BLOB' => 'b',
+        	'LONGBLOB' => 'b'
+        ];
+    }
+
+	//**********************************************************************************
+	/**
+	 * Return the bind type character for a given MySQL field type
+	 *
+	 * @param string The field type to get a bind character for
+	 * @return character The bind type character
+	 */
+	//**********************************************************************************
+	public static function GetBindType($field_type)
+	{
+    	if (!$field_type) {
+        	return false;
+        }
+    	$field_type = strtoupper($field_type);
+        $bind_types = self::BindTypes();
+        return (isset($bind_types[$field_type])) ? ($bind_types[$field_type]) : ('s');
+    }
+
 }

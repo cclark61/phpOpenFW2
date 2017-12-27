@@ -457,10 +457,7 @@ abstract class DIO
 		                	$this->bind_param_count++;
 							break;
 
-						default:
-
 		            }
-
 				}
 				//-------------------------------------------------
 				// Do NOT use Bind Parameters

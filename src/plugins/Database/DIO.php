@@ -57,7 +57,7 @@ abstract class DIO
 	// Load Values
 	//***********************************************************************
 	//***********************************************************************
-	public function load($pkey_values)
+	public function load($pkey_values=false)
 	{
 		//===============================================================
 		// Load data from database

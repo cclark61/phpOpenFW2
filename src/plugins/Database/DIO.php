@@ -31,6 +31,7 @@ abstract class DIO
 	protected $data_source;
 	protected $db_type;
 	protected $schema;
+	protected $schema_separator = '.';
 	protected $table;
 	protected $primary_key = 'id';
 	protected $data;
@@ -65,7 +66,7 @@ abstract class DIO
             $ll_where = false;
 			$strsql = 'select * from';
 			if (isset($this->schema)) {
-    			$strsql .= " {$this->schema}.{$this->table}";
+    			$strsql .= " {$this->schema}{$this->schema_separator}{$this->table}";
             }
 			else {
     			$strsql .= " {$this->table}";
@@ -165,7 +166,9 @@ abstract class DIO
 		else {
             foreach ($this->table_info as $key => $info) {
                 if (!$info['no_load']) {
-                    if (isset($info['alias'])) { $key = $info['alias']; }
+                    if (isset($info['alias'])) {
+                        $key = $info['alias'];
+                    }
                     $this->data[$key] = $info['load_default'];
                 }
             }
@@ -198,10 +201,14 @@ abstract class DIO
             foreach ($this->data as $field => $info) {
                 $return_data[$this->load_prefix . $field] = $this->data[$field];
             }
-            if (count($return_data) <= 0) { unset($return_data); }
+            if (count($return_data) <= 0) {
+                unset($return_data);
+            }
         }
         else {
-        	if (isset($this->data)) { $return_data = $this->data; }
+        	if (isset($this->data)) {
+            	$return_data = $this->data;
+            }
         }
 
 		return (isset($return_data)) ? ($return_data) : (false);
@@ -230,8 +237,12 @@ abstract class DIO
 			//-------------------------------------------------
             // Load Prefix
 			//-------------------------------------------------
-            if (isset($this->load_prefix)) { $var_field = $this->load_prefix . $field; }
-            else { $var_field = $field; }
+            if (isset($this->load_prefix)) {
+                $var_field = $this->load_prefix . $field;
+            }
+            else {
+                $var_field = $field;
+            }
 
 			//-------------------------------------------------
             // Unset $val for this pass through the loop
@@ -242,14 +253,20 @@ abstract class DIO
             // Search Input Array
             //-------------------------------------------------
             if (isset($in_array) && !empty($in_array)) {
-            	if (isset($in_array[$var_field])) { $val = $in_array[$var_field]; }
+            	if (isset($in_array[$var_field])) {
+                	$val = $in_array[$var_field];
+                }
             }
 			//-------------------------------------------------
             // Search POST and GET
             //-------------------------------------------------
             else {
-            	if (isset($_POST[$var_field])) { $val = $_POST[$var_field]; }
-            	elseif (isset($_GET[$var_field])) { $val = $_GET[$var_field]; }
+            	if (isset($_POST[$var_field])) {
+                	$val = $_POST[$var_field];
+                }
+            	elseif (isset($_GET[$var_field])) {
+                	$val = $_GET[$var_field];
+                }
             }
 
 			//-------------------------------------------------
@@ -262,8 +279,12 @@ abstract class DIO
 	            //-------------------------------------------------
             	// Check for a default save value
             	//-------------------------------------------------
-            	if (isset($info['save_default'])) { $this->data[$field] = $info['save_default']; }
-            	else { $this->unset_fields[$field] = ''; }
+            	if (isset($info['save_default'])) {
+                	$this->data[$field] = $info['save_default'];
+                }
+            	else {
+                	$this->unset_fields[$field] = '';
+                }
             }
 		}
 
@@ -294,7 +315,7 @@ abstract class DIO
         // Set Table
 		//===============================================================
         if (isset($this->schema)) {
-	        $qa['table'] = "{$this->schema}.{$this->table}";
+	        $qa['table'] = "{$this->schema}{$this->schema_separator}{$this->table}";
 	    }
         else {
 	        $qa['table'] = $this->table;
@@ -372,12 +393,7 @@ abstract class DIO
 		                case 'mysqli':
 		                	$qa['fields'][$field] = '?';
 		                	$this->bind_param_count++;
-		                	$tmp_type = (isset($GLOBALS['mysql_bind_types'][strtoupper($this->table_info[$field]['data_type'])]))
-		                		? ($GLOBALS['mysql_bind_types'][strtoupper($this->table_info[$field]['data_type'])])
-		                		: ('s');
-		                	if (!array_key_exists(0, $this->bind_params)) {
-			                	$this->bind_params[0] = '';
-		                	}
+		                	$tmp_type = \phpOpenFW\Database\Structure\DatabaseType\MySQL::GetBindType($this->table_info[$field]['data_type']);
 		                	$this->bind_params[0] .= $tmp_type;
 		                	$this->bind_params[] = &$value;
 		                    break;
@@ -596,7 +612,7 @@ abstract class DIO
             // Set Table
             //-------------------------------------------------
             if (isset($this->schema)) {
-                $qa['table'] = "{$this->schema}.{$this->table}";
+                $qa['table'] = "{$this->schema}{$this->schema_separator}{$this->table}";
             }
             else {
                 $qa['table'] = $this->table;
@@ -695,11 +711,6 @@ abstract class DIO
         $this->save_default_types = array();
 
 		//===============================================================
-		// Setup Bind Parameters
-		//===============================================================
-		$this->reset_bind_vars();
-
-		//===============================================================
         // Validate / Set Data Source
 		//===============================================================
 		$this->data_source = (string)$data_source;
@@ -709,37 +720,46 @@ abstract class DIO
     		return false;
 		}
 
-		//-------------------------------------------------
+		//===============================================================
         // Set Database / Database Type
-        //-------------------------------------------------
+		//===============================================================
         $this->database = $ds_data['source'];
         $this->db_type = $ds_data['type'];
 
-		//-------------------------------------------------
+		//===============================================================
         // Set Quoted Types
-		//-------------------------------------------------
+		//===============================================================
         $this->quoted_types = Structure\Table::QuotedTypes($this->db_type, true);
 
-		//-------------------------------------------------
+		//===============================================================
         // Set Table and Schema
-        //-------------------------------------------------
+		//===============================================================
         $tmp = Structure\Table::DetermineSchema($this->data_source, $table);
         $this->table = $tmp['table'];
         if ($tmp['schema'] != '') {
             $this->schema = $tmp['schema'];
         }
 
-		//-------------------------------------------------
-        // Use Bind Parameters by Default?
-        //-------------------------------------------------
+		//===============================================================
+		// Setup Bind Parameters
+		//===============================================================
+		$this->reset_bind_vars();
+
+		//===============================================================
+        // Database Type Specific Options
+		//===============================================================
         switch ($this->db_type) {
 
             case 'mysqli':
             case 'pgsql':
 			case 'oracle':
 			case 'sqlsrv':
+				$this->use_bind_params = true;
+				break;
+
 			case 'db2':
 				$this->use_bind_params = true;
+                $this->schema_separator = '/';
 				break;
 
 			default:
@@ -748,9 +768,9 @@ abstract class DIO
 
         }
 
-		//-------------------------------------------------
+		//===============================================================
         // Pull Table Info
-        //-------------------------------------------------
+		//===============================================================
         $this->table_info = Structure\Table::TableStructure($this->data_source, $table);
 
         return true;
@@ -808,8 +828,12 @@ abstract class DIO
 			trigger_error('set_load_default(): Invalid parameter count!', E_USER_ERROR);
 		}
 		else {
-			if (isset($this->table_info[$field])) { $this->table_info[$field]['load_default'] = $value; }
-			else { trigger_error("set_load_default(): Field '{$field}' does not exist.", E_USER_ERROR); }
+			if (isset($this->table_info[$field])) {
+                $this->table_info[$field]['load_default'] = $value;
+            }
+			else {
+    			trigger_error("set_load_default(): Field '{$field}' does not exist.", E_USER_ERROR);
+            }
 		}
 	}
 
@@ -824,8 +848,12 @@ abstract class DIO
 			trigger_error('set_save_default(): Invalid parameter count!', E_USER_ERROR);
 		}
 		else {
-			if (isset($this->table_info[$field])) { $this->table_info[$field]['save_default'] = $value; }
-			else { trigger_error("set_save_default(): Field '{$field}' does not exist.", E_USER_ERROR); }
+			if (isset($this->table_info[$field])) {
+    			$this->table_info[$field]['save_default'] = $value;
+            }
+			else {
+    			trigger_error("set_save_default(): Field '{$field}' does not exist.", E_USER_ERROR);
+            }
 		}
 	}
 
@@ -843,11 +871,14 @@ abstract class DIO
 				}
 			}
 			else {
-				$err_msg = 'Data types and values must be passed as an associative array with each element in the following form: [data type] => [default value].';
-				trigger_error("set_save_default_types(): $err_msg.", E_USER_ERROR);
+				$err_msg = 'Data types and values must be passed as an associative array with each element';
+				$err_msg .= ' in the following form: [data type] => [default value].';
+				trigger_error("set_save_default_types(): {$err_msg}.", E_USER_ERROR);
 			}
 		}
-		else { trigger_error('set_save_default_types(): No data type(s) passed.', E_USER_ERROR); }
+		else {
+    		trigger_error('set_save_default_types(): No data type(s) passed.', E_USER_ERROR);
+        }
 	}
 
 	//***********************************************************************
@@ -857,8 +888,12 @@ abstract class DIO
 	//***********************************************************************
 	public function set_field_data($field, $value, $use_quotes='auto')
 	{
-		if (isset($this->table_info[$field])) { $this->data[$field] = $value; }
-		else { trigger_error("set_field_data(): Field '{$field}' does not exist.", E_USER_ERROR); }
+		if (isset($this->table_info[$field])) {
+            $this->data[$field] = $value;
+        }
+		else {
+    		trigger_error("set_field_data(): Field '{$field}' does not exist.", E_USER_ERROR);
+        }
 	}
 
 	//***********************************************************************
@@ -868,8 +903,12 @@ abstract class DIO
 	//***********************************************************************
 	public function set_field_alias($field, $alias)
 	{
-		if (isset($this->table_info[$field])) { $this->table_info[$field]['alias'] = $alias; }
-		else { trigger_error("set_field_alias(): Field '{$field}' does not exist.", E_USER_ERROR); }
+		if (isset($this->table_info[$field])) {
+    		$this->table_info[$field]['alias'] = $alias;
+        }
+		else {
+    		trigger_error("set_field_alias(): Field '{$field}' does not exist.", E_USER_ERROR);
+        }
 	}
 
 	//***********************************************************************
@@ -890,7 +929,9 @@ abstract class DIO
                     break;
             }
         }
-		else { trigger_error("set_field_quotes(): Field '{$field}' does not exist.", E_USER_ERROR); }
+		else {
+    		trigger_error("set_field_quotes(): Field '{$field}' does not exist.", E_USER_ERROR);
+        }
 	}
 
 	//***********************************************************************
@@ -912,8 +953,12 @@ abstract class DIO
 	public function set_use_bind_param($field, $flag)
 	{
 		$flag = (bool)$flag;
-		if (isset($this->table_info[$field])) { $this->table_info[$field]['can_bind_param'] = $flag; }
-		else { trigger_error("set_use_bind_param(): Field '{$field}' does not exist.", E_USER_ERROR); }
+		if (isset($this->table_info[$field])) {
+    		$this->table_info[$field]['can_bind_param'] = $flag;
+        }
+		else {
+    		trigger_error("set_use_bind_param(): Field '{$field}' does not exist.", E_USER_ERROR);
+        }
 	}
 
 	//***********************************************************************
@@ -923,8 +968,12 @@ abstract class DIO
 	//***********************************************************************
 	public function no_save($field)
 	{
-		if (isset($this->table_info[$field])) { $this->table_info[$field]['no_save'] = true; }
-		else { trigger_error("no_save(): Field '{$field}' does not exist.", E_USER_ERROR); }
+		if (isset($this->table_info[$field])) {
+    		$this->table_info[$field]['no_save'] = true;
+        }
+		else {
+    		trigger_error("no_save(): Field '{$field}' does not exist.", E_USER_ERROR);
+        }
 	}
 
 	//***********************************************************************
@@ -934,8 +983,12 @@ abstract class DIO
 	//***********************************************************************
 	public function no_save_empty($field)
 	{
-		if (isset($this->table_info[$field])) { $this->table_info[$field]['no_save_empty'] = true; }
-		else { trigger_error("no_save_empty(): Field '{$field}' does not exist.", E_USER_ERROR); }
+		if (isset($this->table_info[$field])) {
+    		$this->table_info[$field]['no_save_empty'] = true;
+        }
+		else {
+    		trigger_error("no_save_empty(): Field '{$field}' does not exist.", E_USER_ERROR);
+        }
 	}
 
 	//***********************************************************************
@@ -955,7 +1008,9 @@ abstract class DIO
 				$this->no_save_empty_types[$types] = 1;
 			}
 		}
-		else { trigger_error('no_save_empty_types(): No data type(s) passed.', E_USER_ERROR); }
+		else {
+    		trigger_error('no_save_empty_types(): No data type(s) passed.', E_USER_ERROR);
+        }
 	}
 
 	//***********************************************************************
@@ -965,8 +1020,12 @@ abstract class DIO
 	//***********************************************************************
 	public function no_load($field)
 	{
-		if (isset($this->table_info[$field])) { $this->table_info[$field]['no_load'] = true; }
-		else { trigger_error("no_load(): Field '{$field}' does not exist.", E_USER_ERROR); }
+		if (isset($this->table_info[$field])) {
+    		$this->table_info[$field]['no_load'] = true;
+        }
+		else {
+    		trigger_error("no_load(): Field '{$field}' does not exist.", E_USER_ERROR);
+        }
 	}
 
 	//***********************************************************************
@@ -997,11 +1056,17 @@ abstract class DIO
 	    }
 
 		foreach ($pkey_values as $key => &$value) {
+
+			//-------------------------------------------------
+            // Where or And?
+			//-------------------------------------------------
             if (!$ll_where) {
         		$strsql .= ' where';
     			$ll_where = true;
 			}
-			else { $strsql .= ' and'; }
+			else {
+    			$strsql .= ' and';
+            }
 
 			//-------------------------------------------------
 			// Bind Parameters
@@ -1013,12 +1078,7 @@ abstract class DIO
 	                case 'mysqli':
 	                	$strsql .= " {$key} = ?";
 	                	$this->bind_param_count++;
-	                	$tmp_type = (isset($GLOBALS['mysql_bind_types'][strtoupper($this->table_info[$key]['data_type'])]))
-	                		? ($GLOBALS['mysql_bind_types'][strtoupper($this->table_info[$key]['data_type'])])
-	                		: ('s');
-	                	if (!array_key_exists(0, $this->bind_params)) {
-		                	$this->bind_params[0] = '';
-	                	}
+	                	$tmp_type = \phpOpenFW\Database\Structure\DatabaseType\MySQL::GetBindType($this->table_info[$key]['data_type']);
 	                	$this->bind_params[0] .= $tmp_type;
 	                	$this->bind_params[] = &$value;
 	                    break;
@@ -1037,15 +1097,7 @@ abstract class DIO
 	                	$this->bind_params[$tmp_param] = $value;
 						break;
 
-					case 'mssql':
-					case 'mysql':
 					case 'sqlite':
-						if (isset($this->quoted_types[$this->table_info[$key]['data_type']])) {
-							$strsql .= " {$key} = '{$value}'";
-						}
-						else {
-							$strsql .= " {$key} = {$value}";
-						}
 						break;
 
 					case 'db2':
@@ -1055,10 +1107,7 @@ abstract class DIO
 	                	$this->bind_param_count++;
 						break;
 
-					default:
-
 	            }
-
 			}
 			//-------------------------------------------------
 			// No Bind Parameters
@@ -1081,8 +1130,10 @@ abstract class DIO
 	//***********************************************************************
 	private function reset_bind_vars()
 	{
-        $this->use_bind_params = false;
-        $this->bind_params = array();
+        $this->bind_params = [];
+        if ($this->db_type == 'mysqli') {
+    		$this->bind_params[0] = '';
+        }
         $this->bind_param_count = 0;
 	}
 
@@ -1094,7 +1145,7 @@ abstract class DIO
 	public function use_bind_params($flag=true)
 	{
 		$this->use_bind_params = (bool)$flag;
-		if ($this->db_type == 'mysqli') { $this->bind_params[0] = ''; }
+		$this->reset_bind_vars();
 	}
 
 	//***********************************************************************
@@ -1125,8 +1176,12 @@ abstract class DIO
 	public function get_field_data($field)
 	{
 		if (isset($this->table_info[$field])) {
-			if (isset($this->data[$field])) { return $this->data[$field]; }
-			else { return false; }
+			if (isset($this->data[$field])) {
+    			return $this->data[$field];
+            }
+			else {
+    			return false;
+            }
 		}
 		else {
 			trigger_error("get_field_data(): Field '{$field}' does not exist.", E_USER_ERROR);
@@ -1157,9 +1212,9 @@ abstract class DIO
 	//***********************************************************************
 	//***********************************************************************
 	/**
-	* Set Charset
-	* @param string $str Example: utf8
-	**/
+	 * Set Charset
+	 * @param string $str Example: utf8
+	 **/
 	//***********************************************************************
 	//***********************************************************************
 	public function set_charset($charset)
@@ -1168,44 +1223,3 @@ abstract class DIO
 	}
 
 }
-
-//***********************************************************************
-//***********************************************************************
-// GLOBAL Database Variables
-//***********************************************************************
-//***********************************************************************
-
-//===============================================================
-// All but the 's' types, use 's' as the default
-//===============================================================
-$GLOBALS['mysql_bind_types'] = array(
-
-	//-------------------------------------------------
-	// Integer
-	//-------------------------------------------------
-	'TINYINT' => 'i',
-	'SMALLINT' => 'i',
-	'MEDIUMINT' => 'i',
-	'INT' => 'i',
-	'BIGINT' => 'i',
-
-	'BIT' => 'i',
-	'BOOL' => 'i',
-	'SERIAL' => 'i',
-
-	//-------------------------------------------------
-	// Double
-	//-------------------------------------------------
-	'DECIMAL' => 'd',
-	'FLOAT' => 'd',
-	'DOUBLE' => 'd',
-	'REAL' => 'd',
-
-	//-------------------------------------------------
-	// Blob
-	//-------------------------------------------------
-	'TINYBLOB' => 'b',
-	'MEDIUMBLOB' => 'b',
-	'BLOB' => 'b',
-	'LONGBLOB' => 'b'
-);

@@ -453,31 +453,58 @@ class QDB
 	//**************************************************************************************
 	public static function rs_trim($rs, $trim_data=true, $trim_row_keys=false, $trim_col_keys=false)
 	{
+        //------------------------------------------------------------
+        // Validate Recordset is an array
+        //------------------------------------------------------------
 		if (!is_array($rs)) {
-			trigger_error("ERROR: rs_data_trim(): Recordset must be an array!");
+			trigger_error("ERROR: QDB::rs_trim(): Recordset must be an array!");
 			return false;
 		}
 
+        //------------------------------------------------------------
+        // Process Data to be Trimmed
+        //------------------------------------------------------------
 		foreach ($rs as $key => $val) {
+
+			//--------------------------------------------------------
+            // Value is array, iterate through the values
+			//--------------------------------------------------------
 			if (is_array($val)) {
 				foreach ($val as $key2 => $val2) {
+    				//------------------------------------------------
 					// Trim Column Keys
+    				//------------------------------------------------
 					if ($trim_col_keys) {
 						unset($val[$key2]);
+
+                        //--------------------------------------------
 						// Trim Data
-						if ($trim_data) { $val[trim($key2)] = trim($val2); }
+                        //--------------------------------------------
+						if ($trim_data) {
+    						$val[trim($key2)] = trim($val2);
+    				    }
+                        //--------------------------------------------
 						// Do Not Trim Data
-						else { $val[trim($key2)] = $val2; }
+                        //--------------------------------------------
+						else {
+    						$val[trim($key2)] = $val2;
+    				    }
 					}
+    				//------------------------------------------------
 					// Do not Trim Column Keys
 					// Trim Data
-					else if ($trim_data) { $val[$key2] = trim($val2); }
+    				//------------------------------------------------
+					else if ($trim_data) {
+    					$val[$key2] = trim($val2);
+    				}
 				}
 			}
 			//--------------------------------------------------------
 			// Trim Data
 			//--------------------------------------------------------
-			else if ($trim_data) { $val = trim($val); }
+			else if ($trim_data) {
+    			$val = trim($val);
+            }
 
 			//--------------------------------------------------------
 			// Trim Row Keys
@@ -488,9 +515,13 @@ class QDB
 			}
 			//--------------------------------------------------------
 			// Do not Trim Row Keys
-			// If Trim Data or Trim Column Keys, reset in recordset array
 			//--------------------------------------------------------
-			else if ($trim_col_keys || $trim_data) { $rs[$key] = $val; }
+			// If Trim Data or Trim Column Keys, 
+			// reset in recordset array
+			//--------------------------------------------------------
+			else if ($trim_col_keys || $trim_data) {
+    			$rs[$key] = $val;
+            }
 		}
 
 		return $rs;

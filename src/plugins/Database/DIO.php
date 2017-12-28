@@ -38,9 +38,6 @@ abstract class DIO
 	protected $table_info;
 	protected $quoted_types;
 	protected $load_prefix;
-	protected $execute_queries;
-	protected $execute_pre_methods;
-	protected $execute_post_methods;
 	protected $unset_fields;
 	protected $class_name;
 	protected $no_save_empty_types;
@@ -50,6 +47,8 @@ abstract class DIO
 	protected $bind_param_count;
 	protected $charset;
 	protected $last_query = false;
+	protected $execute_queries;
+	protected $disabled_methods = [];
 
 	//=====================================================================
 	// Member Functions
@@ -184,7 +183,7 @@ abstract class DIO
 		//===============================================================
 		// Check for pre_export()
 		//===============================================================
-		if ($this->execute_pre_methods && method_exists($this, 'pre_export')) {
+		if (!$this->method_disabled('pre_export') && method_exists($this, 'pre_export')) {
 			if (!is_array($pre_args)) {
 				$pre_args = array($pre_args);
 			}
@@ -222,7 +221,7 @@ abstract class DIO
 		//===============================================================
 		// Check for pre_import()
 		//===============================================================
-		if ($this->execute_pre_methods && method_exists($this, 'pre_import')) {
+		if (!$this->method_disabled('pre_import') && method_exists($this, 'pre_import')) {
 			if (!is_array($pre_args)) {
 				$pre_args = array($pre_args);
 			}
@@ -299,7 +298,7 @@ abstract class DIO
 		//===============================================================
 		// Check for pre_save()
 		//===============================================================
-		if ($this->execute_pre_methods && method_exists($this, 'pre_save')) {
+		if (!$this->method_disabled('pre_save') && method_exists($this, 'pre_save')) {
 			if (!is_array($pre_args)) {
 				$pre_args = array($pre_args);
 			}
@@ -575,7 +574,7 @@ abstract class DIO
 		//===============================================================
         // Check for post_save()
 		//===============================================================
-		if ($this->execute_post_methods && method_exists($this, 'post_save')) {
+		if (!$this->method_disabled('post_save') && method_exists($this, 'post_save')) {
 			if (!is_array($post_args)) {
 				$post_args = array($post_args);
 			}
@@ -597,7 +596,7 @@ abstract class DIO
 		//===============================================================
 		// Check for pre_delete()
 		//===============================================================
-		if ($this->execute_pre_methods && method_exists($this, 'pre_delete')) {
+		if (!$this->method_disabled('pre_delete') && method_exists($this, 'pre_delete')) {
 			if (!is_array($pre_args)) {
 				$pre_args = array($pre_args);
 			}
@@ -672,7 +671,7 @@ abstract class DIO
 		//===============================================================
         // Check for post_delete()
 		//===============================================================
-		if ($this->execute_post_methods && method_exists($this, 'post_delete')) {
+		if (!$this->method_disabled('post_delete') && method_exists($this, 'post_delete')) {
 			if (!is_array($post_args)) {
 				$post_args = array($post_args);
 			}
@@ -698,8 +697,7 @@ abstract class DIO
         // Set default execution statuses
 		//===============================================================
         $this->execute_queries = true;
-        $this->execute_pre_methods = true;
-        $this->execute_post_methods = true;
+        $this->disabled_methods = [];
 
 		//===============================================================
         // Initialize No Save Empty Data Types 
@@ -1054,46 +1052,86 @@ abstract class DIO
 
 	//***********************************************************************
 	//***********************************************************************
-	// Set Pre methods to NOT execute
+	// Disable a method from executing
 	//***********************************************************************
 	//***********************************************************************
-	public function no_execute_pre_methods($no_execute=true)
+	public function disable_method($method)
 	{
-        $this->execute_pre_methods = !$no_execute;
+    	//===============================================================
+    	// Validate Parameters
+    	//===============================================================
+    	$tmp_type = gettype($method);
+        if (!$method || is_numeric($method) || in_array($tmp_type, ['array', 'object'])) {
+            return false;
+        }
+
+    	//===============================================================
+    	// Disable Method
+    	//===============================================================
+        $this->disabled_methods[$method] = $method;
+        return true;
 	}
 
 	//***********************************************************************
 	//***********************************************************************
-	// Set Post methods to NOT execute
+	// Enable a method for executing
 	//***********************************************************************
 	//***********************************************************************
-	public function no_execute_post_methods($no_execute=true)
+	public function enable_method($method)
 	{
-        $this->execute_post_methods = !$no_execute;
+    	//===============================================================
+    	// Validate Parameters
+    	//===============================================================
+    	$tmp_type = gettype($method);
+        if (!$method || is_numeric($method) || in_array($tmp_type, ['array', 'object'])) {
+            return false;
+        }
+
+    	//===============================================================
+    	// Enable Method
+    	//===============================================================
+    	if (isset($this->disabled_methods[$method])) {
+        	unset($this->disabled_methods[$method]);
+        	return 1;
+    	}
+
+        return true;
 	}
 
 	//***********************************************************************
 	//***********************************************************************
-	// Set Pre and Post methods to NOT execute
+	// Get disabled methods
 	//***********************************************************************
 	//***********************************************************************
-	public function no_execute_pre_post($no_execute=true)
+	public function disabled_methods()
 	{
-        $this->execute_pre_methods = !$no_execute;
-        $this->execute_post_methods = !$no_execute;
-	}
+        return $this->disabled_methods;
+    }
 
 	//***********************************************************************
 	//***********************************************************************
-	// Set database transactions and Pre and Post methods to NOT execute
+	// Is a method disabled?
 	//***********************************************************************
 	//***********************************************************************
-	public function no_execute_all($no_execute=true)
+	public function method_disabled($method)
 	{
-    	$this->execute_queries = !$no_execute;
-        $this->execute_pre_methods = !$no_execute;
-        $this->execute_post_methods = !$no_execute;
-	}
+    	//===============================================================
+    	// Validate Parameters
+    	//===============================================================
+    	$tmp_type = gettype($method);
+        if (!$method || is_numeric($method) || in_array($tmp_type, ['array', 'object'])) {
+            return null;
+        }
+
+    	//===============================================================
+    	// Is method disabled?
+    	//===============================================================
+    	if (isset($this->disabled_methods[$method])) {
+        	return true;
+        }
+
+        return false;
+    }
 
 	//***********************************************************************
 	//***********************************************************************

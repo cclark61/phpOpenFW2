@@ -166,7 +166,7 @@ class DataQuery {
 		}
 
 		//--------------------------------------------------------------------
-		// Filter phrase
+		// Filter phrase (Where)
 		//--------------------------------------------------------------------
 		if (array_key_exists('filter_phrase', $in_qa)) {
 			$this->filter_phrase = ' ' . $in_qa['filter_phrase'];

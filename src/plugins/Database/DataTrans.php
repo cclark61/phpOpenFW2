@@ -74,9 +74,11 @@ class DataTrans
 		$this->data_src = $data_src;
 
         //=================================================================
-		// Convert Mysql to MySQLi Database Driver
+		// Convert MySQL to MySQLi Database Driver
         //=================================================================
-        if ($_SESSION[$this->data_src]['type'] == 'mysql') { $_SESSION[$this->data_src]['type'] = 'mysqli'; }
+        if ($_SESSION[$this->data_src]['type'] == 'mysql') {
+            $_SESSION[$this->data_src]['type'] = 'mysqli';
+        }
 
         //=================================================================
         // Create Object based on Data Source Type
@@ -100,8 +102,12 @@ class DataTrans
 	* Destructor Function
 	**/
 	//*************************************************************************
-    public function __destruct() { $this->data_object->shutdown(); }
+    public function __destruct()
+    {
+        $this->data_object->shutdown();
+    }
 
+	//*************************************************************************
 	/**
 	* Executes a query based on the data source type
 	* @param string SQL Statement
@@ -126,7 +132,9 @@ class DataTrans
 		//------------------------------------------------------------
 		// Print Query (if necessary)
 		//------------------------------------------------------------
-		if ($this->print_query) { $this->display_query(); }
+		if ($this->print_query) {
+    		$this->display_query();
+        }
 
 		//------------------------------------------------------------
 		// Return Results
@@ -134,6 +142,7 @@ class DataTrans
 		return $query_result;
 	}
 	
+	//*************************************************************************
 	/**
 	* Return the current record set in the form of an associative array
 	* @return array current record set in the form of an associate array 
@@ -235,7 +244,10 @@ class DataTrans
 	* @param bool True (default) = Enable print of queries, False = Disable printing of queries
 	**/
 	//*************************************************************************
-	public function data_debug($print_queries=true) { $this->print_query = (bool)$print_queries; }
+	public function data_debug($print_queries=true)
+	{
+    	$this->print_query = (bool)$print_queries;
+    }
 
 	//*************************************************************************
 	/**
@@ -243,7 +255,10 @@ class DataTrans
 	* @return whether the current user is bound to the current data source
 	**/
 	//*************************************************************************
-	public function is_bound() { return $this->data_object->is_bound(); }
+	public function is_bound()
+	{
+    	return $this->data_object->is_bound();
+    }
 
 	//*************************************************************************
 	/**
@@ -251,28 +266,40 @@ class DataTrans
 	* @param bool True (default) = auto commit, False = no auto commit
 	**/
 	//*************************************************************************
-	public function auto_commit($auto_commit=true) { return $this->data_object->auto_commit($auto_commit); }
+	public function auto_commit($auto_commit=true)
+	{
+    	return $this->data_object->auto_commit($auto_commit);
+    }
 
 	//*************************************************************************
 	/**
 	* Start a new Database Transaction
 	**/
 	//*************************************************************************
-	public function start_trans() { return $this->data_object->start_trans(); }
+	public function start_trans()
+	{
+    	return $this->data_object->start_trans();
+    }
 
 	//*************************************************************************
 	/**
 	* Commit current Outstanding Statements / Transaction(s)
 	**/
 	//*************************************************************************
-	public function commit($start_new=true) { return $this->data_object->commit($start_new); }
+	public function commit($start_new=true)
+	{
+    	return $this->data_object->commit($start_new);
+    }
 
 	//*************************************************************************
 	/**
 	* Rollback current Outstanding Statements / Transaction(s)
 	**/
 	//*************************************************************************
-	public function rollback() { return $this->data_object->rollback(); }
+	public function rollback()
+	{
+    	return $this->data_object->rollback();
+    }
 
 	//*************************************************************************
 	/**
@@ -288,7 +315,9 @@ class DataTrans
 		$this->data_object->clear_last_insert_id();
 		$this->data_object->clear_result();
 
-		if (!$this->data_object->is_open()) { return false; }
+		if (!$this->data_object->is_open()) {
+    		return false;
+        }
 
 		if (!$statement) {
 			trigger_error('Error: [DataTrans]::prepare(): No statement or invalid statement passed.');
@@ -299,7 +328,9 @@ class DataTrans
 			// Arguments
 			//------------------------------------------------------------
 			$args = array();
-			foreach (func_get_args() as $arg) { $args[] = $arg; }
+			foreach (func_get_args() as $arg) {
+    			$args[] = $arg;
+            }
 			return call_user_func_array(array($this->data_object, 'prepare'), $args);
 		}
 	}
@@ -321,13 +352,17 @@ class DataTrans
 		//------------------------------------------------------------
 		// Check if Connection Open
 		//------------------------------------------------------------
-		if (!$this->data_object->is_open()) { return false; }
+		if (!$this->data_object->is_open()) {
+    		return false;
+        }
 
 		//------------------------------------------------------------
 		// Extra Function Arguments
 		//------------------------------------------------------------
 		$args = array();
-		foreach (func_get_args() as $arg) { $args[] = $arg; }
+		foreach (func_get_args() as $arg) {
+    		$args[] = $arg;
+        }
 
 		//------------------------------------------------------------
 		// Execute Query
@@ -337,7 +372,9 @@ class DataTrans
 		//------------------------------------------------------------
 		// Print Query (if necessary)
 		//------------------------------------------------------------
-		if ($this->print_query) { $this->display_query(); }
+		if ($this->print_query) {
+    		$this->display_query();
+        }
 
 		return $exec_result;
 	}
@@ -365,11 +402,17 @@ class DataTrans
 				print_r($query);
 				print "</pre>\n";
 			}
-			else { print_r($query); }
+			else {
+    			print_r($query);
+            }
 		}
 		else {
-			if (isset($_SERVER)) { print "{$query}<br/>\n"; }
-			else { print "{$query}\n"; }
+			if (isset($_SERVER)) {
+    			print "{$query}<br/>\n";
+            }
+			else {
+    			print "{$query}\n";
+            }
 		}
 	}
 

@@ -74,9 +74,11 @@ class DataResult
 		$this->data_src = $data_src;
 
         //=================================================================
-		// Convert Mysql to MySQLi Database Driver
+		// Convert MySQL to MySQLi Database Driver
         //=================================================================
-        if ($_SESSION[$this->data_src]['type'] == 'mysql') { $_SESSION[$this->data_src]['type'] = 'mysqli'; }
+        if ($_SESSION[$this->data_src]['type'] == 'mysql') {
+            $_SESSION[$this->data_src]['type'] = 'mysqli';
+        }
 
         //=================================================================
         // Create Object based on Data Source Type
@@ -111,14 +113,20 @@ class DataResult
 	* Get the number records in a result set. A False value means the value could not be determined.
 	**/
 	//*************************************************************************
-	public function num_rows() { return $this->data_object->num_rows(); }
+	public function num_rows()
+	{
+    	return $this->data_object->num_rows();
+    }
 
 	//*************************************************************************
 	/**
 	* Get the number fields in a result set. A False value means the value could not be determined.
 	**/
 	//*************************************************************************
-	public function num_fields() { return $this->data_object->num_fields(); }
+	public function num_fields()
+	{
+    	return $this->data_object->num_fields();
+    }
 
 	//*************************************************************************
 	/**
@@ -189,4 +197,3 @@ class DataResult
 	}
 
 }
-

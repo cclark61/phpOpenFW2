@@ -71,7 +71,12 @@ abstract class DIO
 			// Build SQL
             //-----------------------------------------------------------------
 			$strsql = 'select * from ' . $this->full_table_name();
-			$strsql .= $this->build_where($pkey_values);
+			$where = $this->build_where($pkey_values);
+			if (!$where) {
+    			$this->trigger_error(__METHOD__, 'An error occurred generating SQL where clause.');
+    			return false;
+			}
+			$strsql .= $where;
 
             //-----------------------------------------------------------------
             // Store last query
@@ -492,6 +497,10 @@ abstract class DIO
         if (!empty($pkey_values)) {
             $qa['type'] = 'update';
             $qa['filter_phrase'] = $this->build_where($pkey_values);
+            if (!$qa['filter_phrase']) {
+                $this->trigger_error(__METHOD__, 'An error occurred generating SQL where clause.');
+                return false;
+            }
         }
         else {
             $qa['type'] = 'insert';
@@ -599,7 +608,8 @@ abstract class DIO
         // Validate Keys / Filtering Values
         //===============================================================
         if (empty($pkey_values)) {
-            trigger_error("Error: [$this->class_name]::delete(): No primary key(s) given.", E_USER_ERROR);
+            $this->trigger_error(__METHOD__, 'No primary key(s) given.');
+            return false;
         }
 
         //===============================================================
@@ -611,7 +621,7 @@ abstract class DIO
             'filter_phrase' => $this->build_where($pkey_values)
         ];
         if (!$qa['filter_phrase']) {
-            trigger_error("Error: [$this->class_name]::delete(): Invalid primary key(s) given.", E_USER_ERROR);
+            $this->trigger_error(__METHOD__, 'An error occurred generating SQL where clause.');
             return false;
         }
         $query = new DataQuery($qa);
@@ -680,11 +690,6 @@ abstract class DIO
 	protected function set_data_source($data_source, $table)
 	{
 		//===============================================================
-		// Set Data to Empty Array
-		//===============================================================
-		$this->data = array();
-
-		//===============================================================
 		// Set Class Name
 		//===============================================================
 		$this->class_name = get_class($this);
@@ -709,7 +714,7 @@ abstract class DIO
 		$this->data_source = (string)$data_source;
 		$ds_data = \phpOpenFW\Framework\Core\DataSources::GetOne($this->data_source);
 		if (!$ds_data) {
-    		trigger_error('Data Source does not exist.', E_USER_ERROR);
+    		$this->trigger_error(__METHOD__, 'Data Source does not exist.');
     		return false;
 		}
 
@@ -732,11 +737,6 @@ abstract class DIO
         if ($tmp['schema'] != '') {
             $this->schema = $tmp['schema'];
         }
-
-		//===============================================================
-		// Setup Bind Parameters
-		//===============================================================
-		$this->reset_bind_vars();
 
 		//===============================================================
         // Database Type Specific Options
@@ -765,6 +765,11 @@ abstract class DIO
         // Pull Table Info
 		//===============================================================
         $this->table_info = Structure\Table::TableStructure($this->data_source, $table);
+
+		//===============================================================
+		// Initialize variables via reset() method
+		//===============================================================
+		$this->reset();
 
         return true;
 	}
@@ -803,11 +808,12 @@ abstract class DIO
 	public function set_field_default($field=null, $value=null)
 	{
 		if ($field === null || $value === null) {
-			trigger_error('set_field_default(): Invalid parameter count!', E_USER_ERROR);
+			$this->trigger_error(__METHOD__, 'Invalid parameter count.');
+			return false;
 		}
-		else {
-			$this->set_load_default($field, $value);
-		}
+
+        $this->set_load_default($field, $value);
+        return true;
 	}
 
 	//***********************************************************************
@@ -818,14 +824,17 @@ abstract class DIO
 	public function set_load_default($field=null, $value=null)
 	{
 		if ($field === null || $value === null) {
-			trigger_error('set_load_default(): Invalid parameter count!', E_USER_ERROR);
+			$this->trigger_error(__METHOD__, 'Invalid parameter count.');
+			return false;
 		}
 		else {
 			if (isset($this->table_info[$field])) {
                 $this->table_info[$field]['load_default'] = $value;
+                return true;
             }
 			else {
-    			trigger_error("set_load_default(): Field '{$field}' does not exist.", E_USER_ERROR);
+    			$this->trigger_error(__METHOD__, "Field '{$field}' does not exist.");
+    			return false;
             }
 		}
 	}
@@ -838,14 +847,14 @@ abstract class DIO
 	public function set_save_default($field=null, $value=null)
 	{
 		if ($field === null || $value === null) {
-			trigger_error('set_save_default(): Invalid parameter count!', E_USER_ERROR);
+			$this->trigger_error(__METHOD__, 'Invalid parameter count.');
 		}
 		else {
 			if (isset($this->table_info[$field])) {
     			$this->table_info[$field]['save_default'] = $value;
             }
 			else {
-    			trigger_error("set_save_default(): Field '{$field}' does not exist.", E_USER_ERROR);
+    			$this->trigger_error(__METHOD__, "Field '{$field}' does not exist.");
             }
 		}
 	}
@@ -866,11 +875,11 @@ abstract class DIO
 			else {
 				$err_msg = 'Data types and values must be passed as an associative array with each element';
 				$err_msg .= ' in the following form: [data type] => [default value].';
-				trigger_error("set_save_default_types(): {$err_msg}.", E_USER_ERROR);
+				$this->trigger_error(__METHOD__, $err_msg);
 			}
 		}
 		else {
-    		trigger_error('set_save_default_types(): No data type(s) passed.', E_USER_ERROR);
+    		$this->trigger_error(__METHOD__, 'No data type(s) passed.');
         }
 	}
 
@@ -885,7 +894,7 @@ abstract class DIO
             $this->data[$field] = $value;
         }
 		else {
-    		trigger_error("set_field_data(): Field '{$field}' does not exist.", E_USER_ERROR);
+    		$this->trigger_error(__METHOD__, "Field '{$field}' does not exist.");
         }
 	}
 
@@ -900,7 +909,7 @@ abstract class DIO
     		$this->table_info[$field]['alias'] = $alias;
         }
 		else {
-    		trigger_error("set_field_alias(): Field '{$field}' does not exist.", E_USER_ERROR);
+    		$this->trigger_error(__METHOD__, "Field '{$field}' does not exist.");
         }
 	}
 
@@ -923,7 +932,7 @@ abstract class DIO
             }
         }
 		else {
-    		trigger_error("set_field_quotes(): Field '{$field}' does not exist.", E_USER_ERROR);
+    		$this->trigger_error(__METHOD__, "Field '{$field}' does not exist.");
         }
 	}
 
@@ -950,7 +959,7 @@ abstract class DIO
     		$this->table_info[$field]['can_bind_param'] = $flag;
         }
 		else {
-    		trigger_error("set_use_bind_param(): Field '{$field}' does not exist.", E_USER_ERROR);
+    		$this->trigger_error(__METHOD__, "Field '{$field}' does not exist.");
         }
 	}
 
@@ -965,7 +974,7 @@ abstract class DIO
     		$this->table_info[$field]['no_save'] = true;
         }
 		else {
-    		trigger_error("no_save(): Field '{$field}' does not exist.", E_USER_ERROR);
+    		$this->trigger_error(__METHOD__, "Field '{$field}' does not exist.");
         }
 	}
 
@@ -980,7 +989,7 @@ abstract class DIO
     		$this->table_info[$field]['no_save_empty'] = true;
         }
 		else {
-    		trigger_error("no_save_empty(): Field '{$field}' does not exist.", E_USER_ERROR);
+    		$this->trigger_error(__METHOD__, "Field '{$field}' does not exist.");
         }
 	}
 
@@ -1002,7 +1011,7 @@ abstract class DIO
 			}
 		}
 		else {
-    		trigger_error('no_save_empty_types(): No data type(s) passed.', E_USER_ERROR);
+    		$this->trigger_error(__METHOD__, 'No data type(s) passed.');
         }
 	}
 
@@ -1017,7 +1026,7 @@ abstract class DIO
     		$this->table_info[$field]['no_load'] = true;
         }
 		else {
-    		trigger_error("no_load(): Field '{$field}' does not exist.", E_USER_ERROR);
+    		$this->trigger_error(__METHOD__, "Field '{$field}' does not exist.");
         }
 	}
 
@@ -1029,7 +1038,8 @@ abstract class DIO
 	public function print_only()
 	{
         $this->no_execute_all();
-        trigger_error('This method has been deprecated. Please use the no_execute_all() method instead.', E_USER_DEPRECATED);
+        $msg = 'This method has been deprecated. Please use the no_execute_all() method instead.';
+        $this->trigger_error(__METHOD__, $msg, E_USER_DEPRECATED);
 	}
 
 	//***********************************************************************
@@ -1093,27 +1103,46 @@ abstract class DIO
 	private function build_where(&$pkey_values)
 	{
         $strsql = '';
-        $ll_where = false;
 
 		//===============================================================
 		// If string passed transform into an array
 		//===============================================================
         if (!is_array($pkey_values)) {
-	        $pkey_values = array($this->primary_key => $pkey_values);
+            if (!$this->primary_key) {
+                $msg = 'Unable to build SQL where clause. Primary key(s) or indexes are not set or are invalid.';
+                $this->trigger_error(__METHOD__, $msg);
+                return false;
+            }
+            else if (!is_array($this->primary_key)) {
+    	        $pkey_values = array($this->primary_key => $pkey_values);
+            }
+            else {
+                $msg = 'Unable to build SQL where clause. Invalid primary key(s) or indexes given.';
+                $this->trigger_error(__METHOD__, $msg);
+                return false;
+            }
 	    }
 
+		//===============================================================
+        // Build where clause
+		//===============================================================
 		foreach ($pkey_values as $key => &$value) {
 
 			//-------------------------------------------------
-            // Where or And?
+            // Check that field name is NOT numeric
 			//-------------------------------------------------
-            if (!$ll_where) {
-        		$strsql .= ' where';
-    			$ll_where = true;
-			}
-			else {
-    			$strsql .= ' and';
+            if (is_numeric($key)) {
+                $msg = 'Unable to build SQL where clause. A primary key or index was found with an invalid name.';
+                $this->trigger_error(__METHOD__, $msg);
+                return false;
             }
+
+			//-------------------------------------------------
+            // Prepend And?
+			//-------------------------------------------------
+            if ($strsql) {
+        		$strsql .= ' and';
+			}
 
 			//-------------------------------------------------
 			// Bind Parameters
@@ -1167,7 +1196,29 @@ abstract class DIO
 			}
         }
 
-        return $strsql;
+        //===============================================================
+        // Check if where clause was generated...
+        // If not, return false
+        //===============================================================
+        if (!$strsql) {
+            return false;
+        }
+
+        //===============================================================
+        // Valid where clause, return it.
+        //===============================================================
+        return 'where' . $strsql;
+	}
+
+	//***********************************************************************
+	//***********************************************************************
+	// Reset Method
+	//***********************************************************************
+	//***********************************************************************
+	public function reset()
+	{
+        $this->data = array();
+        $this->reset_bind_vars();
 	}
 
 	//***********************************************************************
@@ -1246,7 +1297,7 @@ abstract class DIO
             }
 		}
 		else {
-			trigger_error("get_field_data(): Field '{$field}' does not exist.", E_USER_ERROR);
+			$this->trigger_error(__METHOD__, "Field '{$field}' does not exist.");
 			return false;
 		}
 	}
@@ -1259,6 +1310,16 @@ abstract class DIO
 	public function get_last_query()
 	{
 		return $this->last_query;
+	}
+
+	//***********************************************************************
+	//***********************************************************************
+	// Class Method for Triggering an Error
+	//***********************************************************************
+	//***********************************************************************
+	public function trigger_error($method, $msg, $error_type=E_USER_ERROR)
+	{
+		trigger_error("[{$this->class_name}]::{$method}(): {$msg}", $error_type);
 	}
 
 	//***********************************************************************

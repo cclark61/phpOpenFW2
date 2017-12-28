@@ -1035,19 +1035,19 @@ abstract class DIO
 	//***********************************************************************
 	public function print_only()
 	{
-        $this->no_execute_all();
-        $msg = 'This method has been deprecated. Please use the no_execute_all() method instead.';
+        $this->disable_queries();
+        $msg = 'This method has been deprecated. Please use the disable_queries() method instead.';
         $this->trigger_error(__METHOD__, $msg, E_USER_DEPRECATED);
 	}
 
 	//***********************************************************************
 	//***********************************************************************
-	// Set database queries to NOT execute
+	// Disable database queries (insert, update, and delete only)
 	//***********************************************************************
 	//***********************************************************************
-	public function no_execute_queries($no_execute=true)
+	public function disable_queries($disable=true)
 	{
-        $this->execute_queries = !$no_execute;
+        $this->execute_queries = !$disable;
 	}
 
 	//***********************************************************************

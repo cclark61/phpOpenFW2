@@ -23,7 +23,7 @@ Released under the MIT License: https://mit-license.org/
 -----------------------------------------------------------------------------------------------------------
 ## Version
 -----------------------------------------------------------------------------------------------------------
-2.0.7
+2.0.8
 
 -----------------------------------------------------------------------------------------------------------
 ## Requirements
@@ -45,6 +45,7 @@ Below is an outline of some of the features offered by phpOpenFW:
 * HTML Helpers
 * Form Engine
 * Plugin Facility
+* Validation Objects (SSV / SSV2)
 
 #### Application Facilities
 

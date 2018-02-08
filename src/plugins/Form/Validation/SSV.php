@@ -2,13 +2,13 @@
 //**************************************************************************************
 //**************************************************************************************
 /**
-* Server Side Validation Plugin
-*
-* @package		phpOpenFW
-* @author 		Christian J. Clark
-* @copyright	Copyright (c) Christian J. Clark
-* @license		https://mit-license.org
-**/
+ * Server Side Validation Plugin
+ *
+ * @package		phpOpenFW
+ * @author 		Christian J. Clark
+ * @copyright	Copyright (c) Christian J. Clark
+ * @license		https://mit-license.org
+ **/
 //**************************************************************************************
 //**************************************************************************************
 
@@ -27,53 +27,53 @@ class SSV
 	// Member Variables
 	//==============================================================
 	/**
-	* @var array Check $_POST for variables to validate
-	**/
+	 * @var array Check $_POST for variables to validate
+	 **/
 	private $check_post;
 
 	/**
-	* @var array Check $_GET for variables to validate
-	**/
+	 * @var array Check $_GET for variables to validate
+	 **/
 	private $check_get;
 
 	/**
-	* @var array Validation Types
-	**/
+	 * @var array Validation Types
+	 **/
 	private $valid_types;
 	
 	/**
-	* @var bool Validation Status
-	**/
+	 * @var bool Validation Status
+	 **/
 	private $validation_status;
 
 	/**
-	* @var array Failed Validations
-	**/
+	 * @var array Failed Validations
+	 **/
 	private $failed_checks;
 
 	/**
-	* @var array Validations to perform
-	**/
+	 * @var array Validations to perform
+	 **/
 	private $validations;
 
 	/**
-	* @var array Validation error messages
-	**/
+	 * @var array Validation error messages
+	 **/
 	private $fail_messages;
 
 	/**
-	* @var bool Debug Mode (Default: false)
-	**/
+	 * @var bool Debug Mode (Default: false)
+	 **/
 	private $debug_mode;
 	
 	/**
-	* @var string Transformation XSL Stylesheet
-	**/
+	 * @var string Transformation XSL Stylesheet
+	 **/
 	private $xsl;
 	
 	/**
-	* @var string POST Sub Arrays to check
-	**/
+	 * @var string POST Sub Arrays to check
+	 **/
 	private $post_sub_arrays;
 	
 	//======================================================================================
@@ -83,12 +83,11 @@ class SSV
 	//======================================================================================
 	
 	//**************************************************************************************
-	/**
-	* Constructor function
-	* @param string 
-	**/
 	//**************************************************************************************
-	// Constructor Function
+	/**
+	 * Constructor function
+	 **/
+	//**************************************************************************************
 	//**************************************************************************************
 	public function __construct($check_post=true, $check_get=false)
 	{
@@ -121,15 +120,15 @@ class SSV
 	}
 	
 	//**************************************************************************************
-	/**
-	* Add Check
-	* @param string Field name (First field if more than one)
-	* @param string Validation Type
-	* @param string Error Message
-	* @param string Field name 2 (or other parameter) 
-	**/
 	//**************************************************************************************
-	// Add Check Function
+	/**
+	 * Add Check
+	 * @param string Field name (First field if more than one)
+	 * @param string Validation Type
+	 * @param string Error Message
+	 * @param string Field name 2 (or other parameter) 
+	 **/
+	//**************************************************************************************
 	//**************************************************************************************
 	public function add_check($field_name, $valid_type, $valid_txt='', $field2_name='')
 	{
@@ -145,12 +144,12 @@ class SSV
 	}
 
 	//**************************************************************************************
-	/**
-	* Add a Failed validation
-	* @param string Fail Message
-	**/
 	//**************************************************************************************
-	// Add Fail Function
+	/**
+	 * Add a Failed validation
+	 * @param string Fail Message
+	 **/
+	//**************************************************************************************
 	//**************************************************************************************
 	public function add_fail($fail_message)
 	{
@@ -159,12 +158,12 @@ class SSV
 	}
 	
 	//**************************************************************************************
-	/**
-	* Add Post Sub Array to Check
-	* @param string POST Sub Array Name
-	**/
 	//**************************************************************************************
-	// Add Post Sub Array to Check Function
+	/**
+	 * Add Post Sub Array to Check
+	 * @param string POST Sub Array Name
+	 **/
+	//**************************************************************************************
 	//**************************************************************************************
 	public function check_post_sub_array($sub_array)
 	{
@@ -176,12 +175,13 @@ class SSV
 		}
 	}
 
-	/**
-	* Validate Function
-	* @return bool Success - True, Failure - False
-	**/
 	//**************************************************************************************
-	// Validate Function
+	//**************************************************************************************
+	/**
+	 * Validate Function
+	 * @return bool Success - True, Failure - False
+	 **/
+	//**************************************************************************************
 	//**************************************************************************************
 	public function validate()
 	{
@@ -307,48 +307,53 @@ class SSV
 		return $this->validation_status;
 	}
 
-	/**
-	* Status Function
-	* @return bool Returns the status of the server side validation (null before / true or false after)
-	**/
 	//**************************************************************************************
-	// Status Function
+	//**************************************************************************************
+	/**
+	 * Status Function
+	 * @return bool Returns the status of the server side validation (null before / true or false after)
+	 **/
+	//**************************************************************************************
 	//**************************************************************************************
 	public function status() { return $this->validation_status; }
 	
-	/**
-	* Fail Messages Function
-	* @return array Returns the failure messages produced by the server side validation
-	**/
 	//**************************************************************************************
-	// Status Function
+	//**************************************************************************************
+	/**
+	 * Fail Messages Function
+	 * @return array Returns the failure messages produced by the server side validation
+	 **/
+	//**************************************************************************************
 	//**************************************************************************************
 	public function fail_messages() { return $this->fail_messages; }
 	
-	/**
-	* Number of failed validations Function
-	* @return integer Returns the number of failed validations produced by the server side validation
-	**/
 	//**************************************************************************************
-	// Status Function
+	//**************************************************************************************
+	/**
+	 * Number of failed validations Function
+	 * @return integer Returns the number of failed validations produced by the server side validation
+	 **/
+	//**************************************************************************************
 	//**************************************************************************************
 	public function failed_checks() { return $this->num_failed_checks; }
 	
-	/**
-	* Toggle Debug Mode
-	* @param bool True - On, False - Off
-	**/
 	//**************************************************************************************
-	// Debug Mode function
+	//**************************************************************************************
+	/**
+	 * Toggle Debug Mode
+	 * @param bool True - On, False - Off
+	 **/
+	//**************************************************************************************
 	//**************************************************************************************
 	public function debug_mode($tmp_bool) { $this->debug_mode = ($tmp_bool) ? (true) : (false); }
 	
-	/**
-	* Display failed check messages using XSL
-	* @param string File path to other XSL Stylesheet
-	**/
 	//**************************************************************************************
-	// Display failed check messages function
+	//**************************************************************************************
+	/**
+	 * Display failed check messages using XSL
+	 * @param string File path to other XSL Stylesheet
+	 **/
+	//**************************************************************************************
 	//**************************************************************************************
 	public function display_fail_messages($xsl=false)
 	{

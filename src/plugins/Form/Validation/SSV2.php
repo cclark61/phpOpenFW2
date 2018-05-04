@@ -139,11 +139,20 @@ class SSV2
         // 3) Fail Message
         //------------------------------------------------------------------
         else if (count($args) == 3) {
-    		$params = [
-    		    'field' => $args[0], 
-    		    'type' => $args[1], 
-    		    'message' => $args[2]
-            ];
+            if ($args[0] == 'fail') {
+                $params = [
+                    'field' => $args[1],
+                    'type' => 'fail',
+                    'message' => $args[2]
+                ];
+            }
+            else {
+                $params = [
+                    'field' => $args[0],
+                    'type' => $args[1],
+                    'message' => $args[2]
+                ];
+            }
         }
         //------------------------------------------------------------------
         // Function Validation
@@ -234,9 +243,12 @@ class SSV2
 	 **/
 	//**************************************************************************************
 	//**************************************************************************************
-	public function AddFail($message)
+	public function AddFail($arg1, $arg2=false)
 	{
-        return $this->AddCheck('fail', $message);
+        if (!empty($arg2)) {
+            return $this->AddCheck('fail', $arg1, $arg2);
+        }
+        return $this->AddCheck('fail', $arg1);
     }
 
 	//**************************************************************************************

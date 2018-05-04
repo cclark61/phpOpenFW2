@@ -115,7 +115,7 @@ class SSV2
         // 2) Fail Message
         //------------------------------------------------------------------
         else if (count($args) == 2) {
-            if ($args[0] == 'fail') {
+            if ($args[0] == '__fail__') {
                 $params = [
         		    'field' => false, 
         		    'type' => 'fail',
@@ -139,20 +139,11 @@ class SSV2
         // 3) Fail Message
         //------------------------------------------------------------------
         else if (count($args) == 3) {
-            if ($args[0] == 'fail') {
-                $params = [
-                    'field' => $args[1],
-                    'type' => 'fail',
-                    'message' => $args[2]
-                ];
-            }
-            else {
-                $params = [
-                    'field' => $args[0],
-                    'type' => $args[1],
-                    'message' => $args[2]
-                ];
-            }
+            $params = [
+                'field' => $args[0],
+                'type' => $args[1],
+                'message' => $args[2]
+            ];
         }
         //------------------------------------------------------------------
         // Function Validation
@@ -246,9 +237,9 @@ class SSV2
 	public function AddFail($arg1, $arg2=false)
 	{
         if (!empty($arg2)) {
-            return $this->AddCheck('fail', $arg1, $arg2);
+            return $this->AddCheck($arg1, 'fail', $arg2);
         }
-        return $this->AddCheck('fail', $arg1);
+        return $this->AddCheck('__fail__', $arg1);
     }
 
 	//**************************************************************************************

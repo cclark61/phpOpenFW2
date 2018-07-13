@@ -67,7 +67,7 @@ class dr_mysqli extends dr_structure
 			$this->num_fields = count($this->fields);
 		}
 		else {
-			$this->num_fields = count($this->resource->fetch_fields());
+			$this->num_fields = $this->resource->field_count;
 		}
 	}
 

@@ -34,12 +34,12 @@ class QDB
 	* @return object A "DataResult" object which can be used to get the records.
 	*/
 	//**************************************************************************************
-	public static function qdb_result($db_config, $strsql, $bind_params=false, $opts=false)
+	public static function qdb_result($db_config, $strsql, $bind_params=[], $opts=false)
 	{
 		//------------------------------------------------------------------
 		// Use Bind Parameters?
 		//------------------------------------------------------------------
-		$use_bind_params = (is_array($bind_params) && count($bind_params)) ? (true) : (false);
+		$use_bind_params = (is_array($bind_params)) ? (true) : (false);
 
 		//------------------------------------------------------------------
 		// New Data Transaction

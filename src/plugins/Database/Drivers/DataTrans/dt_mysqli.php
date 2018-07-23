@@ -277,7 +277,10 @@ class dt_mysqli extends dt_structure
 		//----------------------------------------------
 		if ($bind_params) {
 
-			// Are you feeling a bit lazy? Let's just make those values into references for you…
+            //-----------------------------------------------------------
+			// Are you feeling a bit lazy?
+			// Let's just make those values into references for you...
+			//-----------------------------------------------------------
 			if ($lazy || $this->get_opt('make_bind_params_refs')) {
 				$tmp_bind_params = $bind_params;
 				for ($i = 1; $i < count($bind_params); $i++) {
@@ -285,7 +288,9 @@ class dt_mysqli extends dt_structure
 				}
 			}
 
-			// Call Bind Parameters Methid
+            //-----------------------------------------------------------
+			// Call Bind Parameters Method
+            //-----------------------------------------------------------
 	    	$bind_status = call_user_func_array(array($this->stmt, 'bind_param'), $bind_params);
 	    	if (!$bind_status) {
 	    		$this->gen_error('Binding of parameter data failed.');

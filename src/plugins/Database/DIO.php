@@ -49,6 +49,8 @@ abstract class DIO
 	protected $last_query = false;
 	protected $execute_queries;
 	protected $disabled_methods = [];
+	protected $pkey_values = false;
+	protected $last_insert_id = false;
 
 	//=====================================================================
 	// Member Functions
@@ -61,6 +63,13 @@ abstract class DIO
 	//***********************************************************************
 	public function load($pkey_values=false)
 	{
+		//===============================================================
+        // Set Primary Key Value(s)
+        // Reset Last Insert ID
+		//===============================================================
+    	$this->pkey_values = $pkey_values;
+    	$this->last_insert_id = false;
+
 		//===============================================================
 		// Load data from database
 		//===============================================================
@@ -295,6 +304,13 @@ abstract class DIO
 	//***********************************************************************
 	public function save($pkey_values='', $pre_args=array(), $post_args=array())
 	{
+		//===============================================================
+        // Set Primary Key Value(s)
+        // Reset Last Insert ID
+		//===============================================================
+    	$this->pkey_values = $pkey_values;
+    	$this->last_insert_id = false;
+
 		//===============================================================
 		// Check for pre_save()
 		//===============================================================
@@ -564,9 +580,9 @@ abstract class DIO
 			// and a valid ID is returned
 	        //-----------------------------------------------------------
             if ($qa['type'] == 'insert') {
-            	$lii = $data1->last_insert_id();
-            	if ($lii !== false) {
-                	$ret_val = $lii;
+            	$this->last_insert_id = $data1->last_insert_id();
+            	if ($this->last_insert_id !== false) {
+                	$ret_val = $this->last_insert_id;
                 }
             }
         }
@@ -592,6 +608,13 @@ abstract class DIO
 	public function delete($pkey_values='', $pre_args=array(), $post_args=array())
 	{
     	$ret_val = false;
+
+		//===============================================================
+        // Set Primary Key Value(s)
+        // Reset Last Insert ID
+		//===============================================================
+    	$this->pkey_values = $pkey_values;
+        $this->last_insert_id = false;
 
 		//===============================================================
 		// Check for pre_delete()

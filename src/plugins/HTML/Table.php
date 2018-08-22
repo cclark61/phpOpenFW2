@@ -30,22 +30,22 @@ class Table extends \phpOpenFW\XML\Element
 	/**
 	* @var array An array of all of the data for this table
 	**/
-	private $table_data;
+	protected $table_data;
 	
 	/**
 	* @var array An array of elements in the table
 	**/
-	private $table_elements;
+	protected $table_elements;
 	
 	/**
 	* @var integer number of columns in the table
 	**/
-	private $columns;
+	protected $columns;
 
 	/**
 	* @var Flag: true = put "alt" class in row element, false = don't
 	**/	
-	private $alt_rows;
+	protected $alt_rows;
 
 	//*************************************************************************
 	/**

@@ -251,46 +251,36 @@ abstract class DIO
             }
 
 			//-------------------------------------------------
-            // Unset $val for this pass through the loop
-            //-------------------------------------------------
-            if (isset($val)) { unset($val); }
-
-			//-------------------------------------------------
             // Search Input Array
             //-------------------------------------------------
             if (isset($in_array) && !empty($in_array)) {
-            	if (isset($in_array[$var_field])) {
-                	$val = $in_array[$var_field];
+            	if (array_key_exists($var_field, $in_array)) {
+                	$this->data[$field] = $in_array[$var_field];
+                	continue;
                 }
             }
 			//-------------------------------------------------
             // Search POST and GET
             //-------------------------------------------------
             else {
-            	if (isset($_POST[$var_field])) {
-                	$val = $_POST[$var_field];
+            	if (array_key_exists($var_field, $_POST)) {
+                	$this->data[$field] = $_POST[$var_field];
+                	continue;
                 }
-            	elseif (isset($_GET[$var_field])) {
-                	$val = $_GET[$var_field];
+            	elseif (array_key_exists($var_field, $_GET)) {
+                	$this->data[$field] = $_GET[$var_field];
+                	continue;
                 }
             }
 
-			//-------------------------------------------------
-            // Set in data array or unset_fields array
             //-------------------------------------------------
-            if (isset($val)) {
-	            $this->data[$field] = $val;
-	        }
-            else {
-	            //-------------------------------------------------
-            	// Check for a default save value
-            	//-------------------------------------------------
-            	if (isset($info['save_default'])) {
-                	$this->data[$field] = $info['save_default'];
-                }
-            	else {
-                	$this->unset_fields[$field] = '';
-                }
+        	// Check for a default save value
+        	//-------------------------------------------------
+        	if (isset($info['save_default'])) {
+            	$this->data[$field] = $info['save_default'];
+            }
+        	else {
+            	$this->unset_fields[$field] = '';
             }
 		}
 

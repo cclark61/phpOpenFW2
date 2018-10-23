@@ -35,7 +35,11 @@ trait Condition
     // Equals
     //=========================================================================
     //=========================================================================
-    public static function Equals(String $field, $value, Array &$params, String $type='i')
+    public static function Equals(String $field, $value, Array &$params, String $type='s')
+    {
+        return self::SingleValueCondition($field, $value, '=', $params, $type);
+    }
+    public static function eq(String $field, $value, Array &$params, String $type='s')
     {
         return self::SingleValueCondition($field, $value, '=', $params, $type);
     }
@@ -45,7 +49,11 @@ trait Condition
     // Not Equals
     //=========================================================================
     //=========================================================================
-    public static function NotEquals(String $field, $value, Array &$params, String $type='i')
+    public static function NotEquals(String $field, $value, Array &$params, String $type='s')
+    {
+        return self::SingleValueCondition($field, $value, '!=', $params, $type);
+    }
+    public static function neq(String $field, $value, Array &$params, String $type='s')
     {
         return self::SingleValueCondition($field, $value, '!=', $params, $type);
     }
@@ -55,7 +63,11 @@ trait Condition
     // Less Than
     //=========================================================================
     //=========================================================================
-    public static function LessThan(String $field, $value, Array &$params, String $type='i')
+    public static function LessThan(String $field, $value, Array &$params, String $type='s')
+    {
+        return self::SingleValueCondition($field, $value, '<', $params, $type);
+    }
+    public static function lt(String $field, $value, Array &$params, String $type='s')
     {
         return self::SingleValueCondition($field, $value, '<', $params, $type);
     }
@@ -65,7 +77,11 @@ trait Condition
     // Less Than Or Equal
     //=========================================================================
     //=========================================================================
-    public static function LessThanOrEqual(String $field, $value, Array &$params, String $type='i')
+    public static function LessThanOrEqual(String $field, $value, Array &$params, String $type='s')
+    {
+        return self::SingleValueCondition($field, $value, '<=', $params, $type);
+    }
+    public static function ltoe(String $field, $value, Array &$params, String $type='s')
     {
         return self::SingleValueCondition($field, $value, '<=', $params, $type);
     }
@@ -75,7 +91,11 @@ trait Condition
     // Greater Than
     //=========================================================================
     //=========================================================================
-    public static function GreaterThan(String $field, $value, Array &$params, String $type='i')
+    public static function GreaterThan(String $field, $value, Array &$params, String $type='s')
+    {
+        return self::SingleValueCondition($field, $value, '>', $params, $type);
+    }
+    public static function gt(String $field, $value, Array &$params, String $type='s')
     {
         return self::SingleValueCondition($field, $value, '>', $params, $type);
     }
@@ -85,7 +105,11 @@ trait Condition
     // Greater Than Or Equal
     //=========================================================================
     //=========================================================================
-    public static function GreaterThanOrEqual(String $field, $value, Array &$params, String $type='i')
+    public static function GreaterThanOrEqual(String $field, $value, Array &$params, String $type='s')
+    {
+        return self::SingleValueCondition($field, $value, '>=', $params, $type);
+    }
+    public static function gtoe(String $field, $value, Array &$params, String $type='s')
     {
         return self::SingleValueCondition($field, $value, '>=', $params, $type);
     }
@@ -95,7 +119,7 @@ trait Condition
     // Like
     //=========================================================================
     //=========================================================================
-    public static function Like(String $field, $value, Array &$params, String $type='i')
+    public static function Like(String $field, $value, Array &$params, String $type='s')
     {
         return self::SingleValueCondition($field, $value, 'LIKE', $params, $type);
     }
@@ -105,7 +129,7 @@ trait Condition
     // NOT Like
     //=========================================================================
     //=========================================================================
-    public static function NotLike(String $field, $value, Array &$params, String $type='i')
+    public static function NotLike(String $field, $value, Array &$params, String $type='s')
     {
         return self::SingleValueCondition($field, $value, 'NOT LIKE', $params, $type);
     }
@@ -149,7 +173,7 @@ trait Condition
     // In
     //=========================================================================
     //=========================================================================
-    public static function In(String $field, $values, Array &$params, String $type='i')
+    public static function In(String $field, $values, Array &$params, String $type='s')
     {
         return self::MultipleValueCondition($field, $values, 'IN', $params, $type);
     }
@@ -159,7 +183,7 @@ trait Condition
     // NOT In
     //=========================================================================
     //=========================================================================
-    public static function NotIn(String $field, $values, Array &$params, String $type='i')
+    public static function NotIn(String $field, $values, Array &$params, String $type='s')
     {
         return self::MultipleValueCondition($field, $values, 'NOT IN', $params, $type);
     }
@@ -177,7 +201,7 @@ trait Condition
     // Single Value Condition
     //=========================================================================
     //=========================================================================
-    protected static function SingleValueCondition(String $field, $value, String $op, Array &$params, String $type='i')
+    protected static function SingleValueCondition(String $field, $value, String $op, Array &$params, String $type='s')
     {
         //-----------------------------------------------------------------
         // Validate Parameters
@@ -192,7 +216,7 @@ trait Condition
         //-----------------------------------------------------------------
         // Add Bind Parameter
         //-----------------------------------------------------------------
-        $place_holder = self::AddBindParam($params, $value, $type);
+        $place_holder = \phpOpenFW\Builders\SQL\Aux::AddBindParam(static::$db_type, $params, $value, $type);
 
         //-----------------------------------------------------------------
         // Create and Return Condition
@@ -205,7 +229,7 @@ trait Condition
     // Multiple Value Condition
     //=========================================================================
     //=========================================================================
-    protected static function MultipleValueCondition(String $field, Array $values, String $op, Array &$params, String $type='i')
+    protected static function MultipleValueCondition(String $field, Array $values, String $op, Array &$params, String $type='s')
     {
         //-----------------------------------------------------------------
         // Validate Parameters
@@ -218,13 +242,9 @@ trait Condition
         }
 
         //-----------------------------------------------------------------
-        // Loop Through Values
+        // Add Bind Parameters
         //-----------------------------------------------------------------
-        $place_holders = '';
-        foreach ($values as $value) {
-            $tmp_ph = self::AddBindParam($params, $value, $type);
-            $place_holders .= ($place_holders) ? (', ' . $tmp_ph) : ($tmp_ph);
-        }
+        $place_holders = \phpOpenFW\Builders\SQL\Aux::AddBindParams(static::$db_type, $params, $values, $type);
 
         //-----------------------------------------------------------------
         // Create and Return Condition
@@ -232,67 +252,5 @@ trait Condition
         return "{$field} {$op} ({$place_holders})";
     }
 
-    //=========================================================================
-    //=========================================================================
-    // Add Bind Parameter
-    //=========================================================================
-    //=========================================================================
-    public static function AddBindParam(Array &$params, $value, $type='i')
-    {
-        //-----------------------------------------------------------------
-        // Which Class is using this trait?
-        //-----------------------------------------------------------------
-        // (i.e. How do we add the bind parameter?)
-        //-----------------------------------------------------------------
-        switch (static::$db_type) {
-
-            //-----------------------------------------------------------------
-            // MySQL
-            //-----------------------------------------------------------------
-            case 'mysql':
-                if (count($params) == 0) {
-                    $params[] = '';
-                }
-                $params[0] .= $type;
-                $params[] = $value;
-                return '?';
-                break;
-
-            //-----------------------------------------------------------------
-            // PgSQL
-            //-----------------------------------------------------------------
-            case 'pgsql':
-                $index = count($params);
-                $ph = '$' . $index;
-                if (isset($params[$index])) {
-                    throw new \Exception("An error occurred trying to add the PostgreSQL bind parameter. Parameter index already in use.");
-                }
-                $params[$index] = $value;
-                return $ph;
-                break;
-
-            //-----------------------------------------------------------------
-            // Oracle
-            //-----------------------------------------------------------------
-            case 'oracle':
-                $index = count($params);
-                $ph = 'p' . $index;
-                if (isset($params[$ph])) {
-                    throw new \Exception("An error occurred trying to add the Oracle bind parameter. Parameter index already in use.");
-                }
-                $params[$ph] = $value;
-                return ':' . $ph;
-                break;
-
-            //-----------------------------------------------------------------
-            // Default
-            //-----------------------------------------------------------------
-            default:
-                $params[] = $value;
-                return '?';
-                break;
-
-        }
-    }
 
 }

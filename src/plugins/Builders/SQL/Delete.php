@@ -30,7 +30,6 @@ class Delete extends Core
 	// Class Memebers
     //=========================================================================
     protected $sql_type = 'delete';
-    protected $table = false;
 
     //=========================================================================
     //=========================================================================
@@ -39,9 +38,19 @@ class Delete extends Core
     //=========================================================================
     public function GetSQL()
     {
+		//----------------------------------------------------------------
+        // Get Formatted Where Clause
+		//----------------------------------------------------------------
 		$where = $this->FormatWhere();
+
+		//----------------------------------------------------------------
+        // Require a where clause to prevent deleting all table rows
+		//----------------------------------------------------------------
 		if ($where) {
     		return "DELETE FROM {$this->table} {$where}";
+        }
+        else {
+            throw new \Exception("SQL Delete statement must have at least one qualifying condition.");
         }
 
         return false;

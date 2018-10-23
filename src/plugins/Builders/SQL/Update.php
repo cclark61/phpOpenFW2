@@ -30,7 +30,6 @@ class Update extends Core
 	// Class Memebers
     //=========================================================================
     protected $sql_type = 'update';
-    protected $table = false;
 
     //=========================================================================
     //=========================================================================
@@ -39,17 +38,28 @@ class Update extends Core
     //=========================================================================
     public function GetSQL()
     {
+		//----------------------------------------------------------------
+        // Start SQL Update Statement
+		//----------------------------------------------------------------
 		$strsql = "UPDATE {$this->table} SET ";
 
 		//-------------------------------------------------------
         // Format Fields
 		//-------------------------------------------------------
+		self::AddSQLClause($strsql, $this->FormatFields());
 
-
-		//-------------------------------------------------------
-        // Format Where
-		//-------------------------------------------------------
-		$strsql .= $this->FormatWhere() . "\n";
+		//----------------------------------------------------------------
+        // Get Formatted Where Clause
+		//----------------------------------------------------------------
+        // Require a where clause to prevent updating all table rows
+		//----------------------------------------------------------------
+        $where = $this->FormatWhere();
+		if ($where) {
+    		self::AddSQLClause($strsql, $where);
+        }
+        else {
+            throw new \Exception("SQL Delete statement must have at least one qualifying condition.");
+        }
 
 		//-------------------------------------------------------
 		// Return SQL

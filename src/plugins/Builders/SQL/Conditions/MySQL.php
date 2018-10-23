@@ -22,20 +22,5 @@ namespace phpOpenFW\Builders\SQL\Conditions;
 class MySQL
 {
     use Condition;
-
-    //=========================================================================
-    //=========================================================================
-    // Add Bind Parameter
-    //=========================================================================
-    //=========================================================================
-    public static function AddBindParam(Array &$params, $value, $type='i')
-    {
-        if (count($params) == 0) {
-            $params[] = '';
-        }
-        $params[0] = $type;
-        $params[] = $value;
-        return '?';
-    }
-    
+    protected static $db_type = 'mysql';
 }

@@ -191,4 +191,36 @@ trait Condition
         return "{$field} {$op} {$place_holder}";
     }
 
+    //=========================================================================
+    //=========================================================================
+    // Multiple Value Condition
+    //=========================================================================
+    //=========================================================================
+    protected static function MultipleValueCondition(String $field, Array $values, String $op, Array &$params, String $type='i')
+    {
+        //-----------------------------------------------------------------
+        // Validate Parameters
+        //-----------------------------------------------------------------
+        if (!$field) {
+            throw new \Exception("Invalid field name given.");
+        }
+        if (!$values) {
+            return false;
+        }
+
+        //-----------------------------------------------------------------
+        // Loop Through Values
+        //-----------------------------------------------------------------
+        $place_holders = '';
+        foreach ($values as $value) {
+            $tmp_ph = self::AddBindParam($params, $value, $type);
+            $place_holders .= ($place_holders) ? (', ' . $tmp_ph) : ($tmp_ph);
+        }
+
+        //-----------------------------------------------------------------
+        // Create and Return Condition
+        //-----------------------------------------------------------------
+        return "{$field} {$op} ({$place_holders})";
+    }
+
 }

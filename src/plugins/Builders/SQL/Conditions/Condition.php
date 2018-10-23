@@ -35,11 +35,11 @@ trait Condition
     // Equals
     //=========================================================================
     //=========================================================================
-    public static function Equals(String $field, $value, Array &$params, String $type='i')
+    public static function Equals(String $field, $value, Array &$params, String $type='s')
     {
         return self::SingleValueCondition($field, $value, '=', $params, $type);
     }
-    public static function eq(String $field, $value, Array &$params, String $type='i')
+    public static function eq(String $field, $value, Array &$params, String $type='s')
     {
         return self::SingleValueCondition($field, $value, '=', $params, $type);
     }
@@ -49,11 +49,11 @@ trait Condition
     // Not Equals
     //=========================================================================
     //=========================================================================
-    public static function NotEquals(String $field, $value, Array &$params, String $type='i')
+    public static function NotEquals(String $field, $value, Array &$params, String $type='s')
     {
         return self::SingleValueCondition($field, $value, '!=', $params, $type);
     }
-    public static function neq(String $field, $value, Array &$params, String $type='i')
+    public static function neq(String $field, $value, Array &$params, String $type='s')
     {
         return self::SingleValueCondition($field, $value, '!=', $params, $type);
     }
@@ -63,11 +63,11 @@ trait Condition
     // Less Than
     //=========================================================================
     //=========================================================================
-    public static function LessThan(String $field, $value, Array &$params, String $type='i')
+    public static function LessThan(String $field, $value, Array &$params, String $type='s')
     {
         return self::SingleValueCondition($field, $value, '<', $params, $type);
     }
-    public static function lt(String $field, $value, Array &$params, String $type='i')
+    public static function lt(String $field, $value, Array &$params, String $type='s')
     {
         return self::SingleValueCondition($field, $value, '<', $params, $type);
     }
@@ -77,11 +77,11 @@ trait Condition
     // Less Than Or Equal
     //=========================================================================
     //=========================================================================
-    public static function LessThanOrEqual(String $field, $value, Array &$params, String $type='i')
+    public static function LessThanOrEqual(String $field, $value, Array &$params, String $type='s')
     {
         return self::SingleValueCondition($field, $value, '<=', $params, $type);
     }
-    public static function ltoe(String $field, $value, Array &$params, String $type='i')
+    public static function ltoe(String $field, $value, Array &$params, String $type='s')
     {
         return self::SingleValueCondition($field, $value, '<=', $params, $type);
     }
@@ -91,11 +91,11 @@ trait Condition
     // Greater Than
     //=========================================================================
     //=========================================================================
-    public static function GreaterThan(String $field, $value, Array &$params, String $type='i')
+    public static function GreaterThan(String $field, $value, Array &$params, String $type='s')
     {
         return self::SingleValueCondition($field, $value, '>', $params, $type);
     }
-    public static function gt(String $field, $value, Array &$params, String $type='i')
+    public static function gt(String $field, $value, Array &$params, String $type='s')
     {
         return self::SingleValueCondition($field, $value, '>', $params, $type);
     }
@@ -105,11 +105,11 @@ trait Condition
     // Greater Than Or Equal
     //=========================================================================
     //=========================================================================
-    public static function GreaterThanOrEqual(String $field, $value, Array &$params, String $type='i')
+    public static function GreaterThanOrEqual(String $field, $value, Array &$params, String $type='s')
     {
         return self::SingleValueCondition($field, $value, '>=', $params, $type);
     }
-    public static function gtoe(String $field, $value, Array &$params, String $type='i')
+    public static function gtoe(String $field, $value, Array &$params, String $type='s')
     {
         return self::SingleValueCondition($field, $value, '>=', $params, $type);
     }
@@ -119,7 +119,7 @@ trait Condition
     // Like
     //=========================================================================
     //=========================================================================
-    public static function Like(String $field, $value, Array &$params, String $type='i')
+    public static function Like(String $field, $value, Array &$params, String $type='s')
     {
         return self::SingleValueCondition($field, $value, 'LIKE', $params, $type);
     }
@@ -129,7 +129,7 @@ trait Condition
     // NOT Like
     //=========================================================================
     //=========================================================================
-    public static function NotLike(String $field, $value, Array &$params, String $type='i')
+    public static function NotLike(String $field, $value, Array &$params, String $type='s')
     {
         return self::SingleValueCondition($field, $value, 'NOT LIKE', $params, $type);
     }
@@ -173,7 +173,7 @@ trait Condition
     // In
     //=========================================================================
     //=========================================================================
-    public static function In(String $field, $values, Array &$params, String $type='i')
+    public static function In(String $field, $values, Array &$params, String $type='s')
     {
         return self::MultipleValueCondition($field, $values, 'IN', $params, $type);
     }
@@ -183,7 +183,7 @@ trait Condition
     // NOT In
     //=========================================================================
     //=========================================================================
-    public static function NotIn(String $field, $values, Array &$params, String $type='i')
+    public static function NotIn(String $field, $values, Array &$params, String $type='s')
     {
         return self::MultipleValueCondition($field, $values, 'NOT IN', $params, $type);
     }
@@ -201,7 +201,7 @@ trait Condition
     // Single Value Condition
     //=========================================================================
     //=========================================================================
-    protected static function SingleValueCondition(String $field, $value, String $op, Array &$params, String $type='i')
+    protected static function SingleValueCondition(String $field, $value, String $op, Array &$params, String $type='s')
     {
         //-----------------------------------------------------------------
         // Validate Parameters
@@ -229,7 +229,7 @@ trait Condition
     // Multiple Value Condition
     //=========================================================================
     //=========================================================================
-    protected static function MultipleValueCondition(String $field, Array $values, String $op, Array &$params, String $type='i')
+    protected static function MultipleValueCondition(String $field, Array $values, String $op, Array &$params, String $type='s')
     {
         //-----------------------------------------------------------------
         // Validate Parameters

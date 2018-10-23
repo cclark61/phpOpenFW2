@@ -2,7 +2,7 @@
 //**************************************************************************************
 //**************************************************************************************
 /**
- * SQL Having Trait
+ * SQL Limit Trait
  *
  * @package		phpOpenFW
  * @author 		Christian J. Clark
@@ -16,25 +16,37 @@ namespace phpOpenFW\Builders\SQL\Traits;
 
 //**************************************************************************************
 /**
- * SQL Having Trait
+ * SQL Limit Trait
  */
 //**************************************************************************************
-trait Having
+trait Limit
 {
     //=========================================================================
 	// Trait Memebers
     //=========================================================================
-	protected $having = [];
+	protected $limit = false;
+	protected $offset = false;
 
     //=========================================================================
     //=========================================================================
-	// Having Clause Method
+	// Limit Clause Method
     //=========================================================================
     //=========================================================================
-	public function Having($condition)
+	public function Limit($limit, $offset=false)
 	{
-
-        return $this;
+		if (is_null($limit)) {
+			$this->limit = false;
+		}
+		else if ($limit != '' && (int)$limit) {
+    		$this->limit = (int)$limit;
+		}
+		if (is_null($offset)) {
+			$this->offset = false;
+		}
+		else if ($offset != '' && (int)$offset) {
+    		$this->offset = (int)$offset;
+		}
+		return $this;
 	}
 
     //##################################################################################
@@ -47,12 +59,43 @@ trait Having
 
     //=========================================================================
     //=========================================================================
-	// Format Having Clause Method
+	// Format Limit Clause Method
     //=========================================================================
     //=========================================================================
-	protected function FormatHaving()
+	protected function FormatLimit()
 	{
+    	$ret_val = '';
 
+		//-------------------------------------------------------
+        // MySQL Limit / Offset
+		//-------------------------------------------------------
+    	if ($this->db_type == 'mysql' || $this->db_type == 'pgsql') {
+    		if ($this->limit) {
+    			$ret_val = 'LIMIT ' . $this->limit;
+    		}
+    		if ($this->offset) {
+    			$ret_val .= ' OFFSET ' . $this->offset;
+    		}
+        }
+		//-------------------------------------------------------
+        // Oracle
+		//-------------------------------------------------------
+        else if ($this->db_type == 'oracle') {
+    		if ($this->offset) {
+    			$ret_val = "OFFSET {$this->offset} ROWS";
+    		}
+    		if ($this->limit) {
+    			$ret_val .= " FETCH NEXT {$this->limit} ROWS ONLY";
+    		}            
+        }
+		//-------------------------------------------------------
+        // SQL Server
+		//-------------------------------------------------------
+        else if ($this->db_type == 'sqlsrv') {
+            $ret_val = 'SELECT TOP ' . $this->limit;
+        }
+
+		return $ret_val;
 	}
 
 }

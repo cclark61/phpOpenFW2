@@ -39,6 +39,10 @@ trait Condition
     {
         return self::SingleValueCondition($field, $value, '=', $params, $type);
     }
+    public static function eq(String $field, $value, Array &$params, String $type='i')
+    {
+        return self::SingleValueCondition($field, $value, '=', $params, $type);
+    }
 
     //=========================================================================
     //=========================================================================
@@ -46,6 +50,10 @@ trait Condition
     //=========================================================================
     //=========================================================================
     public static function NotEquals(String $field, $value, Array &$params, String $type='i')
+    {
+        return self::SingleValueCondition($field, $value, '!=', $params, $type);
+    }
+    public static function neq(String $field, $value, Array &$params, String $type='i')
     {
         return self::SingleValueCondition($field, $value, '!=', $params, $type);
     }
@@ -59,6 +67,10 @@ trait Condition
     {
         return self::SingleValueCondition($field, $value, '<', $params, $type);
     }
+    public static function lt(String $field, $value, Array &$params, String $type='i')
+    {
+        return self::SingleValueCondition($field, $value, '<', $params, $type);
+    }
 
     //=========================================================================
     //=========================================================================
@@ -66,6 +78,10 @@ trait Condition
     //=========================================================================
     //=========================================================================
     public static function LessThanOrEqual(String $field, $value, Array &$params, String $type='i')
+    {
+        return self::SingleValueCondition($field, $value, '<=', $params, $type);
+    }
+    public static function ltoe(String $field, $value, Array &$params, String $type='i')
     {
         return self::SingleValueCondition($field, $value, '<=', $params, $type);
     }
@@ -79,6 +95,10 @@ trait Condition
     {
         return self::SingleValueCondition($field, $value, '>', $params, $type);
     }
+    public static function gt(String $field, $value, Array &$params, String $type='i')
+    {
+        return self::SingleValueCondition($field, $value, '>', $params, $type);
+    }
 
     //=========================================================================
     //=========================================================================
@@ -86,6 +106,10 @@ trait Condition
     //=========================================================================
     //=========================================================================
     public static function GreaterThanOrEqual(String $field, $value, Array &$params, String $type='i')
+    {
+        return self::SingleValueCondition($field, $value, '>=', $params, $type);
+    }
+    public static function gtoe(String $field, $value, Array &$params, String $type='i')
     {
         return self::SingleValueCondition($field, $value, '>=', $params, $type);
     }

@@ -192,7 +192,7 @@ trait Condition
         //-----------------------------------------------------------------
         // Add Bind Parameter
         //-----------------------------------------------------------------
-        $place_holder = self::AddBindParam($params, $value, $type);
+        $place_holder = \phpOpenFW\Builders\SQL\Aux::AddBindParam(static::$db_type, $params, $value, $type);
 
         //-----------------------------------------------------------------
         // Create and Return Condition
@@ -218,13 +218,9 @@ trait Condition
         }
 
         //-----------------------------------------------------------------
-        // Loop Through Values
+        // Add Bind Parameters
         //-----------------------------------------------------------------
-        $place_holders = '';
-        foreach ($values as $value) {
-            $tmp_ph = self::AddBindParam($params, $value, $type);
-            $place_holders .= ($place_holders) ? (', ' . $tmp_ph) : ($tmp_ph);
-        }
+        $place_holders = \phpOpenFW\Builders\SQL\Aux::AddBindParams(static::$db_type, $params, $values, $type);
 
         //-----------------------------------------------------------------
         // Create and Return Condition
@@ -232,67 +228,5 @@ trait Condition
         return "{$field} {$op} ({$place_holders})";
     }
 
-    //=========================================================================
-    //=========================================================================
-    // Add Bind Parameter
-    //=========================================================================
-    //=========================================================================
-    public static function AddBindParam(Array &$params, $value, $type='i')
-    {
-        //-----------------------------------------------------------------
-        // Which Class is using this trait?
-        //-----------------------------------------------------------------
-        // (i.e. How do we add the bind parameter?)
-        //-----------------------------------------------------------------
-        switch (static::$db_type) {
-
-            //-----------------------------------------------------------------
-            // MySQL
-            //-----------------------------------------------------------------
-            case 'mysql':
-                if (count($params) == 0) {
-                    $params[] = '';
-                }
-                $params[0] .= $type;
-                $params[] = $value;
-                return '?';
-                break;
-
-            //-----------------------------------------------------------------
-            // PgSQL
-            //-----------------------------------------------------------------
-            case 'pgsql':
-                $index = count($params);
-                $ph = '$' . $index;
-                if (isset($params[$index])) {
-                    throw new \Exception("An error occurred trying to add the PostgreSQL bind parameter. Parameter index already in use.");
-                }
-                $params[$index] = $value;
-                return $ph;
-                break;
-
-            //-----------------------------------------------------------------
-            // Oracle
-            //-----------------------------------------------------------------
-            case 'oracle':
-                $index = count($params);
-                $ph = 'p' . $index;
-                if (isset($params[$ph])) {
-                    throw new \Exception("An error occurred trying to add the Oracle bind parameter. Parameter index already in use.");
-                }
-                $params[$ph] = $value;
-                return ':' . $ph;
-                break;
-
-            //-----------------------------------------------------------------
-            // Default
-            //-----------------------------------------------------------------
-            default:
-                $params[] = $value;
-                return '?';
-                break;
-
-        }
-    }
 
 }

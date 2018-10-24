@@ -51,7 +51,11 @@ trait From
     //=========================================================================
     protected function FormatFrom()
     {
-		return 'FROM ' . implode(', ', $this->from);
+        if ($this->from) {
+    		return 'FROM ' . implode(', ', $this->from);
+        }
+
+        return false;
     }
 
 }

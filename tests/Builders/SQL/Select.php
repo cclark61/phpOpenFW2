@@ -56,6 +56,7 @@ class Select
             // Create / Start SQL Select Statement
             //---------------------------------------------------------------
             $query = SQL::Select('cases')
+            ->From('test_table')
             ->SetDbType($db_type)
             ->GroupBy('worker_id')
             ->OrderBy(['child_id', 'id desc'])

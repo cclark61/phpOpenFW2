@@ -39,9 +39,25 @@ trait Condition
     {
         return self::SingleValueCondition($field, $value, '=', $params, $type);
     }
-    public static function eq(String $field, $value, Array &$params, String $type='s')
+    public static function EQ(String $field, $value, Array &$params, String $type='s')
     {
         return self::SingleValueCondition($field, $value, '=', $params, $type);
+    }
+    public static function AndEquals(String $field, $value, Array &$params, String $type='s')
+    {
+        return self::AndOr('and', self::SingleValueCondition($field, $value, '=', $params, $type));
+    }
+    public static function OrEquals(String $field, $value, Array &$params, String $type='s')
+    {
+        return self::AndOr('or', self::SingleValueCondition($field, $value, '=', $params, $type));
+    }
+    public static function AndEQ(String $field, $value, Array &$params, String $type='s')
+    {
+        return self::AndOr('and', self::SingleValueCondition($field, $value, '=', $params, $type));
+    }
+    public static function OrEQ(String $field, $value, Array &$params, String $type='s')
+    {
+        return self::AndOr('or', self::SingleValueCondition($field, $value, '=', $params, $type));
     }
 
     //=========================================================================
@@ -53,9 +69,25 @@ trait Condition
     {
         return self::SingleValueCondition($field, $value, '!=', $params, $type);
     }
-    public static function neq(String $field, $value, Array &$params, String $type='s')
+    public static function NEQ(String $field, $value, Array &$params, String $type='s')
     {
         return self::SingleValueCondition($field, $value, '!=', $params, $type);
+    }
+    public static function AndNotEquals(String $field, $value, Array &$params, String $type='s')
+    {
+        return self::AndOr('and', self::SingleValueCondition($field, $value, '!=', $params, $type));
+    }
+    public static function OrNotEquals(String $field, $value, Array &$params, String $type='s')
+    {
+        return self::AndOr('or', self::SingleValueCondition($field, $value, '!=', $params, $type));
+    }
+    public static function AndNEQ(String $field, $value, Array &$params, String $type='s')
+    {
+        return self::AndOr('and', self::SingleValueCondition($field, $value, '!=', $params, $type));
+    }
+    public static function OrNEQ(String $field, $value, Array &$params, String $type='s')
+    {
+        return self::AndOr('or', self::SingleValueCondition($field, $value, '!=', $params, $type));
     }
 
     //=========================================================================
@@ -67,9 +99,25 @@ trait Condition
     {
         return self::SingleValueCondition($field, $value, '<', $params, $type);
     }
-    public static function lt(String $field, $value, Array &$params, String $type='s')
+    public static function LT(String $field, $value, Array &$params, String $type='s')
     {
         return self::SingleValueCondition($field, $value, '<', $params, $type);
+    }
+    public static function AndLessThan(String $field, $value, Array &$params, String $type='s')
+    {
+        return self::AndOr('and', self::SingleValueCondition($field, $value, '<', $params, $type));
+    }
+    public static function OrLessThan(String $field, $value, Array &$params, String $type='s')
+    {
+        return self::AndOr('or', self::SingleValueCondition($field, $value, '<', $params, $type));
+    }
+    public static function AndLT(String $field, $value, Array &$params, String $type='s')
+    {
+        return self::AndOr('and', self::SingleValueCondition($field, $value, '<', $params, $type));
+    }
+    public static function OrLT(String $field, $value, Array &$params, String $type='s')
+    {
+        return self::AndOr('or', self::SingleValueCondition($field, $value, '<', $params, $type));
     }
 
     //=========================================================================
@@ -81,9 +129,25 @@ trait Condition
     {
         return self::SingleValueCondition($field, $value, '<=', $params, $type);
     }
-    public static function ltoe(String $field, $value, Array &$params, String $type='s')
+    public static function LTOE(String $field, $value, Array &$params, String $type='s')
     {
         return self::SingleValueCondition($field, $value, '<=', $params, $type);
+    }
+    public static function AndLessThanOrEqual(String $field, $value, Array &$params, String $type='s')
+    {
+        return self::AndOr('and', self::SingleValueCondition($field, $value, '<=', $params, $type));
+    }
+    public static function OrLessThanOrEqual(String $field, $value, Array &$params, String $type='s')
+    {
+        return self::AndOr('or', self::SingleValueCondition($field, $value, '<=', $params, $type));
+    }
+    public static function AndLTOE(String $field, $value, Array &$params, String $type='s')
+    {
+        return self::AndOr('and', self::SingleValueCondition($field, $value, '<=', $params, $type));
+    }
+    public static function OrLTOE(String $field, $value, Array &$params, String $type='s')
+    {
+        return self::AndOr('or', self::SingleValueCondition($field, $value, '<=', $params, $type));
     }
 
     //=========================================================================
@@ -95,9 +159,25 @@ trait Condition
     {
         return self::SingleValueCondition($field, $value, '>', $params, $type);
     }
-    public static function gt(String $field, $value, Array &$params, String $type='s')
+    public static function GT(String $field, $value, Array &$params, String $type='s')
     {
         return self::SingleValueCondition($field, $value, '>', $params, $type);
+    }
+    public static function AndGreaterThan(String $field, $value, Array &$params, String $type='s')
+    {
+        return self::AndOr('and', self::SingleValueCondition($field, $value, '>', $params, $type));
+    }
+    public static function OrGreaterThan(String $field, $value, Array &$params, String $type='s')
+    {
+        return self::AndOr('or', self::SingleValueCondition($field, $value, '>', $params, $type));
+    }
+    public static function AndGT(String $field, $value, Array &$params, String $type='s')
+    {
+        return self::AndOr('and', self::SingleValueCondition($field, $value, '>', $params, $type));
+    }
+    public static function OrGT(String $field, $value, Array &$params, String $type='s')
+    {
+        return self::AndOr('or', self::SingleValueCondition($field, $value, '>', $params, $type));
     }
 
     //=========================================================================
@@ -109,9 +189,25 @@ trait Condition
     {
         return self::SingleValueCondition($field, $value, '>=', $params, $type);
     }
-    public static function gtoe(String $field, $value, Array &$params, String $type='s')
+    public static function GTOE(String $field, $value, Array &$params, String $type='s')
     {
         return self::SingleValueCondition($field, $value, '>=', $params, $type);
+    }
+    public static function AndGreaterThanOrEqual(String $field, $value, Array &$params, String $type='s')
+    {
+        return self::AndOr('and', self::SingleValueCondition($field, $value, '>=', $params, $type));
+    }
+    public static function OrGreaterThanOrEqual(String $field, $value, Array &$params, String $type='s')
+    {
+        return self::AndOr('or', self::SingleValueCondition($field, $value, '>=', $params, $type));
+    }
+    public static function AndGTOE(String $field, $value, Array &$params, String $type='s')
+    {
+        return self::AndOr('and', self::SingleValueCondition($field, $value, '>=', $params, $type));
+    }
+    public static function OrGTOE(String $field, $value, Array &$params, String $type='s')
+    {
+        return self::AndOr('or', self::SingleValueCondition($field, $value, '>=', $params, $type));
     }
 
     //=========================================================================
@@ -123,6 +219,14 @@ trait Condition
     {
         return self::SingleValueCondition($field, $value, 'LIKE', $params, $type);
     }
+    public static function AndLike(String $field, $value, Array &$params, String $type='s')
+    {
+        return self::AndOr('and', self::SingleValueCondition($field, $value, 'LIKE', $params, $type));
+    }
+    public static function OrLike(String $field, $value, Array &$params, String $type='s')
+    {
+        return self::AndOr('or', self::SingleValueCondition($field, $value, 'LIKE', $params, $type));
+    }
 
     //=========================================================================
     //=========================================================================
@@ -132,6 +236,14 @@ trait Condition
     public static function NotLike(String $field, $value, Array &$params, String $type='s')
     {
         return self::SingleValueCondition($field, $value, 'NOT LIKE', $params, $type);
+    }
+    public static function AndNotLike(String $field, $value, Array &$params, String $type='s')
+    {
+        return self::AndOr('and', self::SingleValueCondition($field, $value, 'NOT LIKE', $params, $type));
+    }
+    public static function OrNotLike(String $field, $value, Array &$params, String $type='s')
+    {
+        return self::AndOr('or', self::SingleValueCondition($field, $value, 'NOT LIKE', $params, $type));
     }
 
     //=========================================================================
@@ -150,6 +262,14 @@ trait Condition
 
         return "{$field} IS NULL";
     }
+    public static function AndIsNull(String $field)
+    {
+        return self::AndOr('and', self::IsNull($field));
+    }
+    public static function OrIsNull(String $field)
+    {
+        return self::AndOr('or', self::IsNull($field));
+    }
 
     //=========================================================================
     //=========================================================================
@@ -167,6 +287,14 @@ trait Condition
 
         return "{$field} IS NOT NULL";
     }
+    public static function AndIsNotNull(String $field)
+    {
+        return self::AndOr('and', self::IsNotNull($field));
+    }
+    public static function OrIsNotNull(String $field)
+    {
+        return self::AndOr('or', self::IsNotNull($field));
+    }
 
     //=========================================================================
     //=========================================================================
@@ -176,6 +304,14 @@ trait Condition
     public static function In(String $field, $values, Array &$params, String $type='s')
     {
         return self::MultipleValueCondition($field, $values, 'IN', $params, $type);
+    }
+    public static function AndIn(String $field, $value, Array &$params, String $type='s')
+    {
+        return self::AndOr('and', self::SingleValueCondition($field, $value, 'IN', $params, $type));
+    }
+    public static function OrIn(String $field, $value, Array &$params, String $type='s')
+    {
+        return self::AndOr('or', self::SingleValueCondition($field, $value, 'IN', $params, $type));
     }
 
     //=========================================================================
@@ -187,6 +323,22 @@ trait Condition
     {
         return self::MultipleValueCondition($field, $values, 'NOT IN', $params, $type);
     }
+    public static function AndNotIn(String $field, $value, Array &$params, String $type='s')
+    {
+        return self::AndOr('and', self::SingleValueCondition($field, $value, 'NOT IN', $params, $type));
+    }
+    public static function OrNotIn(String $field, $value, Array &$params, String $type='s')
+    {
+        return self::AndOr('or', self::SingleValueCondition($field, $value, 'NOT IN', $params, $type));
+    }
+
+    //##################################################################################
+    //##################################################################################
+    //##################################################################################
+    // "And" / "Or" Methods
+    //##################################################################################
+    //##################################################################################
+    //##################################################################################
 
     //##################################################################################
     //##################################################################################
@@ -208,6 +360,20 @@ trait Condition
         //-----------------------------------------------------------------
         if (!$field) {
             throw new \Exception("Invalid field name given.");
+        }
+        if ($value === false) {
+            return false;
+        }
+        else if (is_null($value)) {
+            if ($op == '=') {
+                return self::IsNull($field);
+            }
+            else if ($op == '!=') {
+                return self::IsNotNull($field);
+            }
+            else {
+                return false;
+            }
         }
         if (!is_scalar($value)) {
             throw new \Exception("Value must be a scalar value.");
@@ -252,5 +418,37 @@ trait Condition
         return "{$field} {$op} ({$place_holders})";
     }
 
+    //=========================================================================
+    //=========================================================================
+    // AndOr Methods
+    //=========================================================================
+    //=========================================================================
+    protected static function AndOr(String $andor, $condition)
+    {
+        //-----------------------------------------------------------------
+        // Validate AndOr
+        //-----------------------------------------------------------------
+        $andor = strtolower($andor);
+        if ($andor != 'and' && $andor != 'or') {
+            throw new \Exception("Invalid And/Or parameter.");
+        }
+
+        //-----------------------------------------------------------------
+        // Is Condition Empty?
+        //-----------------------------------------------------------------
+        if (!$condition) {
+            return false;
+        }
+
+        //-----------------------------------------------------------------
+        // Return Condtion with And / Or attached
+        //-----------------------------------------------------------------
+        if ($andor == 'and') {
+            return 'and ' . $condition;
+        }
+        else {
+            return 'or ' . $condition;
+        }
+    }
 
 }

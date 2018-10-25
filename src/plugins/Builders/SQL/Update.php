@@ -46,8 +46,8 @@ class Update extends Core
 		//----------------------------------------------------------------
         $where = $this->FormatWhere();
 		if (!$where) {
-            //trigger_error("SQL Update statement must have at least one qualifying condition.");
-            //return '';
+            trigger_error("SQL Update statement must have at least one qualifying condition.");
+            return '';
         }
 
 		//----------------------------------------------------------------

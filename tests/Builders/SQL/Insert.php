@@ -2,7 +2,7 @@
 //**************************************************************************************
 //**************************************************************************************
 /**
- * Select Statement Test Class
+ * Insert Statement Test Class
  *
  * @package		phpOpenFW
  * @author 		Christian J. Clark
@@ -17,10 +17,10 @@ use \phpOpenFW\Builders\SQL;
 
 //**************************************************************************************
 /**
- * Select Class
+ * Insert Class
  */
 //**************************************************************************************
-class Select
+class Insert
 {
     //=========================================================================
     //=========================================================================
@@ -40,7 +40,7 @@ class Select
         ];
 
         //---------------------------------------------------------------
-        // Build SQL Select Statements for each database type
+        // Build SQL Insert Statements for each database type
         //---------------------------------------------------------------
         foreach ($db_types as $db_type) {
 
@@ -49,19 +49,25 @@ class Select
             //----------------------------------------------------------------
             $disp_db_type = ucfirst($db_type);
             print "\n-------------------------------------------------------";
-            print "\n*** {$disp_db_type} Select Statements";
+            print "\n*** {$disp_db_type} Insert Statements";
             print "\n-------------------------------------------------------\n\n";
 
             //---------------------------------------------------------------
-            // Create / Start SQL Select Statement
+            // Test Values
             //---------------------------------------------------------------
-            $query = SQL::Select('cases')
-            ->From('test_table')
+            $values = [
+                ['field_1', '12', 'i'],
+                ['field_2', 'value_2']
+            ];
+
+            //---------------------------------------------------------------
+            // Create / Start SQL Insert Statement
+            //---------------------------------------------------------------
+            $query = SQL::Insert('cases')
             ->SetDbType($db_type)
-            ->GroupBy('worker_id')
-            ->OrderBy(['child_id', 'id desc'])
-            ->Where('field_4', '=', 4)
-            ->Limit(50, 2);
+            ->Values($values)
+            ->Value('field_3', 'value_3')
+            ->Value('field_4', null);
 
             //---------------------------------------------------------------
             // Output Query / Bind Parameters

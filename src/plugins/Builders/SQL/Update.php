@@ -25,6 +25,7 @@ class Update extends Core
     // Traits
     //=========================================================================
     use Traits\Where;
+    use Traits\Values;
 
     //=========================================================================
 	// Class Memebers
@@ -39,32 +40,33 @@ class Update extends Core
     public function GetSQL()
     {
 		//----------------------------------------------------------------
-        // Start SQL Update Statement
-		//----------------------------------------------------------------
-		$strsql = "UPDATE {$this->table} SET ";
-
-		//-------------------------------------------------------
-        // Format Fields
-		//-------------------------------------------------------
-		self::AddSQLClause($strsql, $this->FormatFields());
-
-		//----------------------------------------------------------------
         // Get Formatted Where Clause
 		//----------------------------------------------------------------
         // Require a where clause to prevent updating all table rows
 		//----------------------------------------------------------------
         $where = $this->FormatWhere();
-		if ($where) {
-    		self::AddSQLClause($strsql, $where);
-        }
-        else {
-            throw new \Exception("SQL Delete statement must have at least one qualifying condition.");
+		if (!$where) {
+            //trigger_error("SQL Update statement must have at least one qualifying condition.");
+            //return '';
         }
 
-		//-------------------------------------------------------
-		// Return SQL
-		//-------------------------------------------------------
-		return $strsql;
+		//----------------------------------------------------------------
+        // Format Values
+		//----------------------------------------------------------------
+        $set = $this->FormatValues();
+
+        //-------------------------------------------------------
+        // Are there values?
+        //-------------------------------------------------------
+        if (empty($set)) {
+	    	trigger_error("No update values could be found.");
+	    	return '';
+	    }
+
+		//----------------------------------------------------------------
+        // Start SQL Update Statement
+		//----------------------------------------------------------------
+		return "UPDATE {$this->table} SET {$set} {$where}";
 	}
 
 }

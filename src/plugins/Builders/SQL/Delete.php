@@ -41,19 +41,15 @@ class Delete extends Core
 		//----------------------------------------------------------------
         // Get Formatted Where Clause
 		//----------------------------------------------------------------
-		$where = $this->FormatWhere();
-
-		//----------------------------------------------------------------
         // Require a where clause to prevent deleting all table rows
 		//----------------------------------------------------------------
-		if ($where) {
-    		return "DELETE FROM {$this->table} {$where}";
-        }
-        else {
-            throw new \Exception("SQL Delete statement must have at least one qualifying condition.");
+		$where = $this->FormatWhere();
+		if (!$where) {
+            trigger_error("SQL Delete statement must have at least one qualifying condition.");
+            return '';
         }
 
-        return false;
+        return "DELETE FROM {$this->table} {$where}";
 	}
 
 }

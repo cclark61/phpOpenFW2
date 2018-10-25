@@ -2,7 +2,7 @@
 //**************************************************************************************
 //**************************************************************************************
 /**
- * Select Statement Test Class
+ * Delete Statement Test Class
  *
  * @package		phpOpenFW
  * @author 		Christian J. Clark
@@ -17,10 +17,10 @@ use \phpOpenFW\Builders\SQL;
 
 //**************************************************************************************
 /**
- * Select Class
+ * Delete Class
  */
 //**************************************************************************************
-class Select
+class Delete
 {
     //=========================================================================
     //=========================================================================
@@ -40,7 +40,7 @@ class Select
         ];
 
         //---------------------------------------------------------------
-        // Build SQL Select Statements for each database type
+        // Build SQL Delete Statements for each database type
         //---------------------------------------------------------------
         foreach ($db_types as $db_type) {
 
@@ -49,19 +49,15 @@ class Select
             //----------------------------------------------------------------
             $disp_db_type = ucfirst($db_type);
             print "\n-------------------------------------------------------";
-            print "\n*** {$disp_db_type} Select Statements";
+            print "\n*** {$disp_db_type} Delete Statements";
             print "\n-------------------------------------------------------\n\n";
 
             //---------------------------------------------------------------
-            // Create / Start SQL Select Statement
+            // Create / Start SQL Delete Statement
             //---------------------------------------------------------------
-            $query = SQL::Select('cases')
-            ->From('test_table')
+            $query = SQL::Delete('cases')
             ->SetDbType($db_type)
-            ->GroupBy('worker_id')
-            ->OrderBy(['child_id', 'id desc'])
-            ->Where('field_4', '=', 4)
-            ->Limit(50, 2);
+            ->Where('field_4', '='. 4);
 
             //---------------------------------------------------------------
             // Output Query / Bind Parameters

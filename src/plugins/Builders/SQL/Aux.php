@@ -23,11 +23,31 @@ class Aux
 {
     //=========================================================================
     //=========================================================================
+    // DB Type Is Valid?
+    //=========================================================================
+    //=========================================================================
+    public static function DbTypeIsValid(String $db_type)
+    {
+        if (!in_array($db_type, ['mysql', 'pgsql', 'oracle', 'sqlsrv'])) {
+            return false;
+        }
+        return true;
+    }
+
+    //=========================================================================
+    //=========================================================================
     // Add a Bind Parameter
     //=========================================================================
     //=========================================================================
-    public static function AddBindParam(String $db_type, Array &$params, $value, $type='i')
+    public static function AddBindParam(String $db_type, Array &$params, $value, $type='s')
     {
+        //-----------------------------------------------------------------
+        // Is Database Type Valid?
+        //-----------------------------------------------------------------
+        if (!self::DbTypeIsValid($db_type)) {
+            throw new \Exception("Invalid database type.");
+        }
+
         //-----------------------------------------------------------------
         // Validate that Value is Scalar
         //-----------------------------------------------------------------
@@ -97,7 +117,7 @@ class Aux
     // Add a Bind Parameters
     //=========================================================================
     //=========================================================================
-    public static function AddBindParams(String $db_type, Array &$params, Array $values, $type='i')
+    public static function AddBindParams(String $db_type, Array &$params, Array $values, $type='s')
     {
         $place_holders = '';
         foreach ($values as $value) {

@@ -34,17 +34,7 @@ trait Where
     //=========================================================================
 	public function Where()
 	{
-    	$args = func_get_args();
-    	if (count($args) == 1 && $args[0] == '') {
-        	return $this;
-    	}
-    	foreach ($args as $arg) {
-        	if (!is_array($arg)) {
-            	trigger_error('Each Where() method parameter must be passed as an array.', E_USER_ERROR);
-        	}
-        	if (!$arg) { continue; }
 
-    	}
         return $this;
 	}
 

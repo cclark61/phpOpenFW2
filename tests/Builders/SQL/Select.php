@@ -56,12 +56,18 @@ class Select
             // Create / Start SQL Select Statement
             //---------------------------------------------------------------
             $query = SQL::Select('cases')
-            ->From('test_table')
-            ->SetDbType($db_type)
-            ->GroupBy('worker_id')
-            ->OrderBy(['child_id', 'id desc'])
-            ->Where('field_4', '=', 4)
-            ->Limit(50, 2);
+                ->SetDbType($db_type)
+                ->Select('a.id, a.worker_id')
+                ->Select('a.child_id, a.birth_mother_id')
+                ->SelectRaw("concat(b.first_name, ' ', b.last_name as full_name")
+                ->Join('join_table b', 'a.worker_id', '=', 'b.id')
+                //->From('test_table')
+                //->From('test_table2 a, test_table3 z, ')
+                //->From(['test1', 'test3'])
+                ->GroupBy('worker_id')
+                ->OrderBy(['child_id', 'id desc'])
+                ->Where('field_4', '=', 4)
+                ->Limit(50, 2);
 
             //---------------------------------------------------------------
             // Output Query / Bind Parameters

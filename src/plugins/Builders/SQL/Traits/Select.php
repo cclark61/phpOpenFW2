@@ -2,7 +2,7 @@
 //**************************************************************************************
 //**************************************************************************************
 /**
- * SQL Order By Trait
+ * SQL Select Trait
  *
  * @package		phpOpenFW
  * @author 		Christian J. Clark
@@ -16,34 +16,34 @@ namespace phpOpenFW\Builders\SQL\Traits;
 
 //**************************************************************************************
 /**
- * SQL Order By Trait
+ * SQL Select Trait
  */
 //**************************************************************************************
-trait OrderBy
+trait Select
 {
     //=========================================================================
 	// Trait Memebers
     //=========================================================================
-	protected $order_by = [];
+	protected $fields = [];
 
     //=========================================================================
     //=========================================================================
-	// Add Order By Method
+	// Select Clause Method
     //=========================================================================
     //=========================================================================
-	public function OrderBy($order_by)
+	public function Select($field)
 	{
-    	return $this->CSC_AddItem($this->order_by, $order_by);
+    	return $this->CSC_AddItem($this->fields, $field);
 	}
 
     //=========================================================================
     //=========================================================================
-	// Raw Order By Clause Method
+	// Raw Select Clause Method
     //=========================================================================
     //=========================================================================
-	public function OrderByRaw($order_by)
+	public function SelectRaw($field)
 	{
-        return $this->CSC_AddItemRaw($this->order_by, $order_by);
+    	return $this->CSC_AddItemRaw($this->fields, $field);
 	}
 
     //##################################################################################
@@ -56,12 +56,16 @@ trait OrderBy
 
     //=========================================================================
     //=========================================================================
-    // Format Order By Method
+    // Format Fields Method
     //=========================================================================
     //=========================================================================
-    protected function FormatOrderBy()
+    protected function FormatFields()
     {
-        return $this->FormatCSC('ORDER BY', $this->order_by);
-	}
+        $select = $this->FormatCSC('SELECT', $this->fields);
+        if (!$select) {
+            $select = 'SELECT *';
+        }
+        return $select;
+    }
 
 }

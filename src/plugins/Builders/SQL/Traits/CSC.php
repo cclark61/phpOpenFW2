@@ -2,7 +2,7 @@
 //**************************************************************************************
 //**************************************************************************************
 /**
- * SQL Order By Trait
+ * SQL Comma Separated Clause Trait
  *
  * @package		phpOpenFW
  * @author 		Christian J. Clark
@@ -16,52 +16,61 @@ namespace phpOpenFW\Builders\SQL\Traits;
 
 //**************************************************************************************
 /**
- * SQL Order By Trait
+ * SQL Comma Separated Clause Trait
  */
 //**************************************************************************************
-trait OrderBy
+trait CSC
 {
     //=========================================================================
-	// Trait Memebers
     //=========================================================================
-	protected $order_by = [];
-
+	// Comma Separated Clause Add Item Method
     //=========================================================================
     //=========================================================================
-	// Add Order By Method
-    //=========================================================================
-    //=========================================================================
-	public function OrderBy($order_by)
+	protected function CSC_AddItem(&$var, $value)
 	{
-    	return $this->CSC_AddItem($this->order_by, $order_by);
+    	if ($value) {
+        	$values = [];
+        	if (is_scalar($value)) {
+            	$values = explode(',', $value);
+            }
+            else if (is_array($value)) {
+                $values = $value;
+            }
+            
+            if ($values && is_iterable($values)) {
+                foreach ($values as $tmp_value) {
+                    $tmp_value = trim($tmp_value);
+                    if ($tmp_value) {
+                    	$this->AddItem($var, $tmp_value);
+                    }
+                }
+            }
+        }
+        return $this;
 	}
 
     //=========================================================================
     //=========================================================================
-	// Raw Order By Clause Method
+	// Comma Separated Clause Add Item Raw Method
     //=========================================================================
     //=========================================================================
-	public function OrderByRaw($order_by)
+	protected function CSC_AddItemRaw(&$var, $value)
 	{
-        return $this->CSC_AddItemRaw($this->order_by, $order_by);
+        return $this->AddItem($var, $value);
 	}
 
-    //##################################################################################
-    //##################################################################################
-    //##################################################################################
-    // Protected / Internal Methods
-    //##################################################################################
-    //##################################################################################
-    //##################################################################################
-
     //=========================================================================
     //=========================================================================
-    // Format Order By Method
+    // Format Comma Separated Clause Method
     //=========================================================================
     //=========================================================================
-    protected function FormatOrderBy()
+    protected function FormatCSC($clause, &$values)
     {
-        return $this->FormatCSC('ORDER BY', $this->order_by);
-	}
+        if ($values) {
+    		return "{$clause}\n  " . implode(",\n  ", $values);
+        }
+
+        return false;
+    }
 
 }

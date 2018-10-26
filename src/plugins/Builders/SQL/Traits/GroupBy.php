@@ -33,7 +33,17 @@ trait GroupBy
     //=========================================================================
 	public function GroupBy($group_by)
 	{
-    	return $this->AddItem($this->group_by, $group_by);
+    	return $this->CSC_AddItem($this->group_by, $group_by);
+	}
+
+    //=========================================================================
+    //=========================================================================
+	// Raw Group By Clause Method
+    //=========================================================================
+    //=========================================================================
+	public function GroupByRaw($group_by)
+	{
+        return $this->CSC_AddItemRaw($this->group_by, $group_by);
 	}
 
     //##################################################################################
@@ -46,18 +56,12 @@ trait GroupBy
 
     //=========================================================================
     //=========================================================================
-    // Render Group By Method
+    // Format Group By Method
     //=========================================================================
     //=========================================================================
     protected function FormatGroupBy()
     {
-	    $group_by = $this->group_by;
-		if (is_array($group_by)) {
-			$group_by = implode(', ', $group_by);
-		}
-        if ($group_by == '') { return false; }
-		$group_by = 'GROUP BY ' . $group_by;
-		return $group_by;
-	}
+        return $this->FormatCSC('GROUP BY', $this->group_by);
+    }
 
 }

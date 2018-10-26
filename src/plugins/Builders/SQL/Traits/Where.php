@@ -24,15 +24,14 @@ trait Where
     //=========================================================================
 	// Trait Memebers
     //=========================================================================
-	protected $where = [0 => []];
-	protected $where_pos = 0;
+	protected $where = [];
 
     //=========================================================================
     //=========================================================================
 	// Where Clause Method
     //=========================================================================
     //=========================================================================
-	public function Where()
+	public function Where($field, $op=null, $val=false, $type='s')
 	{
 
         return $this;
@@ -43,7 +42,7 @@ trait Where
 	// And Where Clause Method
     //=========================================================================
     //=========================================================================
-	public function AndWhere($field, $op, $val)
+	public function AndWhere($field, $op=null, $val=false, $type='s')
 	{
     	
         return $this;
@@ -54,7 +53,7 @@ trait Where
 	// OrWhere Clause Method
     //=========================================================================
     //=========================================================================
-	public function OrWhere($field, $op, $val)
+	public function OrWhere($field, $op=null, $val=false, $type='s')
 	{
     	
         return $this;
@@ -65,7 +64,7 @@ trait Where
 	// Where Group Clause Method
     //=========================================================================
     //=========================================================================
-	public function WhereGroup($field, $op, $val)
+	public function WhereGroup($field, $op=null, $val=false, $type='s')
 	{
     	
         return $this;

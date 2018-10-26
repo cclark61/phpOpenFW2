@@ -45,7 +45,7 @@ trait Aux
             return false;
         }
         $op = strtolower($op);
-        $ops = ['=', '!=', '<>', '<', '<=', '>', '>=', 'in', 'not in', 'like', 'not like'];
+        $ops = ['=', '!=', '<>', '<', '<=', '>', '>=', 'in', 'not in', 'like', 'not like', 'between', 'not between'];
         if (!in_array($op, $ops)) {
             return false;
         }

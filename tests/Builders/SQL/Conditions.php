@@ -176,6 +176,22 @@ class Conditions
             print "-> Not In: {$cond}\n";
             print_r($params);
             print "\n";
+
+            //----------------------------------------------------------------
+            // Between
+            //----------------------------------------------------------------
+            $cond = $class::Between('test_field13', [1, 2], $params, 'i');
+            print "-> Between: {$cond}\n";
+            print_r($params);
+            print "\n";
+
+            //----------------------------------------------------------------
+            // Not Between
+            //----------------------------------------------------------------
+            $cond = $class::NotBetween('test_field14', [1, 2], $params, 'i');
+            print "-> Not Between: {$cond}\n";
+            print_r($params);
+            print "\n";
         }
     }
     

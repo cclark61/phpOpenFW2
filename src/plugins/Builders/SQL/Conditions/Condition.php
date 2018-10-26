@@ -310,13 +310,13 @@ trait Condition
     {
         return self::MultipleValueCondition($field, $values, 'IN', $params, $type);
     }
-    public static function AndIn(String $field, $value, Array &$params, String $type='s')
+    public static function AndIn(String $field, $values, Array &$params, String $type='s')
     {
-        return self::AndOr('and', self::SingleValueCondition($field, $value, 'IN', $params, $type));
+        return self::AndOr('and', self::SingleValueCondition($field, $values, 'IN', $params, $type));
     }
-    public static function OrIn(String $field, $value, Array &$params, String $type='s')
+    public static function OrIn(String $field, $values, Array &$params, String $type='s')
     {
-        return self::AndOr('or', self::SingleValueCondition($field, $value, 'IN', $params, $type));
+        return self::AndOr('or', self::SingleValueCondition($field, $values, 'IN', $params, $type));
     }
 
     //=========================================================================
@@ -328,13 +328,49 @@ trait Condition
     {
         return self::MultipleValueCondition($field, $values, 'NOT IN', $params, $type);
     }
-    public static function AndNotIn(String $field, $value, Array &$params, String $type='s')
+    public static function AndNotIn(String $field, $values, Array &$params, String $type='s')
     {
-        return self::AndOr('and', self::SingleValueCondition($field, $value, 'NOT IN', $params, $type));
+        return self::AndOr('and', self::SingleValueCondition($field, $values, 'NOT IN', $params, $type));
     }
-    public static function OrNotIn(String $field, $value, Array &$params, String $type='s')
+    public static function OrNotIn(String $field, $values, Array &$params, String $type='s')
     {
-        return self::AndOr('or', self::SingleValueCondition($field, $value, 'NOT IN', $params, $type));
+        return self::AndOr('or', self::SingleValueCondition($field, $values, 'NOT IN', $params, $type));
+    }
+
+    //=========================================================================
+    //=========================================================================
+    // Between
+    //=========================================================================
+    //=========================================================================
+    public static function Between(String $field, $values, Array &$params, String $type='s')
+    {
+        return self::BetweenCondition($field, $values, 'BETWEEN', $params, $type);
+    }
+    public static function AndBetween(String $field, $values, Array &$params, String $type='s')
+    {
+        return self::AndOr('and', self::BetweenCondition($field, $values, 'BETWEEN', $params, $type));
+    }
+    public static function OrBetween(String $field, $values, Array &$params, String $type='s')
+    {
+        return self::AndOr('or', self::BetweenCondition($field, $values, 'BETWEEN', $params, $type));
+    }
+
+    //=========================================================================
+    //=========================================================================
+    // NOT Between
+    //=========================================================================
+    //=========================================================================
+    public static function NotBetween(String $field, $values, Array &$params, String $type='s')
+    {
+        return self::BetweenCondition($field, $values, 'NOT BETWEEN', $params, $type);
+    }
+    public static function AndNotBetween(String $field, $values, Array &$params, String $type='s')
+    {
+        return self::AndOr('and', self::BetweenCondition($field, $values, 'NOT BETWEEN', $params, $type));
+    }
+    public static function OrNotBetween(String $field, $values, Array &$params, String $type='s')
+    {
+        return self::AndOr('or', self::BetweenCondition($field, $values, 'NOT BETWEEN', $params, $type));
     }
 
     //##################################################################################
@@ -430,6 +466,48 @@ trait Condition
         // Create and Return Condition
         //-----------------------------------------------------------------
         return "{$field} {$op} ({$place_holders})";
+    }
+
+    //=========================================================================
+    //=========================================================================
+    // Between Condition
+    //=========================================================================
+    //=========================================================================
+    protected static function BetweenCondition(String $field, Array $values, String $op, Array &$params, String $type='s')
+    {
+        //-----------------------------------------------------------------
+        // Validate Parameters
+        //-----------------------------------------------------------------
+        if (!$field) {
+            throw new \Exception("Invalid field name given.");
+        }
+        if (!self::IsValidOperator($op)) {
+            throw new \Exception("Invalid operator given.");
+        }
+
+        //-----------------------------------------------------------------
+        // No Values? Return.
+        //-----------------------------------------------------------------
+        if (!$values) {
+            return false;
+        }
+        else if (!array_key_exists(0, $values) || !array_key_exists(1, $values)) {
+            throw new \Exception("Invalid between values given. (1)");
+        }
+        else if (!is_scalar($values[0]) || !is_scalar($values[1])) {
+            throw new \Exception("Invalid between values given. (2)");
+        }
+
+        //-----------------------------------------------------------------
+        // Add Bind Parameters
+        //-----------------------------------------------------------------
+        $place_holder1 = self::AddBindParam(static::$db_type, $params, $values[0], $type);
+        $place_holder2 = self::AddBindParam(static::$db_type, $params, $values[1], $type);
+
+        //-----------------------------------------------------------------
+        // Create and Return Condition
+        //-----------------------------------------------------------------
+        return "{$field} {$op} {$place_holder1} AND {$place_holder2}";
     }
 
 }

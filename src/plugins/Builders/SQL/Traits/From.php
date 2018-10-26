@@ -33,7 +33,27 @@ trait From
     //=========================================================================
 	public function From($from)
 	{
-    	return $this->AddItem($this->from, $from);
+    	$froms = explode(',', $from);
+        foreach ($froms as $tmp_from) {
+            $tmp_from = trim($tmp_from);
+            if ($tmp_from) {
+            	$this->AddItem($this->from, $tmp_from);
+            }
+        }
+        return $this;
+	}
+
+    //=========================================================================
+    //=========================================================================
+	// Raw From Clause Method
+    //=========================================================================
+    //=========================================================================
+	public function FromRaw($from)
+	{
+    	if ($from && is_scalar($from)) {
+            $this->AddItem($this->from, $from);
+        }
+        return $this;
 	}
 
     //##################################################################################

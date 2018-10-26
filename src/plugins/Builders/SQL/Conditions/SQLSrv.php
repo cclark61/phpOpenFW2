@@ -21,6 +21,6 @@ namespace phpOpenFW\Builders\SQL\Conditions;
 //**************************************************************************************
 class SQLSrv
 {
-    use Condition;
+    use Conditions;
     protected static $db_type = 'sqlsrv';
 }

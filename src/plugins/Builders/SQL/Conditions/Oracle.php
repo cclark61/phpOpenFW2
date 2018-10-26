@@ -21,6 +21,6 @@ namespace phpOpenFW\Builders\SQL\Conditions;
 //**************************************************************************************
 class Oracle
 {
-    use Condition;
+    use Conditions;
     protected static $db_type = 'oracle';
 }

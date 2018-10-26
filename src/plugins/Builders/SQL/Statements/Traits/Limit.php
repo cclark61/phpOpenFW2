@@ -2,7 +2,7 @@
 //**************************************************************************************
 //**************************************************************************************
 /**
- * SQL Group By Trait
+ * SQL Limit Trait
  *
  * @package		phpOpenFW
  * @author 		Christian J. Clark
@@ -12,38 +12,41 @@
 //**************************************************************************************
 //**************************************************************************************
 
-namespace phpOpenFW\Builders\SQL\Traits;
+namespace phpOpenFW\Builders\SQL\Statements\Traits;
 
 //**************************************************************************************
 /**
- * SQL Group By Trait
+ * SQL Limit Trait
  */
 //**************************************************************************************
-trait GroupBy
+trait Limit
 {
     //=========================================================================
 	// Trait Memebers
     //=========================================================================
-	protected $group_by = [];
+	protected $limit = false;
+	protected $offset = false;
 
     //=========================================================================
     //=========================================================================
-	// Add Group By Method
+	// Limit Clause Method
     //=========================================================================
     //=========================================================================
-	public function GroupBy($group_by)
+	public function Limit($limit, $offset=false)
 	{
-    	return $this->CSC_AddItem($this->group_by, $group_by);
-	}
-
-    //=========================================================================
-    //=========================================================================
-	// Raw Group By Clause Method
-    //=========================================================================
-    //=========================================================================
-	public function GroupByRaw($group_by)
-	{
-        return $this->CSC_AddItemRaw($this->group_by, $group_by);
+		if (is_null($limit)) {
+			$this->limit = false;
+		}
+		else if ($limit != '' && (int)$limit) {
+    		$this->limit = (int)$limit;
+		}
+		if (is_null($offset)) {
+			$this->offset = false;
+		}
+		else if ($offset != '' && (int)$offset) {
+    		$this->offset = (int)$offset;
+		}
+		return $this;
 	}
 
     //##################################################################################
@@ -56,12 +59,43 @@ trait GroupBy
 
     //=========================================================================
     //=========================================================================
-    // Format Group By Method
+	// Format Limit Clause Method
     //=========================================================================
     //=========================================================================
-    protected function FormatGroupBy()
-    {
-        return $this->FormatCSC('GROUP BY', $this->group_by);
-    }
+	protected function FormatLimit()
+	{
+    	$ret_val = '';
+
+		//-------------------------------------------------------
+        // MySQL Limit / Offset
+		//-------------------------------------------------------
+    	if ($this->db_type == 'mysql' || $this->db_type == 'pgsql') {
+    		if ($this->limit) {
+    			$ret_val = 'LIMIT ' . $this->limit;
+    		}
+    		if ($this->offset) {
+    			$ret_val .= ' OFFSET ' . $this->offset;
+    		}
+        }
+		//-------------------------------------------------------
+        // Oracle
+		//-------------------------------------------------------
+        else if ($this->db_type == 'oracle') {
+    		if ($this->offset) {
+    			$ret_val = "OFFSET {$this->offset} ROWS";
+    		}
+    		if ($this->limit) {
+    			$ret_val .= " FETCH NEXT {$this->limit} ROWS ONLY";
+    		}            
+        }
+		//-------------------------------------------------------
+        // SQL Server
+		//-------------------------------------------------------
+        else if ($this->db_type == 'sqlsrv') {
+            $ret_val = 'SELECT TOP ' . $this->limit;
+        }
+
+		return $ret_val;
+	}
 
 }

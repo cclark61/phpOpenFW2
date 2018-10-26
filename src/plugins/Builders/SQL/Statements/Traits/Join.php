@@ -12,7 +12,8 @@
 //**************************************************************************************
 //**************************************************************************************
 
-namespace phpOpenFW\Builders\SQL\Traits;
+namespace phpOpenFW\Builders\SQL\Statements\Traits;
+use \Closure;
 
 //**************************************************************************************
 /**
@@ -107,7 +108,9 @@ trait Join
     //=========================================================================
 	protected function AddJoin(String $join_type, $table, $field1, $op=false, $field2=false)
 	{
-    	
+    	if ($field1 instanceof Closure) {
+        	
+        }
         return $this;
 	}
 

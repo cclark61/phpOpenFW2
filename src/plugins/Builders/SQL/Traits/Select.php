@@ -33,7 +33,14 @@ trait Select
     //=========================================================================
 	public function Select($field)
 	{
-    	return $this->AddItem($this->fields, $field);
+    	$fields = explode(',', $field);
+        foreach ($fields as $tmp_field) {
+            $tmp_field = trim($tmp_field);
+            if ($tmp_field) {
+            	$this->AddItem($this->fields, $tmp_field);
+            }
+        }
+        return $this;
 	}
 
     //##################################################################################

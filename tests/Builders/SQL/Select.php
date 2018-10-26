@@ -58,6 +58,8 @@ class Select
             $query = SQL::Select('cases')
             ->Select('a.test')
             ->Select('b.name, c.zip')
+            ->Select('d.first_name as fname, e.city')
+            ->Select('f.id, g.code as zcode')
             ->From('test_table')
             ->SetDbType($db_type)
             ->GroupBy('worker_id')

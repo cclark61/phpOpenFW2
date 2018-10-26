@@ -52,7 +52,7 @@ trait From
     protected function FormatFrom()
     {
         if ($this->from) {
-    		return 'FROM ' . implode(', ', $this->from);
+    		return "FROM\n  " . implode(",\n  ", $this->from);
         }
 
         return false;

@@ -56,7 +56,7 @@ trait GroupBy
 			$group_by = implode(', ', $group_by);
 		}
         if ($group_by == '') { return false; }
-		$group_by = 'GROUP BY ' . $group_by;
+		$group_by = "GROUP BY\n  " . $group_by;
 		return $group_by;
 	}
 

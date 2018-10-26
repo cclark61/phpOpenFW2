@@ -2,7 +2,7 @@
 //**************************************************************************************
 //**************************************************************************************
 /**
- * SQL Order By Trait
+ * SQL Select Trait
  *
  * @package		phpOpenFW
  * @author 		Christian J. Clark
@@ -16,24 +16,24 @@ namespace phpOpenFW\Builders\SQL\Traits;
 
 //**************************************************************************************
 /**
- * SQL Order By Trait
+ * SQL Select Trait
  */
 //**************************************************************************************
-trait OrderBy
+trait Select
 {
     //=========================================================================
 	// Trait Memebers
     //=========================================================================
-	protected $order_by = [];
+	protected $fields = [];
 
     //=========================================================================
     //=========================================================================
-	// Add Order By Method
+	// From Clause Method
     //=========================================================================
     //=========================================================================
-	public function OrderBy($order_by)
+	public function Select($field)
 	{
-    	return $this->AddItem($this->order_by, $order_by);
+    	return $this->AddItem($this->fields, $field);
 	}
 
     //##################################################################################
@@ -46,18 +46,17 @@ trait OrderBy
 
     //=========================================================================
     //=========================================================================
-    // Format Order By Method
+    // Format Fields Method
     //=========================================================================
     //=========================================================================
-    protected function FormatOrderBy()
+    protected function FormatFields()
     {
-	    $order_by = $this->order_by;
-		if (is_array($order_by)) {
-			$order_by = implode(', ', $order_by);
-		}
-        if ($order_by == '') { return false; }
-		$order_by = "ORDER BY\n  " . $order_by;
-		return $order_by;
-	}
+        if ($this->fields) {
+    		return "SELECT \n  " . implode(",\n  ", $this->fields);
+        }
+        else {
+            return 'SELECT *';
+        }
+    }
 
 }

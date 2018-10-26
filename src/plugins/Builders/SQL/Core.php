@@ -103,8 +103,7 @@ abstract class Core
     //=========================================================================
     public function SetDbType($type)
     {
-        $db_types = ['mysql', 'pgsql', 'sqlsrv', 'oracle'];
-        if (!in_array($type, $db_types)) {
+        if (!\phpOpenFW\Builders\SQL\Aux::DbTypeIsValid($type)) {
             throw new \Exception("Invalid database type passed.");
         }
         $this->db_type = $type;

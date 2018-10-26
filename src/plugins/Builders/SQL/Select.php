@@ -24,6 +24,7 @@ class Select extends Core
     //=========================================================================
     // Traits
     //=========================================================================
+    use Traits\CSC;
     use Traits\Select;
     use Traits\From;
     use Traits\Join;

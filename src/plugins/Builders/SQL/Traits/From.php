@@ -33,14 +33,7 @@ trait From
     //=========================================================================
 	public function From($from)
 	{
-    	$froms = explode(',', $from);
-        foreach ($froms as $tmp_from) {
-            $tmp_from = trim($tmp_from);
-            if ($tmp_from) {
-            	$this->AddItem($this->from, $tmp_from);
-            }
-        }
-        return $this;
+        return $this->CSC_AddItem($this->from, $from);
 	}
 
     //=========================================================================
@@ -50,10 +43,7 @@ trait From
     //=========================================================================
 	public function FromRaw($from)
 	{
-    	if ($from && is_scalar($from)) {
-            $this->AddItem($this->from, $from);
-        }
-        return $this;
+        return $this->CSC_AddItemRaw($this->from, $from);
 	}
 
     //##################################################################################
@@ -71,11 +61,7 @@ trait From
     //=========================================================================
     protected function FormatFrom()
     {
-        if ($this->from) {
-    		return "FROM\n  " . implode(",\n  ", $this->from);
-        }
-
-        return false;
+        return $this->FormatCSC('FROM', $this->from);
     }
 
 }

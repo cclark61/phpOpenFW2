@@ -33,14 +33,7 @@ trait Select
     //=========================================================================
 	public function Select($field)
 	{
-    	$fields = explode(',', $field);
-        foreach ($fields as $tmp_field) {
-            $tmp_field = trim($tmp_field);
-            if ($tmp_field) {
-            	$this->AddItem($this->fields, $tmp_field);
-            }
-        }
-        return $this;
+    	return $this->CSC_AddItem($this->fields, $field);
 	}
 
     //=========================================================================
@@ -50,10 +43,7 @@ trait Select
     //=========================================================================
 	public function SelectRaw($field)
 	{
-    	if ($field && is_scalar($field)) {
-            $this->AddItem($this->fields, $field);
-        }
-        return $this;
+    	return $this->CSC_AddItemRaw($this->fields, $field);
 	}
 
     //##################################################################################
@@ -71,12 +61,11 @@ trait Select
     //=========================================================================
     protected function FormatFields()
     {
-        if ($this->fields) {
-    		return "SELECT \n  " . implode(",\n  ", $this->fields);
+        $select = $this->FormatCSC('SELECT', $this->fields);
+        if (!$select) {
+            $select = 'SELECT *';
         }
-        else {
-            return 'SELECT *';
-        }
+        return $select;
     }
 
 }

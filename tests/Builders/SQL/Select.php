@@ -62,6 +62,8 @@ class Select
                 ->SelectRaw("concat(b.first_name, ' ', b.last_name as full_name")
                 ->Join('join_table b', 'a.worker_id', '=', 'b.id')
                 //->From('test_table')
+                //->From('test_table2 a, test_table3 z, ')
+                //->From(['test1', 'test3'])
                 ->GroupBy('worker_id')
                 ->OrderBy(['child_id', 'id desc'])
                 ->Where('field_4', '=', 4)

@@ -22,6 +22,11 @@ namespace phpOpenFW\Builders\SQL\Conditions;
 trait Condition
 {
     //=========================================================================
+    // Traits
+    //=========================================================================
+    use \phpOpenFW\Builders\SQL\Traits\Aux;
+
+    //=========================================================================
     // Class Members
     //=========================================================================
 
@@ -353,9 +358,19 @@ trait Condition
         if (!$field) {
             throw new \Exception("Invalid field name given.");
         }
+        if (!self::IsValidOperator($op)) {
+            throw new \Exception("Invalid operator given.");
+        }
+
+        //-----------------------------------------------------------------
+        // False Value? Return.
+        //-----------------------------------------------------------------
         if ($value === false) {
             return false;
         }
+        //-----------------------------------------------------------------
+        // Null Value
+        //-----------------------------------------------------------------
         else if (is_null($value)) {
             if ($op == '=') {
                 return self::IsNull($field);
@@ -374,7 +389,7 @@ trait Condition
         //-----------------------------------------------------------------
         // Add Bind Parameter
         //-----------------------------------------------------------------
-        $place_holder = \phpOpenFW\Builders\SQL\Aux::AddBindParam(static::$db_type, $params, $value, $type);
+        $place_holder = self::AddBindParam(static::$db_type, $params, $value, $type);
 
         //-----------------------------------------------------------------
         // Create and Return Condition
@@ -395,6 +410,13 @@ trait Condition
         if (!$field) {
             throw new \Exception("Invalid field name given.");
         }
+        if (!self::IsValidOperator($op)) {
+            throw new \Exception("Invalid operator given.");
+        }
+
+        //-----------------------------------------------------------------
+        // No Values? Return.
+        //-----------------------------------------------------------------
         if (!$values) {
             return false;
         }
@@ -402,45 +424,12 @@ trait Condition
         //-----------------------------------------------------------------
         // Add Bind Parameters
         //-----------------------------------------------------------------
-        $place_holders = \phpOpenFW\Builders\SQL\Aux::AddBindParams(static::$db_type, $params, $values, $type);
+        $place_holders = self::AddBindParams(static::$db_type, $params, $values, $type);
 
         //-----------------------------------------------------------------
         // Create and Return Condition
         //-----------------------------------------------------------------
         return "{$field} {$op} ({$place_holders})";
-    }
-
-    //=========================================================================
-    //=========================================================================
-    // AndOr Methods
-    //=========================================================================
-    //=========================================================================
-    protected static function AndOr(String $andor, $condition)
-    {
-        //-----------------------------------------------------------------
-        // Validate AndOr
-        //-----------------------------------------------------------------
-        $andor = strtolower($andor);
-        if ($andor != 'and' && $andor != 'or') {
-            throw new \Exception("Invalid And/Or parameter.");
-        }
-
-        //-----------------------------------------------------------------
-        // Is Condition Empty?
-        //-----------------------------------------------------------------
-        if (!$condition) {
-            return false;
-        }
-
-        //-----------------------------------------------------------------
-        // Return Condtion with And / Or attached
-        //-----------------------------------------------------------------
-        if ($andor == 'and') {
-            return 'and ' . $condition;
-        }
-        else {
-            return 'or ' . $condition;
-        }
     }
 
 }

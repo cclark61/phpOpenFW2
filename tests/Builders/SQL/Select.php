@@ -61,6 +61,9 @@ class Select
                 ->Select('a.child_id, a.birth_mother_id')
                 ->SelectRaw("concat(b.first_name, ' ', b.last_name as full_name")
                 ->Join('join_table b', 'a.worker_id', '=', 'b.id')
+                ->Join('join_table c', function ($join) {
+                    
+                })
                 //->From('test_table')
                 //->From('test_table2 a, test_table3 z, ')
                 //->From(['test1', 'test3'])

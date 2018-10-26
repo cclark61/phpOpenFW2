@@ -2,7 +2,7 @@
 //**************************************************************************************
 //**************************************************************************************
 /**
- * SQL Core Class
+ * SQL Statement Class
  *
  * @package		phpOpenFW
  * @author 		Christian J. Clark
@@ -12,19 +12,19 @@
 //**************************************************************************************
 //**************************************************************************************
 
-namespace phpOpenFW\Builders\SQL;
+namespace phpOpenFW\Builders\SQL\Statements;
 
 //**************************************************************************************
 /**
- * SQL Core Class
+ * SQL Statement Class
  */
 //**************************************************************************************
-abstract class Core
+abstract class Statement
 {
     //=========================================================================
     // Traits
     //=========================================================================
-    use \phpOpenFW\Traits\Opts;
+    use \phpOpenFW\Builders\SQL\Traits\Aux;
 
     //=========================================================================
 	// Class Memebers
@@ -103,7 +103,7 @@ abstract class Core
     //=========================================================================
     public function SetDbType($type)
     {
-        if (!\phpOpenFW\Builders\SQL\Aux::DbTypeIsValid($type)) {
+        if (!self::DbTypeIsValid($type)) {
             throw new \Exception("Invalid database type passed.");
         }
         $this->db_type = $type;

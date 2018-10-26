@@ -2,7 +2,7 @@
 //**************************************************************************************
 //**************************************************************************************
 /**
- * SQL Builder Class
+ * SQL Comma Separated Clause Trait
  *
  * @package		phpOpenFW
  * @author 		Christian J. Clark
@@ -12,54 +12,65 @@
 //**************************************************************************************
 //**************************************************************************************
 
-namespace phpOpenFW\Builders;
+namespace phpOpenFW\Builders\SQL\Statements\Traits;
 
 //**************************************************************************************
 /**
- * SQL Class
+ * SQL Comma Separated Clause Trait
  */
 //**************************************************************************************
-class SQL
+trait CSC
 {
-
     //=========================================================================
     //=========================================================================
-    // Select Method
+	// Comma Separated Clause Add Item Method
     //=========================================================================
     //=========================================================================
-    public static function Select($table, $data_source=false)
-    {
-		return new SQL\Statements\Select($table, $data_source);
+	protected function CSC_AddItem(&$var, $value)
+	{
+    	if ($value) {
+        	$values = [];
+        	if (is_scalar($value)) {
+            	$values = explode(',', $value);
+            }
+            else if (is_array($value)) {
+                $values = $value;
+            }
+            
+            if ($values && is_iterable($values)) {
+                foreach ($values as $tmp_value) {
+                    $tmp_value = trim($tmp_value);
+                    if ($tmp_value) {
+                    	$this->AddItem($var, $tmp_value);
+                    }
+                }
+            }
+        }
+        return $this;
 	}
 
     //=========================================================================
     //=========================================================================
-    // Insert Method
+	// Comma Separated Clause Add Item Raw Method
     //=========================================================================
     //=========================================================================
-    public static function Insert($table, $data_source=false)
-    {
-		return new SQL\Statements\Insert($table, $data_source);
+	protected function CSC_AddItemRaw(&$var, $value)
+	{
+        return $this->AddItem($var, $value);
 	}
 
     //=========================================================================
     //=========================================================================
-    // Update Method
+    // Format Comma Separated Clause Method
     //=========================================================================
     //=========================================================================
-    public static function Update($table, $data_source=false)
+    protected function FormatCSC($clause, &$values)
     {
-		return new SQL\Statements\Update($table, $data_source);
-	}
+        if ($values) {
+    		return "{$clause}\n  " . implode(",\n  ", $values);
+        }
 
-    //=========================================================================
-    //=========================================================================
-    // Delete Method
-    //=========================================================================
-    //=========================================================================
-    public static function Delete($table, $data_source=false)
-    {
-		return new SQL\Statements\Delete($table, $data_source);
-	}
+        return false;
+    }
 
 }

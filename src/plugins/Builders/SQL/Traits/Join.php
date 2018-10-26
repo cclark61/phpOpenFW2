@@ -33,7 +33,7 @@ trait Join
     //=========================================================================
 	public function Join($table, $field1, $op=false, $field2=false)
 	{
-    	$this->AddJoin('join', $field1, $op, $field2);
+    	$this->AddJoin('join', $table, $field1, $op, $field2);
         return $this;
 	}
 
@@ -44,7 +44,7 @@ trait Join
     //=========================================================================
 	public function InnerJoin($table, $field1, $op=false, $field2=false)
 	{
-    	$this->AddJoin('inner', $field1, $op, $field2);
+    	$this->AddJoin('inner', $table, $field1, $op, $field2);
         return $this;
 	}
 
@@ -55,7 +55,7 @@ trait Join
     //=========================================================================
 	public function OuterJoin($table, $field1, $op=false, $field2=false)
 	{
-    	$this->AddJoin('outer', $field1, $op, $field2);
+    	$this->AddJoin('outer', $table, $field1, $op, $field2);
         return $this;
 	}
 
@@ -66,7 +66,7 @@ trait Join
     //=========================================================================
 	public function CrossJoin($table)
 	{
-    	$this->AddJoin('cross', $field1, $op, $field2);
+    	$this->AddJoin('cross', $table);
         return $this;
 	}
 
@@ -77,7 +77,7 @@ trait Join
     //=========================================================================
 	public function LeftJoin($table, $field1, $op=false, $field2=false)
 	{
-    	$this->AddJoin('left', $field1, $op, $field2);
+    	$this->AddJoin('left', $table, $field1, $op, $field2);
         return $this;
 	}
 
@@ -88,7 +88,7 @@ trait Join
     //=========================================================================
 	public function RightJoin($table, $field1, $op=false, $field2=false)
 	{
-    	$this->AddJoin('right', $field1, $op, $field2);
+    	$this->AddJoin('right', $table, $field1, $op, $field2);
         return $this;
 	}
 
@@ -105,7 +105,7 @@ trait Join
 	// Add Join Clause
     //=========================================================================
     //=========================================================================
-	protected function AddJoin(String $join_type, $field1, $op=false, $field2=false)
+	protected function AddJoin(String $join_type, $table, $field1, $op=false, $field2=false)
 	{
     	
         return $this;

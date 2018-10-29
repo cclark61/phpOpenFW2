@@ -199,7 +199,7 @@ trait Aux
 	// Add Item Raw Method
     //=========================================================================
     //=========================================================================
-	protected static function AddItemRaw(&$var, $val)
+	protected static function AddItem(&$var, $val)
 	{
 		if ($val) {
 			if (is_array($val)) {
@@ -213,32 +213,49 @@ trait Aux
 
     //=========================================================================
     //=========================================================================
-	// Add Item Method
+	// Add Item CSC Method
+    //=========================================================================
+	// Detects comma separated items and pulls them apart
     //=========================================================================
     //=========================================================================
-	protected static function AddItem(&$var, $value)
+	protected static function AddItemCSC(&$var, $value)
 	{
     	if ($value) {
         	$values = [];
+
+            //-----------------------------------------------------------------
+            // Scalar Value
+            //-----------------------------------------------------------------
         	if (is_scalar($value)) {
             	$values = explode(',', $value);
             }
+            //-----------------------------------------------------------------
+            // Array of Values
+            //-----------------------------------------------------------------
             else if (is_array($value)) {
-                foreach ($value as $tmp_val) {
-                    self::AddItem($var, $val);
+                foreach ($value as $tmp_value) {
+                    $tmp_value = trim($tmp_value);
+                    if ($tmp_value) {
+                    	self::AddItemCSC($var, $tmp_value);
+                    }
                 }
                 return true;
             }
-            
+
+            //-----------------------------------------------------------------
+            // Scalar value exploded by comma into an array
+            //-----------------------------------------------------------------
             if ($values && is_iterable($values)) {
                 foreach ($values as $tmp_value) {
                     $tmp_value = trim($tmp_value);
                     if ($tmp_value) {
-                    	self::AddItemRaw($var, $tmp_value);
+                    	self::AddItem($var, $tmp_value);
                     }
                 }
             }
         }
+
+        return true;
 	}
 
     //=========================================================================

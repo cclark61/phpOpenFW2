@@ -69,6 +69,7 @@ class Select
                 //->From('test_table2 a, test_table3 z, ')
                 //->From(['test1', 'test3'])
                 ->GroupBy('worker_id')
+                //->GroupBy('test1, test2')
                 ->OrderBy(['child_id', 'id desc'])
                 ->Where('field_4', '=', 4)
                 ->Limit(50, 2);

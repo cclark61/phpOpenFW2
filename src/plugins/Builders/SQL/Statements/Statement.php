@@ -115,7 +115,7 @@ abstract class Statement
     // Get Database Type Method
     //=========================================================================
     //=========================================================================
-    public function GetDbType($type)
+    public function GetDbType()
     {
         return $this->db_type;
     }

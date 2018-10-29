@@ -33,7 +33,7 @@ trait From
     //=========================================================================
 	public function From($from)
 	{
-        self::AddItem($this->from, $from);
+        self::AddItemCSC($this->from, $from);
     	return $this;
 	}
 
@@ -44,7 +44,7 @@ trait From
     //=========================================================================
 	public function FromRaw($from)
 	{
-        self::AddItemRaw($this->from, $from);
+        self::AddItem($this->from, $from);
     	return $this;
 	}
 

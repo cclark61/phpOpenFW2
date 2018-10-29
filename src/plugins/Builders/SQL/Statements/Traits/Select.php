@@ -33,7 +33,7 @@ trait Select
     //=========================================================================
 	public function Select($field)
 	{
-    	self::AddItem($this->fields, $field);
+    	self::AddItemCSC($this->fields, $field);
     	return $this;
 	}
 
@@ -44,7 +44,7 @@ trait Select
     //=========================================================================
 	public function SelectRaw($field)
 	{
-    	self::AddItemRaw($this->fields, $field);
+    	self::AddItem($this->fields, $field);
     	return $this;
 	}
 

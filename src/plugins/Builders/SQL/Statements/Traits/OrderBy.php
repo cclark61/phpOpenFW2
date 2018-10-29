@@ -33,7 +33,7 @@ trait OrderBy
     //=========================================================================
 	public function OrderBy($order_by)
 	{
-    	self::AddItem($this->order_by, $order_by);
+    	self::AddItemCSC($this->order_by, $order_by);
     	return $this;
 	}
 
@@ -44,7 +44,7 @@ trait OrderBy
     //=========================================================================
 	public function OrderByRaw($order_by)
 	{
-        self::AddItemRaw($this->order_by, $order_by);
+        self::AddItem($this->order_by, $order_by);
     	return $this;
 	}
 

@@ -33,7 +33,8 @@ trait GroupBy
     //=========================================================================
 	public function GroupBy($group_by)
 	{
-    	return $this->CSC_AddItem($this->group_by, $group_by);
+    	self::AddItem($this->group_by, $group_by);
+    	return $this;
 	}
 
     //=========================================================================
@@ -43,7 +44,8 @@ trait GroupBy
     //=========================================================================
 	public function GroupByRaw($group_by)
 	{
-        return $this->CSC_AddItemRaw($this->group_by, $group_by);
+        self::AddItemRaw($this->group_by, $group_by);
+    	return $this;
 	}
 
     //##################################################################################
@@ -61,7 +63,7 @@ trait GroupBy
     //=========================================================================
     protected function FormatGroupBy()
     {
-        return $this->FormatCSC('GROUP BY', $this->group_by);
+        return self::FormatCSC('GROUP BY', $this->group_by);
     }
 
 }

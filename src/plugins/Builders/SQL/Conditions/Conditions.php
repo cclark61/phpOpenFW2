@@ -355,5 +355,4 @@ trait Conditions
     {
         return self::AndOr('or', self::BetweenCondition($field, 'NOT BETWEEN', $value, $params, $type));
     }
-
 }

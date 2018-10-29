@@ -25,14 +25,13 @@ trait Join
     //=========================================================================
 	// Trait Memebers
     //=========================================================================
-	protected $from = [];
 
     //=========================================================================
     //=========================================================================
 	// Join Method
     //=========================================================================
     //=========================================================================
-	public function Join($table, $field1, $op=false, $field2=false)
+	public function Join(String $table, $field1, String $op='', String $field2='')
 	{
     	$this->AddJoin('join', $table, $field1, $op, $field2);
         return $this;
@@ -43,7 +42,7 @@ trait Join
 	// Inner Join
     //=========================================================================
     //=========================================================================
-	public function InnerJoin($table, $field1, $op=false, $field2=false)
+	public function InnerJoin(String $table, $field1, String $op='', $field2='')
 	{
     	$this->AddJoin('inner', $table, $field1, $op, $field2);
         return $this;
@@ -54,7 +53,7 @@ trait Join
 	// Outer Join
     //=========================================================================
     //=========================================================================
-	public function OuterJoin($table, $field1, $op=false, $field2=false)
+	public function OuterJoin(String $table, $field1, String $op='', String $field2='')
 	{
     	$this->AddJoin('outer', $table, $field1, $op, $field2);
         return $this;
@@ -65,7 +64,7 @@ trait Join
 	// Cross Join
     //=========================================================================
     //=========================================================================
-	public function CrossJoin($table)
+	public function CrossJoin(String $table)
 	{
     	$this->AddJoin('cross', $table);
         return $this;
@@ -76,7 +75,7 @@ trait Join
 	// Left Join
     //=========================================================================
     //=========================================================================
-	public function LeftJoin($table, $field1, $op=false, $field2=false)
+	public function LeftJoin(String $table, $field1, String $op='', String $field2='')
 	{
     	$this->AddJoin('left', $table, $field1, $op, $field2);
         return $this;
@@ -87,7 +86,7 @@ trait Join
 	// Right Join
     //=========================================================================
     //=========================================================================
-	public function RightJoin($table, $field1, $op=false, $field2=false)
+	public function RightJoin(String $table, $field1, String $op='', String $field2='')
 	{
     	$this->AddJoin('right', $table, $field1, $op, $field2);
         return $this;
@@ -106,12 +105,77 @@ trait Join
 	// Add Join Clause
     //=========================================================================
     //=========================================================================
-	protected function AddJoin(String $join_type, $table, $field1, $op=false, $field2=false)
+	protected function AddJoin(String $join_type, String $table, $field1, String $op='', String $field2='')
 	{
-    	if ($field1 instanceof Closure) {
-        	
+        //-----------------------------------------------------------------
+        // Validate Parameters
+        //-----------------------------------------------------------------
+        if (!$table) {
+            throw new \Exception("Invalid table name given.");
         }
-        return $this;
+        $join_phrase = $this->GetJoinPhrase($join_type);
+
+        //-----------------------------------------------------------------
+        // Cross Join ONLY
+        //-----------------------------------------------------------------
+        if ($join_type == 'cross') {
+            self::AddItem($this->from, ['join', 'CROSS JOIN ' . $table]);
+            return true;
+        }
+
+        //-----------------------------------------------------------------
+        // Advanced Join Clause
+        //-----------------------------------------------------------------
+    	if ($field1 instanceof Closure) {
+        	$nested = new \phpOpenFW\Builders\SQL\Statements\NestedConditions($this);
+        	$conditions = $field1($nested);
+        	self::AddItem($this->from, [
+        	    'join', 
+        	    "{$join_phrase} {$table} ON ({$conditions})"
+            ]);
+        	return true;
+        }
+        //-----------------------------------------------------------------
+        // Single Condition
+        //-----------------------------------------------------------------
+        else if (is_scalar($field1) && is_string($field1)) {
+            $condition = $this->On($field1, $op, $field2);
+        	self::AddItem($this->from, [
+        	    'join', 
+        	    "{$join_phrase} {$table} ON ({$conditions})"
+            ]);
+            return true;
+        }
+        //-----------------------------------------------------------------
+        // Invalid Join Parameters
+        //-----------------------------------------------------------------
+        else {
+            throw new \Exception("Invalid join parameters given.");
+        }
 	}
 
+    //=========================================================================
+    //=========================================================================
+	// Get Join Phrase
+    //=========================================================================
+    //=========================================================================
+	protected function GetJoinPhrase(String $join_type)
+	{
+        switch (strtolower($join_type)) {
+            case 'join':
+                return 'JOIN';
+            case 'inner':
+                return 'INNER JOIN';
+            case 'outer':
+                return 'OUTER JOIN';
+            case 'cross':
+                return 'CROSS JOIN';
+            case 'left':
+                return 'LEFT JOIN';
+            case 'right':
+                return 'RIGHT JOIN';
+            default:
+                return false;
+        }
+    }
 }

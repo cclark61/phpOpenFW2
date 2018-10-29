@@ -33,7 +33,8 @@ trait From
     //=========================================================================
 	public function From($from)
 	{
-        return $this->CSC_AddItem($this->from, $from);
+        self::AddItem($this->from, $from);
+    	return $this;
 	}
 
     //=========================================================================
@@ -43,7 +44,8 @@ trait From
     //=========================================================================
 	public function FromRaw($from)
 	{
-        return $this->CSC_AddItemRaw($this->from, $from);
+        self::AddItemRaw($this->from, $from);
+    	return $this;
 	}
 
     //##################################################################################
@@ -61,7 +63,7 @@ trait From
     //=========================================================================
     protected function FormatFrom()
     {
-        return $this->FormatCSC('FROM', $this->from);
+        return self::FormatCSC('FROM', $this->from);
     }
 
 }

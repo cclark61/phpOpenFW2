@@ -33,7 +33,8 @@ trait Select
     //=========================================================================
 	public function Select($field)
 	{
-    	return $this->CSC_AddItem($this->fields, $field);
+    	self::AddItem($this->fields, $field);
+    	return $this;
 	}
 
     //=========================================================================
@@ -43,7 +44,8 @@ trait Select
     //=========================================================================
 	public function SelectRaw($field)
 	{
-    	return $this->CSC_AddItemRaw($this->fields, $field);
+    	self::AddItemRaw($this->fields, $field);
+    	return $this;
 	}
 
     //##################################################################################
@@ -61,7 +63,7 @@ trait Select
     //=========================================================================
     protected function FormatFields()
     {
-        $select = $this->FormatCSC('SELECT', $this->fields);
+        $select = self::FormatCSC('SELECT', $this->fields);
         if (!$select) {
             $select = 'SELECT *';
         }

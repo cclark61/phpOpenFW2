@@ -45,7 +45,23 @@ trait Aux
             return false;
         }
         $op = strtolower($op);
-        $ops = ['=', '!=', '<>', '<', '<=', '>', '>=', 'in', 'not in', 'like', 'not like', 'between', 'not between'];
+        $ops = [
+            '=', 
+            '!=', 
+            '<>', 
+            '<', 
+            '<=', 
+            '>', 
+            '>=', 
+            'in', 
+            'not in', 
+            'like', 
+            'not like', 
+            'between', 
+            'not between',
+            'is null',
+            'is not null'
+        ];
         if (!in_array($op, $ops)) {
             return false;
         }
@@ -176,6 +192,82 @@ trait Aux
         else {
             return 'or ' . $condition;
         }
+    }
+
+    //=========================================================================
+    //=========================================================================
+	// Add Item Raw Method
+    //=========================================================================
+    //=========================================================================
+	protected static function AddItemRaw(&$var, $val)
+	{
+		if ($val) {
+			if (is_array($val)) {
+				$var = array_merge($var, $val);
+			}
+			else {
+				$var[] = $val;
+			}
+		}
+	}
+
+    //=========================================================================
+    //=========================================================================
+	// Add Item Method
+    //=========================================================================
+    //=========================================================================
+	protected static function AddItem(&$var, $value)
+	{
+    	if ($value) {
+        	$values = [];
+        	if (is_scalar($value)) {
+            	$values = explode(',', $value);
+            }
+            else if (is_array($value)) {
+                foreach ($value as $tmp_val) {
+                    self::AddItem($var, $val);
+                }
+                return true;
+            }
+            
+            if ($values && is_iterable($values)) {
+                foreach ($values as $tmp_value) {
+                    $tmp_value = trim($tmp_value);
+                    if ($tmp_value) {
+                    	self::AddItemRaw($var, $tmp_value);
+                    }
+                }
+            }
+        }
+	}
+
+    //=========================================================================
+    //=========================================================================
+    // Format Comma Separated Clause Method
+    //=========================================================================
+    //=========================================================================
+    protected static function FormatCSC($clause, $values)
+    {
+        if ($values) {
+    		return "{$clause}\n  " . implode(",\n  ", $values);
+        }
+
+        return false;
+    }
+
+    //=========================================================================
+    //=========================================================================
+	// Add SQL Clause Method
+    //=========================================================================
+    //=========================================================================
+	protected static function AddSQLClause(&$strsql, $clause)
+	{
+		if ($clause) {
+    		$strsql .= $clause . "\n";
+            return true;
+        }
+
+        return false;
     }
 
 }

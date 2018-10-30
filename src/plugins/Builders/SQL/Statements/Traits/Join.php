@@ -145,12 +145,11 @@ trait Join
             ];
             return true;
         }
+
         //-----------------------------------------------------------------
         // Invalid Join Parameters
         //-----------------------------------------------------------------
-        else {
-            throw new \Exception("Invalid join parameters given.");
-        }
+        throw new \Exception("Invalid join parameters given.");
 	}
 
     //=========================================================================

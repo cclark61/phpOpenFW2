@@ -68,14 +68,14 @@ trait Condition
             // Is Null
             //-------------------------------------------------------------
             case 'is null':
-                return self::IsNull($field);
+                return self::IsNullCondition($field);
                 break;
 
             //-------------------------------------------------------------
             // Is Not Null
             //-------------------------------------------------------------
             case 'is not null':
-                return self::IsNotNull($field);
+                return self::IsNotNullCondition($field);
                 break;
 
             //-------------------------------------------------------------
@@ -153,10 +153,10 @@ trait Condition
         //-----------------------------------------------------------------
         else if (is_null($value)) {
             if ($op == '=') {
-                return self::IsNull($field);
+                return self::IsNullCondition($field);
             }
             else if ($op == '!=') {
-                return self::IsNotNull($field);
+                return self::IsNotNullCondition($field);
             }
             else {
                 return false;

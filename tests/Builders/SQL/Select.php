@@ -68,12 +68,12 @@ class Select
                 ->LeftJoin('join_table b', 'a.worker_id', '=', 'b.id')
                 ->InnerJoin('join_table c', function ($join) {
                     $join->On('test_col1', 'test_col2')
-                    ->Where('test', '=', 5);
+                    ->Where('test1', '=', 1);
                 })
                 ->OuterJoin('join_table c', function ($join) use ($test_value) {
                     $join->On('test_col1', 'test_col2')
-                    ->Where('test', '=', 5)
-                    ->Where('test2', '!=', $test_value);
+                    ->Where('test2', '=', 2)
+                    ->Where('test3', '!=', $test_value);
                 })
                 //->From('test_table')
                 //->From('test_table2 a, test_table3 z, ')
@@ -82,11 +82,17 @@ class Select
                 ->GroupBy('worker_id')
                 //->GroupBy('test1, test2')
                 ->OrderBy(['child_id', 'id desc'])
-                ->Where('field_4', '=', 4)
-                ->Where(function ($join) use ($test_value) {
-                    $join->On('test_col1', 'test_col2')
-                    ->Where('test', '=', 5)
-                    ->Where('test2', '!=', $test_value);
+                ->Where('test4', '>=', 4, 'i')
+                ->Where(function ($query) use ($test_value) {
+                    $query->WhereColumn('test5', 'test6')
+                    ->OrWhereColumn('test7', 'test8')
+                    ->OrWhere('test9', '=', 9)
+                    ->Where('test10', '!=', $test_value + 10)
+                    ->Where(function ($query) use ($test_value) {
+                        $query->WhereNotBetween('test11', [23, 26], 'i')
+                        ->WhereIn('test12', [11, 12, 13], 'i')
+                        ->WhereNull('test13');
+                    });
                 })
                 ->Limit(50, 2);
 

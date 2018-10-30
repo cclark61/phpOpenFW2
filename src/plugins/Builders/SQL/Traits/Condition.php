@@ -26,7 +26,7 @@ trait Condition
     // Condition
     //=========================================================================
     //=========================================================================
-    public static function Condition(String $field, String $op, $value, Array &$params, String $type='s')
+    protected static function Condition(String $db_type, String $field, String $op, $value=false, Array &$params=null, String $type='s')
     {
         //-----------------------------------------------------------------
         // Validate Parameters
@@ -53,7 +53,7 @@ trait Condition
             //-------------------------------------------------------------
             case 'in':
             case 'not in':
-                return self::MultipleValueCondition($field, $op, $value, $params, $type);
+                return self::MultipleValueCondition($db_type, $field, $op, $value, $params, $type);
                 break;
 
             //-------------------------------------------------------------
@@ -61,14 +61,28 @@ trait Condition
             //-------------------------------------------------------------
             case 'between':
             case 'not between':
-                return self::BetweenCondition($field, $op, $value, $params, $type);
+                return self::BetweenCondition($db_type, $field, $op, $value, $params, $type);
+                break;
+
+            //-------------------------------------------------------------
+            // Is Null
+            //-------------------------------------------------------------
+            case 'is null':
+                return self::IsNull($field);
+                break;
+
+            //-------------------------------------------------------------
+            // Is Not Null
+            //-------------------------------------------------------------
+            case 'is not null':
+                return self::IsNotNull($field);
                 break;
 
             //-------------------------------------------------------------
             // Everything else (Single Value Conditions)
             //-------------------------------------------------------------
             default:
-                return self::SingleValueCondition($field, $op, $value, $params, $type);
+                return self::SingleValueCondition($db_type, $field, $op, $value, $params, $type);
                 break;
         }
 
@@ -80,7 +94,7 @@ trait Condition
     // Is Null
     //=========================================================================
     //=========================================================================
-    public static function IsNull(String $field)
+    protected static function IsNullCondition(String $field)
     {
         //-----------------------------------------------------------------
         // Check if field is empty
@@ -97,7 +111,7 @@ trait Condition
     // Is NOT Null
     //=========================================================================
     //=========================================================================
-    public static function IsNotNull(String $field)
+    protected static function IsNotNullCondition(String $field)
     {
         //-----------------------------------------------------------------
         // Check if field is empty
@@ -109,20 +123,14 @@ trait Condition
         return "{$field} IS NOT NULL";
     }
 
-    //##################################################################################
-    //##################################################################################
-    //##################################################################################
-    // Protected / Internal Methods
-    //##################################################################################
-    //##################################################################################
-    //##################################################################################
-
     //=========================================================================
     //=========================================================================
     // Single Value Condition
     //=========================================================================
+    // (=, !=, <>, <, <=, >, >=, like, not like)
     //=========================================================================
-    protected static function SingleValueCondition(String $field, String $op, $value, Array &$params, String $type='s')
+    //=========================================================================
+    protected static function SingleValueCondition(String $db_type, String $field, String $op, $value, Array &$params, String $type='s')
     {
         //-----------------------------------------------------------------
         // Validate Parameters
@@ -161,7 +169,7 @@ trait Condition
         //-----------------------------------------------------------------
         // Add Bind Parameter
         //-----------------------------------------------------------------
-        $place_holder = self::AddBindParam(static::$db_type, $params, $value, $type);
+        $place_holder = self::AddBindParam($db_type, $params, $value, $type);
 
         //-----------------------------------------------------------------
         // Create and Return Condition
@@ -173,8 +181,10 @@ trait Condition
     //=========================================================================
     // Multiple Value Condition
     //=========================================================================
+    // (in, not in)
     //=========================================================================
-    protected static function MultipleValueCondition(String $field, String $op, Array $values, Array &$params, String $type='s')
+    //=========================================================================
+    protected static function MultipleValueCondition(String $db_type, String $field, String $op, Array $values, Array &$params, String $type='s')
     {
         //-----------------------------------------------------------------
         // Validate Parameters
@@ -196,7 +206,7 @@ trait Condition
         //-----------------------------------------------------------------
         // Add Bind Parameters
         //-----------------------------------------------------------------
-        $place_holders = self::AddBindParams(static::$db_type, $params, $values, $type);
+        $place_holders = self::AddBindParams($db_type, $params, $values, $type);
 
         //-----------------------------------------------------------------
         // Create and Return Condition
@@ -208,8 +218,10 @@ trait Condition
     //=========================================================================
     // Between Condition
     //=========================================================================
+    // (between, not between)
     //=========================================================================
-    protected static function BetweenCondition(String $field, String $op, Array $values, Array &$params, String $type='s')
+    //=========================================================================
+    protected static function BetweenCondition(String $db_type, String $field, String $op, Array $values, Array &$params, String $type='s')
     {
         //-----------------------------------------------------------------
         // Validate Parameters
@@ -237,8 +249,8 @@ trait Condition
         //-----------------------------------------------------------------
         // Add Bind Parameters
         //-----------------------------------------------------------------
-        $place_holder1 = self::AddBindParam(static::$db_type, $params, $values[0], $type);
-        $place_holder2 = self::AddBindParam(static::$db_type, $params, $values[1], $type);
+        $place_holder1 = self::AddBindParam($db_type, $params, $values[0], $type);
+        $place_holder2 = self::AddBindParam($db_type, $params, $values[1], $type);
 
         //-----------------------------------------------------------------
         // Create and Return Condition

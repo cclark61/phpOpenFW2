@@ -24,7 +24,6 @@ class Select extends Statement
     //=========================================================================
     // Traits
     //=========================================================================
-    use Traits\CSC;
     use Traits\Select;
     use Traits\From;
     use Traits\Join;

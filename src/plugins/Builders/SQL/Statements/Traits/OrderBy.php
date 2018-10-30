@@ -33,7 +33,8 @@ trait OrderBy
     //=========================================================================
 	public function OrderBy($order_by)
 	{
-    	return $this->CSC_AddItem($this->order_by, $order_by);
+    	self::AddItemCSC($this->order_by, $order_by);
+    	return $this;
 	}
 
     //=========================================================================
@@ -43,7 +44,8 @@ trait OrderBy
     //=========================================================================
 	public function OrderByRaw($order_by)
 	{
-        return $this->CSC_AddItemRaw($this->order_by, $order_by);
+        self::AddItem($this->order_by, $order_by);
+    	return $this;
 	}
 
     //##################################################################################
@@ -61,7 +63,7 @@ trait OrderBy
     //=========================================================================
     protected function FormatOrderBy()
     {
-        return $this->FormatCSC('ORDER BY', $this->order_by);
+        return self::FormatCSC('ORDER BY', $this->order_by);
 	}
 
 }

@@ -45,7 +45,23 @@ trait Aux
             return false;
         }
         $op = strtolower($op);
-        $ops = ['=', '!=', '<>', '<', '<=', '>', '>=', 'in', 'not in', 'like', 'not like', 'between', 'not between'];
+        $ops = [
+            '=', 
+            '!=', 
+            '<>', 
+            '<', 
+            '<=', 
+            '>', 
+            '>=', 
+            'in', 
+            'not in', 
+            'like', 
+            'not like', 
+            'between', 
+            'not between',
+            'is null',
+            'is not null'
+        ];
         if (!in_array($op, $ops)) {
             return false;
         }
@@ -176,6 +192,100 @@ trait Aux
         else {
             return 'or ' . $condition;
         }
+    }
+
+    //=========================================================================
+    //=========================================================================
+	// Add Item Raw Method
+    //=========================================================================
+    //=========================================================================
+	protected static function AddItem(&$var, $val)
+	{
+		if ($val) {
+			if (is_array($val)) {
+				$var = array_merge($var, $val);
+			}
+			else {
+				$var[] = $val;
+			}
+		}
+	}
+
+    //=========================================================================
+    //=========================================================================
+	// Add Item CSC Method
+    //=========================================================================
+	// Detects comma separated items and pulls them apart
+	// and adds them individually
+    //=========================================================================
+    //=========================================================================
+	protected static function AddItemCSC(&$var, $value)
+	{
+    	if ($value) {
+        	$values = [];
+
+            //-----------------------------------------------------------------
+            // Scalar Value
+            //-----------------------------------------------------------------
+        	if (is_scalar($value)) {
+            	$values = explode(',', $value);
+            }
+            //-----------------------------------------------------------------
+            // Array of Values
+            //-----------------------------------------------------------------
+            else if (is_array($value)) {
+                foreach ($value as $tmp_value) {
+                    $tmp_value = trim($tmp_value);
+                    if ($tmp_value) {
+                    	self::AddItemCSC($var, $tmp_value);
+                    }
+                }
+                return true;
+            }
+
+            //-----------------------------------------------------------------
+            // Scalar value exploded by comma into an array
+            //-----------------------------------------------------------------
+            if ($values && is_iterable($values)) {
+                foreach ($values as $tmp_value) {
+                    $tmp_value = trim($tmp_value);
+                    if ($tmp_value) {
+                    	self::AddItem($var, $tmp_value);
+                    }
+                }
+            }
+        }
+
+        return true;
+	}
+
+    //=========================================================================
+    //=========================================================================
+    // Format Comma Separated Clause Method
+    //=========================================================================
+    //=========================================================================
+    protected static function FormatCSC($clause, $values)
+    {
+        if ($values) {
+    		return "{$clause}\n  " . implode(",\n  ", $values);
+        }
+
+        return false;
+    }
+
+    //=========================================================================
+    //=========================================================================
+	// Add SQL Clause Method
+    //=========================================================================
+    //=========================================================================
+	protected static function AddSQLClause(&$strsql, $clause)
+	{
+		if ($clause) {
+    		$strsql .= $clause . "\n";
+            return true;
+        }
+
+        return false;
     }
 
 }

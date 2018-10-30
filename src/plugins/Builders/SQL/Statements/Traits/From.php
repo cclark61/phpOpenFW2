@@ -63,7 +63,21 @@ trait From
     //=========================================================================
     protected function FormatFrom()
     {
-        return self::FormatCSC('FROM', $this->from);
+        $clause = '';
+        foreach ($this->from as $from) {
+            if (is_array($from)) {
+                if ($from[0] == 'join') {
+                    $clause .= "\n  " . $from[1];
+                }
+            }
+            else {
+                if ($clause) {
+                    $clause .= ',';
+                }
+                $clause .= "\n  " . $from;
+            }
+        }
+        return "FROM" . $clause;
     }
 
 }

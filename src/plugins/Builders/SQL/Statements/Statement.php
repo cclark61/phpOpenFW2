@@ -34,7 +34,8 @@ abstract class Statement
 	protected $data_source = false;
 	protected $bind_params = [];
 	protected $table = false;
-	
+	protected $depth = 0;
+
     //=========================================================================
     //=========================================================================
     // Constructor Method
@@ -136,7 +137,7 @@ abstract class Statement
     // Get Bind Parameters Method
     //=========================================================================
     //=========================================================================
-    public function GetBindParams()
+    public function &GetBindParams()
     {
 		return $this->bind_params;
 	}
@@ -154,7 +155,7 @@ abstract class Statement
 	    extract($args);
 	    $sql = $this->GetSQL();
 	    if ($return_handle) {
-		    return qdb_result($data_source, $sql, $this->bind_params);
+		    return \phpOpenFW\Database\QDB::qdb_result($data_source, $sql, $this->bind_params);
 	    }
 	    else {
 			return \phpOpenFW\Database\QDB::qdb_exec($data_source, $sql, $this->bind_params, $return_format);

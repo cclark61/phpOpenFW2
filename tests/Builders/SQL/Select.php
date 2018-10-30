@@ -53,25 +53,41 @@ class Select
             print "\n-------------------------------------------------------\n\n";
 
             //---------------------------------------------------------------
+            // Test Values
+            //---------------------------------------------------------------
+            $test_value = 27;
+
+            //---------------------------------------------------------------
             // Create / Start SQL Select Statement
             //---------------------------------------------------------------
-            $query = SQL::Select('cases')
+            $query = SQL::Select('cases a')
                 ->SetDbType($db_type)
                 ->Select('a.id, a.worker_id')
                 ->Select('a.child_id, a.birth_mother_id')
                 ->SelectRaw("concat(b.first_name, ' ', b.last_name as full_name")
-                ->Join('join_table b', 'a.worker_id', '=', 'b.id')
-                ->Join('join_table c', function ($join) {
+                ->LeftJoin('join_table b', 'a.worker_id', '=', 'b.id')
+                ->InnerJoin('join_table c', function ($join) {
                     $join->On('test_col1', 'test_col2')
                     ->Where('test', '=', 5);
                 })
+                ->OuterJoin('join_table c', function ($join) use ($test_value) {
+                    $join->On('test_col1', 'test_col2')
+                    ->Where('test', '=', 5)
+                    ->Where('test2', '!=', $test_value);
+                })
                 //->From('test_table')
                 //->From('test_table2 a, test_table3 z, ')
+                //->CrossJoin('join_table b', 'a.worker_id', '=', 'b.id')
                 //->From(['test1', 'test3'])
                 ->GroupBy('worker_id')
                 //->GroupBy('test1, test2')
                 ->OrderBy(['child_id', 'id desc'])
                 ->Where('field_4', '=', 4)
+                ->Where(function ($join) use ($test_value) {
+                    $join->On('test_col1', 'test_col2')
+                    ->Where('test', '=', 5)
+                    ->Where('test2', '!=', $test_value);
+                })
                 ->Limit(50, 2);
 
             //---------------------------------------------------------------

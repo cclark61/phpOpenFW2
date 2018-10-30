@@ -216,6 +216,7 @@ trait Aux
 	// Add Item CSC Method
     //=========================================================================
 	// Detects comma separated items and pulls them apart
+	// and adds them individually
     //=========================================================================
     //=========================================================================
 	protected static function AddItemCSC(&$var, $value)

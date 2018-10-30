@@ -66,7 +66,7 @@ trait Join
     //=========================================================================
 	public function CrossJoin(String $table)
 	{
-    	$this->AddJoin('cross', $table);
+    	$this->AddJoin('cross', $table, '');
         return $this;
 	}
 
@@ -119,7 +119,7 @@ trait Join
         // Cross Join ONLY
         //-----------------------------------------------------------------
         if ($join_type == 'cross') {
-            self::AddItem($this->from, ['join', 'CROSS JOIN ' . $table]);
+            $this->from[] = ['join', 'CROSS JOIN ' . $table];
             return true;
         }
 
@@ -127,23 +127,22 @@ trait Join
         // Advanced Join Clause
         //-----------------------------------------------------------------
     	if ($field1 instanceof Closure) {
-        	$nested = new \phpOpenFW\Builders\SQL\Statements\NestedConditions($this);
-        	$conditions = $field1($nested);
-        	self::AddItem($this->from, [
+        	$nested = new \phpOpenFW\Builders\SQL\Statements\NestedConditions($this, $this->depth+1);
+        	$field1($nested);
+        	$this->from[] = [
         	    'join', 
-        	    "{$join_phrase} {$table} ON ({$conditions})"
-            ]);
+        	    "{$join_phrase} {$table} ON ({$nested}\n  )"
+            ];
         	return true;
         }
         //-----------------------------------------------------------------
-        // Single Condition
+        // Single Condition Join
         //-----------------------------------------------------------------
         else if (is_scalar($field1) && is_string($field1)) {
-            $condition = $this->On($field1, $op, $field2);
-        	self::AddItem($this->from, [
+            $this->from[] = [
         	    'join', 
-        	    "{$join_phrase} {$table} ON ({$conditions})"
-            ]);
+        	    "{$join_phrase} {$table} ON {$field1} {$op} {$field2}"
+            ];
             return true;
         }
         //-----------------------------------------------------------------

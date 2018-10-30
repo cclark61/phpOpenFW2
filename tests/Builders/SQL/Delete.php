@@ -57,7 +57,7 @@ class Delete
             //---------------------------------------------------------------
             $query = SQL::Delete('cases')
             ->SetDbType($db_type)
-            ->Where('field_4', '='. 4);
+            ->Where('field_4', '=', 4);
 
             //---------------------------------------------------------------
             // Output Query / Bind Parameters

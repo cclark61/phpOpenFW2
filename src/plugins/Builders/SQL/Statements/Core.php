@@ -26,6 +26,7 @@ abstract class Core
     //=========================================================================
     use \phpOpenFW\Builders\SQL\Traits\Aux;
     use \phpOpenFW\Builders\SQL\Traits\Condition;
+    use Traits\Conditions;
 
     //=========================================================================
 	// Class Memebers
@@ -119,15 +120,4 @@ abstract class Core
     		$this->bind_params = array_merge($this->bind_params, $new_params);
 		}
 	}
-
-    //=========================================================================
-    //=========================================================================
-    // To String Method
-    //=========================================================================
-    //=========================================================================
-    public function __toString()
-    {
-		return $this->FormatWhere();
-	}
-
 }

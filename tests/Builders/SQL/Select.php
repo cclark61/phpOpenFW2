@@ -74,11 +74,11 @@ class Select
             //---------------------------------------------------------------
             // Create / Start SQL Select Statement
             //---------------------------------------------------------------
-            $query = SQL::Select('cases a')
+            $query = SQL::Select('contacts a')
                 ->SetDbType($db_type)
                 ->Union($query1)
                 ->Select('a.id, a.worker_id')
-                ->Select('a.child_id, a.birth_mother_id')
+                ->Select('a.org_id, a.person_id')
                 ->SelectRaw("concat(b.first_name, ' ', b.last_name as full_name")
                 ->LeftJoin('join_table b', 'a.worker_id', '=', 'b.id')
                 ->InnerJoin('join_table c', function ($join) {
@@ -98,10 +98,12 @@ class Select
                 //->GroupBy('test1, test2')
                 ->OrderBy(['child_id', 'id desc'])
                 ->Where('test4', '>=', 4, 'i')
+                /*
                 ->Where([
                     ['test4_1', '>=', '4_1', 'd'],
                     ['test4_2', '>=', '4_2', 'd'],
                 ])
+                */
                 ->Where(function ($query) use ($test_value) {
                     $query->WhereColumn('test5', 'test6')
                     ->OrWhereColumn('test7', 'test8')
@@ -115,6 +117,12 @@ class Select
                 })
                 ->WhereRaw("raw_field = 'test'")
                 ->Having('id', '>', 0)
+                ->HavingRaw('test_id = 10')
+                ->Having(function ($query) use ($test_value) {
+                    $query->WhereNotBetween('test11', [23, 26], 'i')
+                    ->WhereIn('test12', [11, 12, 13], 'i')
+                    ->WhereNull('test13');
+                })
                 ->Limit(50, 2)
                 
                 ->UnionAll($query2);

@@ -13,7 +13,6 @@
 //**************************************************************************************
 
 namespace phpOpenFW\Builders\SQL\Statements\Traits;
-use \Closure;
 
 //**************************************************************************************
 /**
@@ -38,16 +37,7 @@ trait Where
     //=========================================================================
 	public function Where($field, $op=null, $val=false, $type='s', $andor='and')
 	{
-        if (is_array($field)) {
-            foreach ($field as $tmp_field) {
-                if (is_array($tmp_field)) {
-                    call_user_func_array(array($this, "AddWhereCondition"), $tmp_field);
-                }
-            }
-        }
-        else {
-            $this->AddWhereCondition($field, $op, $val, $type, $andor);
-        }
+        $this->AddCondition($this->wheres, $field, $op, $val, $type, $andor);
         return $this;
 	}
 
@@ -69,7 +59,7 @@ trait Where
     //=========================================================================
 	public function WhereBetween(String $field, Array $val, $type='s')
 	{
-        $this->AddWhereCondition($field, 'BETWEEN', $val, $type, 'and');
+        $this->AddCondition($this->wheres, $field, 'BETWEEN', $val, $type, 'and');
         return $this;
 	}
 
@@ -80,7 +70,7 @@ trait Where
     //=========================================================================
 	public function OrWhereBetween(String $field, Array $val, $type='s')
 	{
-        $this->AddWhereCondition($field, 'BETWEEN', $val, $type, 'or');
+        $this->AddCondition($this->wheres, $field, 'BETWEEN', $val, $type, 'or');
         return $this;
 	}
 
@@ -91,7 +81,7 @@ trait Where
     //=========================================================================
 	public function WhereNotBetween(String $field, Array $val, $type='s')
 	{
-        $this->AddWhereCondition($field, 'NOT BETWEEN', $val, $type, 'and');
+        $this->AddCondition($this->wheres, $field, 'NOT BETWEEN', $val, $type, 'and');
         return $this;
 	}
 
@@ -102,7 +92,7 @@ trait Where
     //=========================================================================
 	public function OrWhereNotBetween(String $field, Array $val, $type='s')
 	{
-        $this->AddWhereCondition($field, 'NOT BETWEEN', $val, $type, 'or');
+        $this->AddCondition($this->wheres, $field, 'NOT BETWEEN', $val, $type, 'or');
         return $this;
 	}
 
@@ -113,7 +103,7 @@ trait Where
     //=========================================================================
 	public function WhereIn(String $field, Array $val, $type='s')
 	{
-        $this->AddWhereCondition($field, 'IN', $val, $type, 'and');
+        $this->AddCondition($this->wheres, $field, 'IN', $val, $type, 'and');
         return $this;
 	}
 
@@ -124,7 +114,7 @@ trait Where
     //=========================================================================
 	public function OrWhereIn(String $field, Array $val, $type='s')
 	{
-        $this->AddWhereCondition($field, 'IN', $val, $type, 'or');
+        $this->AddCondition($this->wheres, $field, 'IN', $val, $type, 'or');
         return $this;
 	}
 
@@ -135,7 +125,7 @@ trait Where
     //=========================================================================
 	public function WhereNotIn(String $field, Array $val, $type='s')
 	{
-        $this->AddWhereCondition($field, 'NOT IN', $val, $type, 'and');
+        $this->AddCondition($this->wheres, $field, 'NOT IN', $val, $type, 'and');
         return $this;
 	}
 
@@ -146,7 +136,7 @@ trait Where
     //=========================================================================
 	public function OrWhereNotIn(String $field, Array $val, $type='s')
 	{
-        $this->AddWhereCondition($field, 'NOT IN', $val, $type, 'or');
+        $this->AddCondition($this->wheres, $field, 'NOT IN', $val, $type, 'or');
         return $this;
 	}
 
@@ -157,7 +147,7 @@ trait Where
     //=========================================================================
 	public function WhereNull(String $field)
 	{
-        $this->AddWhereCondition($field, 'IS NULL', null, '', 'and');
+        $this->AddCondition($this->wheres, $field, 'IS NULL', null, '', 'and');
         return $this;
 	}
 
@@ -168,7 +158,7 @@ trait Where
     //=========================================================================
 	public function OrWhereNull(String $field)
 	{
-        $this->AddWhereCondition($field, 'IS NULL', null, '', 'or');
+        $this->AddCondition($this->wheres, $field, 'IS NULL', null, '', 'or');
         return $this;
 	}
 
@@ -179,7 +169,7 @@ trait Where
     //=========================================================================
 	public function WhereNotNull(String $field)
 	{
-        $this->AddWhereCondition($field, 'IS NOT NULL', null, '', 'and');
+        $this->AddCondition($this->wheres, $field, 'IS NOT NULL', null, '', 'and');
         return $this;
 	}
 
@@ -190,7 +180,7 @@ trait Where
     //=========================================================================
 	public function OrWhereNotNull(String $field)
 	{
-        $this->AddWhereCondition($field, 'IS NOT NULL', null, '', 'or');
+        $this->AddCondition($this->wheres, $field, 'IS NOT NULL', null, '', 'or');
         return $this;
 	}
 
@@ -287,67 +277,16 @@ trait Where
 
     //=========================================================================
     //=========================================================================
-	// Add Where Condition Method
-    //=========================================================================
-    //=========================================================================
-	protected function AddWhereCondition($field, $op, $val, $type, $andor='and')
-	{
-        //-----------------------------------------------------------------
-        // Validate Parameters
-        //-----------------------------------------------------------------
-        if (!$field) {
-            throw new \Exception('Invalid first parameter.');
-        }
-
-        //-----------------------------------------------------------------
-        // Anonymous Function: Nested
-        //-----------------------------------------------------------------
-        if ($field instanceof Closure) {
-        	$nested = new \phpOpenFW\Builders\SQL\Statements\NestedConditions($this, $this->depth+1);
-        	$field($nested);
-        	$rear_pad = str_repeat(' ', 2 + ($this->depth * 2));
-        	$this->wheres[] = [$andor, "({$nested}\n{$rear_pad})"];
-        }
-        //-----------------------------------------------------------------
-        // Single Condition
-        //-----------------------------------------------------------------
-        else if (is_scalar($field) && is_string($field)) {
-            $this->wheres[] = [$andor, self::Condition($this->db_type, $field, $op, $val, $this->bind_params, $type)];
-        }
-        //-----------------------------------------------------------------
-        // Unknown: Throw Exception
-        //-----------------------------------------------------------------
-        else {
-            throw new \Exception('Invalid condition parameters.');
-        }
-	}
-
-    //=========================================================================
-    //=========================================================================
 	// Format Where Clause Method
     //=========================================================================
     //=========================================================================
 	protected function FormatWhere()
 	{
-        $clause = '';
-        $front_pad = str_repeat(' ', 2 + ($this->depth * 2));
-        foreach ($this->wheres as $where) {
-            if (is_array($where)) {
-                if ($clause) {
-                    $clause .= "\n{$front_pad}{$where[0]} {$where[1]}";
-                }
-                else {
-                    $clause .= "\n{$front_pad}{$where[1]}";
-                }
-            }
-            else {
-                $clause .= "\n{$front_pad}{$where}";
-            }
-        }
-        if (!$this->depth) {
-            $clause = "WHERE " . $clause;
-        }
-        return $clause;
+    	$clause = $this->FormatConditions($this->wheres);
+    	if ($clause) {
+        	$clause = "WHERE " . $clause;
+    	}
+    	return $clause;
 	}
 
 }

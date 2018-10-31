@@ -100,6 +100,7 @@ class Select
                         ->WhereNull('test13');
                     });
                 })
+                ->WhereRaw('where_raw = ?', [['RAW!!', 'd'], 'test3'], 'i')
                 ->Limit(50, 2);
                 //->Union($query1)
                 //->UnionAll($query1);

@@ -49,7 +49,7 @@ class Delete extends Statement
             return '';
         }
 
-        return "DELETE FROM {$this->table} {$where}";
+        return "DELETE FROM {$this->table} \n{$where}";
 	}
 
 }

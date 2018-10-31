@@ -34,7 +34,7 @@ trait Where
 
     //=========================================================================
     //=========================================================================
-	// Where Clause Method
+	// Where Method
     //=========================================================================
     //=========================================================================
 	public function Where($field, $op=null, $val=false, $type='s')
@@ -45,7 +45,7 @@ trait Where
 
     //=========================================================================
     //=========================================================================
-	// Or Where Clause Method
+	// Or Where Method
     //=========================================================================
     //=========================================================================
 	public function OrWhere($field, $op=null, $val=false, $type='s')
@@ -59,7 +59,7 @@ trait Where
 	// Where Between Method
     //=========================================================================
     //=========================================================================
-	public function WhereBetween($field, Array $val, $type='s')
+	public function WhereBetween(String $field, Array $val, $type='s')
 	{
         $this->AddWhereCondition($field, 'BETWEEN', $val, $type, 'and');
         return $this;
@@ -70,7 +70,7 @@ trait Where
 	// Or Where Between Method
     //=========================================================================
     //=========================================================================
-	public function OrWhereBetween($field, Array $val, $type='s')
+	public function OrWhereBetween(String $field, Array $val, $type='s')
 	{
         $this->AddWhereCondition($field, 'BETWEEN', $val, $type, 'or');
         return $this;
@@ -81,7 +81,7 @@ trait Where
 	// Where Not Between Method
     //=========================================================================
     //=========================================================================
-	public function WhereNotBetween($field, Array $val, $type='s')
+	public function WhereNotBetween(String $field, Array $val, $type='s')
 	{
         $this->AddWhereCondition($field, 'NOT BETWEEN', $val, $type, 'and');
         return $this;
@@ -92,7 +92,7 @@ trait Where
 	// Or Where Not Between Method
     //=========================================================================
     //=========================================================================
-	public function OrWhereNotBetween($field, Array $val, $type='s')
+	public function OrWhereNotBetween(String $field, Array $val, $type='s')
 	{
         $this->AddWhereCondition($field, 'NOT BETWEEN', $val, $type, 'or');
         return $this;
@@ -103,7 +103,7 @@ trait Where
 	// Where In Method
     //=========================================================================
     //=========================================================================
-	public function WhereIn($field, Array $val, $type='s')
+	public function WhereIn(String $field, Array $val, $type='s')
 	{
         $this->AddWhereCondition($field, 'IN', $val, $type, 'and');
         return $this;
@@ -114,7 +114,7 @@ trait Where
 	// Or Where In Method
     //=========================================================================
     //=========================================================================
-	public function OrWhereIn($field, Array $val, $type='s')
+	public function OrWhereIn(String $field, Array $val, $type='s')
 	{
         $this->AddWhereCondition($field, 'IN', $val, $type, 'or');
         return $this;
@@ -125,7 +125,7 @@ trait Where
 	// Where Not In Method
     //=========================================================================
     //=========================================================================
-	public function WhereNotIn($field, Array $val, $type='s')
+	public function WhereNotIn(String $field, Array $val, $type='s')
 	{
         $this->AddWhereCondition($field, 'NOT IN', $val, $type, 'and');
         return $this;
@@ -136,7 +136,7 @@ trait Where
 	// Or Where Not In Method
     //=========================================================================
     //=========================================================================
-	public function OrWhereNotIn($field, Array $val, $type='s')
+	public function OrWhereNotIn(String $field, Array $val, $type='s')
 	{
         $this->AddWhereCondition($field, 'NOT IN', $val, $type, 'or');
         return $this;
@@ -147,7 +147,7 @@ trait Where
 	// Where Is Null Method
     //=========================================================================
     //=========================================================================
-	public function WhereNull($field)
+	public function WhereNull(String $field)
 	{
         $this->AddWhereCondition($field, 'IS NULL', null, '', 'and');
         return $this;
@@ -158,7 +158,7 @@ trait Where
 	// Or Where Is Null Method
     //=========================================================================
     //=========================================================================
-	public function OrWhereNull($field)
+	public function OrWhereNull(String $field)
 	{
         $this->AddWhereCondition($field, 'IS NULL', null, '', 'or');
         return $this;
@@ -169,7 +169,7 @@ trait Where
 	// Where Is Not Null Method
     //=========================================================================
     //=========================================================================
-	public function WhereNotNull($field)
+	public function WhereNotNull(String $field)
 	{
         $this->AddWhereCondition($field, 'IS NOT NULL', null, '', 'and');
         return $this;
@@ -180,7 +180,7 @@ trait Where
 	// Or Where Is Null Method
     //=========================================================================
     //=========================================================================
-	public function OrWhereNotNull($field)
+	public function OrWhereNotNull(String $field)
 	{
         $this->AddWhereCondition($field, 'IS NOT NULL', null, '', 'or');
         return $this;
@@ -242,6 +242,43 @@ trait Where
 	public function OrOn(String $field1, String $op, String $field2='')
     {
         $this->WhereColumn($field1, $op, $field2, 'or');
+        return $this;
+    }
+
+    //=========================================================================
+    //=========================================================================
+	// Where Raw Method
+    //=========================================================================
+    //=========================================================================
+	public function WhereRaw(String $where_raw, Array $params=[], $def_type='s', $andor='and')
+	{
+        if ($where_raw) {
+            $this->wheres[] = [$andor, $where_raw];
+            foreach ($params as $param) {
+                $bind_type = $def_type;
+                if (is_array($param)) {
+                    if (isset($param[1])) {
+                        $bind_type = $param[1];
+                    }
+                    $tmp_val = $param[0];
+                }
+                else {
+                    $tmp_val = $param;
+                }
+                self::AddBindParam($this->db_type, $this->bind_params, $tmp_val, $bind_type);
+            }
+        }
+        return $this;
+	}
+
+    //=========================================================================
+    //=========================================================================
+	// Or Where Raw Method
+    //=========================================================================
+    //=========================================================================
+	public function OrWhereRaw(String $where_raw, Array $params=[], $def_type='s')
+	{
+        $this->WhereRaw($where_raw, $params, $def_type, 'or');
         return $this;
     }
 

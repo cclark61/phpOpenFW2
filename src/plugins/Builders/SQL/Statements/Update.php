@@ -66,7 +66,7 @@ class Update extends Statement
 		//----------------------------------------------------------------
         // Start SQL Update Statement
 		//----------------------------------------------------------------
-		return "UPDATE {$this->table} SET {$set} {$where}";
+		return "UPDATE {$this->table} SET {$set} \n{$where}";
 	}
 
 }

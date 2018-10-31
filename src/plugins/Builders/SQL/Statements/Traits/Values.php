@@ -93,8 +93,10 @@ trait Values
             $fields = '';
             $place_holders = '';
             foreach ($this->set_fields as $set_field) {
-                if ($fields) { $fields .= ', '; }
-                if ($place_holders) { $place_holders .= ', '; }
+                if ($fields) { $fields .= ','; }
+                $fields .= "\n  "; 
+                if ($place_holders) { $place_holders .= ','; }
+                $place_holders .= "\n  ";
                 $fields .= $set_field[0];
                 if (is_null($set_field[1])) {
                     $place_holders .= 'NULL';
@@ -112,6 +114,7 @@ trait Values
             $set = '';
             foreach ($this->set_fields as $set_field) {
                 if ($set) { $set .= ', '; }
+                $set .= "\n  ";
                 if (is_null($set_field[1])) {
                     $place_holder = 'NULL';
                 }

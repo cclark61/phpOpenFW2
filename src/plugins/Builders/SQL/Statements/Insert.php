@@ -62,7 +62,7 @@ class Insert extends Statement
 		//----------------------------------------------------------------
         // Build Final SQL
 		//----------------------------------------------------------------
-        return "INSERT INTO {$this->table} ({$fields}) VALUES ({$place_holders})";        
+        return "INSERT INTO {$this->table} ({$fields}\n)\nVALUES ({$place_holders}\n)";        
 	}
 
 }

@@ -42,7 +42,7 @@ abstract class Core
     public function SetDbType($type)
     {
         if (!self::DbTypeIsValid($type)) {
-            throw new \Exception("Invalid database type passed.");
+            throw new \Exception('Invalid database type passed.');
         }
         $this->db_type = $type;
         return $this;

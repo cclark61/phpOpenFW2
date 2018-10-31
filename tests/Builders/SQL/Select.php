@@ -109,7 +109,7 @@ class Select
                         ->WhereNull('test13');
                     });
                 })
-                ->WhereRaw("where_raw = 'test'")
+                ->WhereRaw("raw_field = 'test'")
                 ->Having('id', '>', 0)
                 ->Limit(50, 2)
                 

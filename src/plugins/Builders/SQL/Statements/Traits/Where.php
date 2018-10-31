@@ -196,7 +196,7 @@ trait Where
         // Validate Parameters
         //-----------------------------------------------------------------
         if (!$field1) {
-            throw new \Exception("Invalid field name given.");
+            throw new \Exception('Invalid field name given.');
         }
 
         //-----------------------------------------------------------------
@@ -287,7 +287,7 @@ trait Where
         // Validate Parameters
         //-----------------------------------------------------------------
         if (!$field) {
-            throw new \Exception("Invalid field name given.");
+            throw new \Exception('Invalid field name given.');
         }
 
         //-----------------------------------------------------------------
@@ -317,7 +317,7 @@ trait Where
         // Unknown: Throw Exception
         //-----------------------------------------------------------------
         else {
-            throw new \Exception("Invalid field given.");
+            throw new \Exception('Invalid field given.');
         }
 	}
 

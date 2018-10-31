@@ -32,10 +32,10 @@ trait Condition
         // Validate Parameters
         //-----------------------------------------------------------------
         if (!$field) {
-            throw new \Exception("Invalid field name given.");
+            throw new \Exception('Invalid field name given.');
         }
         if (!self::IsValidOperator($op)) {
-            throw new \Exception("Invalid operator given.");
+            throw new \Exception('Invalid operator given.');
         }
 
         //-----------------------------------------------------------------
@@ -100,7 +100,7 @@ trait Condition
         // Check if field is empty
         //-----------------------------------------------------------------
         if (!$field) {
-            throw new \Exception("Invalid field name given.");
+            throw new \Exception('Invalid field name given.');
         }
 
         return "{$field} IS NULL";
@@ -117,7 +117,7 @@ trait Condition
         // Check if field is empty
         //-----------------------------------------------------------------
         if (!$field) {
-            throw new \Exception("Invalid field name given.");
+            throw new \Exception('Invalid field name given.');
         }
 
         return "{$field} IS NOT NULL";
@@ -136,10 +136,10 @@ trait Condition
         // Validate Parameters
         //-----------------------------------------------------------------
         if (!$field) {
-            throw new \Exception("Invalid field name given.");
+            throw new \Exception('Invalid field name given.');
         }
         if (!self::IsValidOperator($op)) {
-            throw new \Exception("Invalid operator given.");
+            throw new \Exception('Invalid operator given.');
         }
 
         //-----------------------------------------------------------------
@@ -163,7 +163,7 @@ trait Condition
             }
         }
         if (!is_scalar($value)) {
-            throw new \Exception("Value must be a scalar value.");
+            throw new \Exception('Value must be a scalar value.');
         }
 
         //-----------------------------------------------------------------
@@ -190,10 +190,10 @@ trait Condition
         // Validate Parameters
         //-----------------------------------------------------------------
         if (!$field) {
-            throw new \Exception("Invalid field name given.");
+            throw new \Exception('Invalid field name given.');
         }
         if (!self::IsValidOperator($op)) {
-            throw new \Exception("Invalid operator given.");
+            throw new \Exception('Invalid operator given.');
         }
 
         //-----------------------------------------------------------------
@@ -227,10 +227,10 @@ trait Condition
         // Validate Parameters
         //-----------------------------------------------------------------
         if (!$field) {
-            throw new \Exception("Invalid field name given.");
+            throw new \Exception('Invalid field name given.');
         }
         if (!self::IsValidOperator($op)) {
-            throw new \Exception("Invalid operator given.");
+            throw new \Exception('Invalid operator given.');
         }
 
         //-----------------------------------------------------------------
@@ -240,10 +240,10 @@ trait Condition
             return false;
         }
         else if (!array_key_exists(0, $values) || !array_key_exists(1, $values)) {
-            throw new \Exception("Invalid between values given. (1)");
+            throw new \Exception('Invalid between values given. (1)');
         }
         else if (!is_scalar($values[0]) || !is_scalar($values[1])) {
-            throw new \Exception("Invalid between values given. (2)");
+            throw new \Exception('Invalid between values given. (2)');
         }
 
         //-----------------------------------------------------------------

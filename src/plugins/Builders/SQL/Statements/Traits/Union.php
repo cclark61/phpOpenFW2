@@ -31,11 +31,12 @@ trait Union
 	// Union Clause Method
     //=========================================================================
     //=========================================================================
-	public function Union($union, Array $bind_params=null)
+	public function Union(\phpOpenFW\Builders\SQL\Statements\Select $union)
 	{
-    	if (is_object($union) && is_callable([$union, 'GetBindParams'])) {
-        	$bind_params = $union->GetBindParams();
-    	}
+    	$bind_params = $union->GetBindParams();
+    	if ($this->GetDbType() != $union->GetDbType()) {
+            throw new \Exception("Unions can only be performed on select statements of the same database type.");
+        }
         $this->unions[] = ['union', $union, $bind_params];
     	return $this;
 	}
@@ -45,11 +46,12 @@ trait Union
 	// Union All Clause Method
     //=========================================================================
     //=========================================================================
-	public function UnionAll($union, Array $bind_params=null)
+	public function UnionAll(\phpOpenFW\Builders\SQL\Statements\Select $union)
 	{
-    	if (is_object($union) && is_callable([$union, 'GetBindParams'])) {
-        	$bind_params = $union->GetBindParams();
-    	}
+    	$bind_params = $union->GetBindParams();
+    	if ($this->GetDbType() != $union->GetDbType()) {
+            throw new \Exception("Unions can only be performed on select statements of the same database type.");
+        }
         $this->unions[] = ['union all', $union, $bind_params];
     	return $this;
 	}

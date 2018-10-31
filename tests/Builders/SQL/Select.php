@@ -58,16 +58,25 @@ class Select
             $test_value = 27;
 
             //---------------------------------------------------------------
-            // Short Query
+            // Short Query #1
             //---------------------------------------------------------------
             $query1 = SQL::Select('contacts')
-            ->Where('last_name', '=', 'Clark');
+            ->SetDbType($db_type)
+            ->Where('last_name', '=', 'Clark', 'd');
+
+            //---------------------------------------------------------------
+            // Short Query #2
+            //---------------------------------------------------------------
+            $query2 = SQL::Select('contacts')
+            ->SetDbType($db_type)
+            ->Where('first_name', '=', 'Bob', 'd');
 
             //---------------------------------------------------------------
             // Create / Start SQL Select Statement
             //---------------------------------------------------------------
             $query = SQL::Select('cases a')
                 ->SetDbType($db_type)
+                ->Union($query1)
                 ->Select('a.id, a.worker_id')
                 ->Select('a.child_id, a.birth_mother_id')
                 ->SelectRaw("concat(b.first_name, ' ', b.last_name as full_name")
@@ -100,10 +109,11 @@ class Select
                         ->WhereNull('test13');
                     });
                 })
-                ->WhereRaw('where_raw = ?', [['RAW!!', 'd'], 'test3'], 'i')
-                ->Limit(50, 2);
-                //->Union($query1)
-                //->UnionAll($query1);
+                ->WhereRaw("where_raw = 'test'")
+                ->Having('id', '>', 0)
+                ->Limit(50, 2)
+                
+                ->UnionAll($query2);
 
             //---------------------------------------------------------------
             // Output Query / Bind Parameters

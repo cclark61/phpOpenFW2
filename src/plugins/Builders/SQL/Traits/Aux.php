@@ -79,14 +79,14 @@ trait Aux
         // Is Database Type Valid?
         //-----------------------------------------------------------------
         if (!self::DbTypeIsValid($db_type)) {
-            throw new \Exception("Invalid database type.");
+            throw new \Exception('Invalid database type.');
         }
 
         //-----------------------------------------------------------------
         // Validate that Value is Scalar
         //-----------------------------------------------------------------
         if (!is_scalar($value)) {
-            throw new \Exception("Value must be a scalar value.");
+            throw new \Exception('Value must be a scalar value.');
         }
 
         //-----------------------------------------------------------------
@@ -116,7 +116,7 @@ trait Aux
                 $index = count($params);
                 $ph = '$' . $index;
                 if (isset($params[$index])) {
-                    throw new \Exception("An error occurred trying to add the PostgreSQL bind parameter. Parameter index already in use.");
+                    throw new \Exception('An error occurred trying to add the PostgreSQL bind parameter. Parameter index already in use.');
                 }
                 $params[$index] = $value;
                 return $ph;
@@ -129,7 +129,7 @@ trait Aux
                 $index = count($params);
                 $ph = 'p' . $index;
                 if (isset($params[$ph])) {
-                    throw new \Exception("An error occurred trying to add the Oracle bind parameter. Parameter index already in use.");
+                    throw new \Exception('An error occurred trying to add the Oracle bind parameter. Parameter index already in use.');
                 }
                 $params[$ph] = $value;
                 return ':' . $ph;
@@ -173,7 +173,7 @@ trait Aux
         //-----------------------------------------------------------------
         $andor = strtolower($andor);
         if ($andor != 'and' && $andor != 'or') {
-            throw new \Exception("Invalid And/Or parameter.");
+            throw new \Exception('Invalid And/Or parameter.');
         }
 
         //-----------------------------------------------------------------

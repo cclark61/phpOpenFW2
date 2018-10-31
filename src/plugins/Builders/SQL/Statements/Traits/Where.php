@@ -36,9 +36,18 @@ trait Where
 	// Where Method
     //=========================================================================
     //=========================================================================
-	public function Where($field, $op=null, $val=false, $type='s')
+	public function Where($field, $op=null, $val=false, $type='s', $andor='and')
 	{
-        $this->AddWhereCondition($field, $op, $val, $type, 'and');
+        if (is_array($field)) {
+            foreach ($field as $tmp_field) {
+                if (is_array($tmp_field)) {
+                    call_user_func_array(array($this, "AddWhereCondition"), $tmp_field);
+                }
+            }
+        }
+        else {
+            $this->AddWhereCondition($field, $op, $val, $type, $andor);
+        }
         return $this;
 	}
 
@@ -49,7 +58,7 @@ trait Where
     //=========================================================================
 	public function OrWhere($field, $op=null, $val=false, $type='s')
 	{
-        $this->AddWhereCondition($field, $op, $val, $type, 'or');    	
+        $this->Where($field, $op, $val, $type, 'or');    	
         return $this;
 	}
 
@@ -287,21 +296,13 @@ trait Where
         // Validate Parameters
         //-----------------------------------------------------------------
         if (!$field) {
-            throw new \Exception('Invalid field name given.');
+            throw new \Exception('Invalid first parameter.');
         }
 
         //-----------------------------------------------------------------
-        // Array: Multiple Conditions
-        //-----------------------------------------------------------------
-        if (is_array($field)) {
-            foreach ($field as $tmp_field) {
-                
-            }
-        }
-        //-----------------------------------------------------------------
         // Anonymous Function: Nested
         //-----------------------------------------------------------------
-        else if ($field instanceof Closure) {
+        if ($field instanceof Closure) {
         	$nested = new \phpOpenFW\Builders\SQL\Statements\NestedConditions($this, $this->depth+1);
         	$field($nested);
         	$rear_pad = str_repeat(' ', 2 + ($this->depth * 2));
@@ -317,7 +318,7 @@ trait Where
         // Unknown: Throw Exception
         //-----------------------------------------------------------------
         else {
-            throw new \Exception('Invalid field given.');
+            throw new \Exception('Invalid condition parameters.');
         }
 	}
 

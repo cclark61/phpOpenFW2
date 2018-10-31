@@ -43,7 +43,7 @@ abstract class Statement extends Core
         // Validate Table
         //-------------------------------------------------------
         if (!$table || !is_scalar($table)) {
-            throw new \Exception("Invalid database table name passed.");
+            throw new \Exception('Invalid database table name passed.');
 	        return false;
 	    }
 	    $this->table = $table;
@@ -100,7 +100,7 @@ abstract class Statement extends Core
     //=========================================================================
     public function GetSQL()
     {
-        throw new \Exception("The GetSQL() method has not been implemented.");
+        throw new \Exception('The GetSQL() method has not been implemented.');
 		return false;
 	}
 

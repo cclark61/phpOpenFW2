@@ -39,7 +39,7 @@ class NestedConditions extends Core
     public function __construct($parent_query, $depth)
     {
         if (gettype($parent_query) != 'object') {
-            throw new \Exception("Parent query must be passed to nested conditions object.");
+            throw new \Exception('Parent query must be passed to nested conditions object.');
         }
         $this->parent_query = $parent_query;
         $this->db_type = $parent_query->GetDbType();

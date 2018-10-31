@@ -98,6 +98,10 @@ class Select
                 //->GroupBy('test1, test2')
                 ->OrderBy(['child_id', 'id desc'])
                 ->Where('test4', '>=', 4, 'i')
+                ->Where([
+                    ['test4_1', '>=', '4_1', 'd'],
+                    ['test4_2', '>=', '4_2', 'd'],
+                ])
                 ->Where(function ($query) use ($test_value) {
                     $query->WhereColumn('test5', 'test6')
                     ->OrWhereColumn('test7', 'test8')

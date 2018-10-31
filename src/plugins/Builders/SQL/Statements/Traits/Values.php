@@ -35,7 +35,7 @@ trait Values
 	{
     	foreach ($values as $value) {
         	if (!isset($value[0]) || !array_key_exists(1, $value)) {
-            	throw new \Exception("Invalid value specified while setting values. (1)");
+            	throw new \Exception('Invalid value specified while setting values. (1)');
         	}
         	$val1 = $value[0];
         	$val2 = $value[1];
@@ -54,10 +54,10 @@ trait Values
 	public function Value($field, $value, $type='s')
 	{
         if (!is_scalar($field) || is_numeric($field)) {
-            throw new \Exception("Invalid field name specified while setting value.");
+            throw new \Exception('Invalid field name specified while setting value.');
         }
         if (!is_scalar($value) && !is_null($value)) {
-            throw new \Exception("Invalid value specified while setting value.");
+            throw new \Exception('Invalid value specified while setting value.');
         }
         if (!$type) { $type = 's'; }
         $this->set_fields[] = [$field, $value, $type];

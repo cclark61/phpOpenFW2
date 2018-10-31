@@ -35,7 +35,7 @@ trait Union
 	{
     	$bind_params = $union->GetBindParams();
     	if ($this->GetDbType() != $union->GetDbType()) {
-            throw new \Exception("Unions can only be performed on select statements of the same database type.");
+            throw new \Exception('Unions can only be performed on select statements of the same database type.');
         }
         $this->unions[] = ['union', $union, $bind_params];
     	return $this;
@@ -50,7 +50,7 @@ trait Union
 	{
     	$bind_params = $union->GetBindParams();
     	if ($this->GetDbType() != $union->GetDbType()) {
-            throw new \Exception("Unions can only be performed on select statements of the same database type.");
+            throw new \Exception('Unions can only be performed on select statements of the same database type.');
         }
         $this->unions[] = ['union all', $union, $bind_params];
     	return $this;

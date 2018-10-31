@@ -111,7 +111,7 @@ trait Join
         // Validate Parameters
         //-----------------------------------------------------------------
         if (!$table) {
-            throw new \Exception("Invalid table name given.");
+            throw new \Exception('Invalid table name given.');
         }
         $join_phrase = $this->GetJoinPhrase($join_type);
 
@@ -149,7 +149,7 @@ trait Join
         //-----------------------------------------------------------------
         // Invalid Join Parameters
         //-----------------------------------------------------------------
-        throw new \Exception("Invalid join parameters given.");
+        throw new \Exception('Invalid join parameters given.');
 	}
 
     //=========================================================================

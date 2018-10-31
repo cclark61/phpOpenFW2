@@ -359,4 +359,37 @@ trait Conditions
     {
         return self::AndOr('or', self::BetweenCondition(static::$db_type, $field, 'NOT BETWEEN', $value, $params, $type));
     }
+
+    //=========================================================================
+    //=========================================================================
+    // Nested
+    //=========================================================================
+    //=========================================================================
+    public static function Nested(Array $conditions, $andor=false)
+    {
+        $nested = '';
+        foreach ($conditions as $condition) {
+            if (!$nested) {
+                if (strtolower(substr($condition, 0, 4)) == 'and ') {
+                    $condition = substr($condition, 4);                    
+                }
+                else if (strtolower(substr($condition, 0, 3)) == 'or ') {
+                    $condition = substr($condition, 3);
+                }
+            }
+            else {
+                $nested .= ' ';
+            }
+            $nested .= $condition;
+        }
+        if ($nested) {
+            if ($andor) {
+                $nested = "{$andor} ({$nested})";
+            }
+            else {
+                $nested = "({$nested})";
+            }
+        }
+        return $nested;
+    }
 }

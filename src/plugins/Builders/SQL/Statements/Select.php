@@ -32,6 +32,7 @@ class Select extends Statement
     use Traits\OrderBy;
     use Traits\Having;
     use Traits\Limit;
+    use Traits\Union;
 
     //=========================================================================
 	// Class Memebers
@@ -92,6 +93,11 @@ class Select extends Statement
         		$strsql .= $limit . "\n";
     		}
 		}
+
+		//-------------------------------------------------------
+		// Unions
+		//-------------------------------------------------------
+		self::AddSQLClause($strsql, $this->FormatUnions());
 
 		//-------------------------------------------------------
 		// Return SQL

@@ -192,6 +192,16 @@ class Conditions
             print "-> Not Between: {$cond}\n";
             print_r($params);
             print "\n";
+
+            //----------------------------------------------------------------
+            // Nested
+            //----------------------------------------------------------------
+            $cond = $class::Nested([
+                'and test1 = ?',
+                'or test2 = ?',
+                'and test3 = ?',
+            ]);
+            print "-> Nested: {$cond}\n";
         }
     }
     

@@ -25,7 +25,6 @@ trait Where
     //=========================================================================
     // Traits
     //=========================================================================
-    use \phpOpenFW\Builders\SQL\Traits\Condition;
 
     //=========================================================================
 	// Trait Memebers
@@ -197,7 +196,7 @@ trait Where
         // Validate Parameters
         //-----------------------------------------------------------------
         if (!$field1) {
-            throw new \Exception("Invalid field name given.");
+            throw new \Exception('Invalid field name given.');
         }
 
         //-----------------------------------------------------------------
@@ -250,23 +249,10 @@ trait Where
 	// Where Raw Method
     //=========================================================================
     //=========================================================================
-	public function WhereRaw(String $where_raw, Array $params=[], $def_type='s', $andor='and')
+	public function WhereRaw(String $where_raw, $andor='and')
 	{
         if ($where_raw) {
             $this->wheres[] = [$andor, $where_raw];
-            foreach ($params as $param) {
-                $bind_type = $def_type;
-                if (is_array($param)) {
-                    if (isset($param[1])) {
-                        $bind_type = $param[1];
-                    }
-                    $tmp_val = $param[0];
-                }
-                else {
-                    $tmp_val = $param;
-                }
-                self::AddBindParam($this->db_type, $this->bind_params, $tmp_val, $bind_type);
-            }
         }
         return $this;
 	}
@@ -276,9 +262,9 @@ trait Where
 	// Or Where Raw Method
     //=========================================================================
     //=========================================================================
-	public function OrWhereRaw(String $where_raw, Array $params=[], $def_type='s')
+	public function OrWhereRaw(String $where_raw)
 	{
-        $this->WhereRaw($where_raw, $params, $def_type, 'or');
+        $this->WhereRaw($where_raw, 'or');
         return $this;
     }
 
@@ -301,7 +287,7 @@ trait Where
         // Validate Parameters
         //-----------------------------------------------------------------
         if (!$field) {
-            throw new \Exception("Invalid field name given.");
+            throw new \Exception('Invalid field name given.');
         }
 
         //-----------------------------------------------------------------
@@ -331,7 +317,7 @@ trait Where
         // Unknown: Throw Exception
         //-----------------------------------------------------------------
         else {
-            throw new \Exception("Invalid field given.");
+            throw new \Exception('Invalid field given.');
         }
 	}
 

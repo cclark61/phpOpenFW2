@@ -33,7 +33,15 @@ trait Values
     //=========================================================================
 	public function Values(Array $values)
 	{
-    	foreach ($values as $value) {
+        foreach ($values as $key => $value) {
+            if (!is_numeric($key)) {
+                if (is_array($value)) {
+                    $value = array_merge([$key], $value);
+                }
+                else {
+                    $value = [$key, $value];
+                }
+            }
         	if (!isset($value[0]) || !array_key_exists(1, $value)) {
             	throw new \Exception('Invalid value specified while setting values. (1)');
         	}

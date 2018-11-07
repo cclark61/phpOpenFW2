@@ -116,7 +116,10 @@ abstract class Statement extends Core
 	    $return_handle = false;
 	    extract($args);
 	    $sql = $this->GetSQL();
-	    if ($return_handle) {
+	    if ($this->sql_type == 'insert') {
+    	    return \phpOpenFW\Database\QDB::qdb_exec($data_source, $sql, $this->bind_params, false, ['return_insert_id' => 1]);
+	    }
+	    else if ($return_handle) {
 		    return \phpOpenFW\Database\QDB::qdb_result($data_source, $sql, $this->bind_params);
 	    }
 	    else {

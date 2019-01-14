@@ -42,6 +42,9 @@ abstract class Core
     //=========================================================================
     public function SetDbType($type)
     {
+        if ($type == 'mysqli') {
+            $type = 'mysql';
+        }
         if (!self::DbTypeIsValid($type)) {
             throw new \Exception('Invalid database type passed.');
         }

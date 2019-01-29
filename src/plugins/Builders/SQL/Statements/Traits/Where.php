@@ -145,7 +145,7 @@ trait Where
 	// Where Like Method
     //=========================================================================
     //=========================================================================
-	public function WhereLike(String $field, Array $val, $type='s')
+	public function WhereLike(String $field, $val, $type='s')
 	{
         $this->AddCondition($this->wheres, $field, 'LIKE', $val, $type, 'and');
         return $this;
@@ -156,7 +156,7 @@ trait Where
 	// Or Where Like Method
     //=========================================================================
     //=========================================================================
-	public function OrWhereLike(String $field, Array $val, $type='s')
+	public function OrWhereLike(String $field, $val, $type='s')
 	{
         $this->AddCondition($this->wheres, $field, 'LIKE', $val, $type, 'or');
         return $this;
@@ -167,7 +167,7 @@ trait Where
 	// Where Not Like Method
     //=========================================================================
     //=========================================================================
-	public function WhereNotLike(String $field, Array $val, $type='s')
+	public function WhereNotLike(String $field, $val, $type='s')
 	{
         $this->AddCondition($this->wheres, $field, 'NOT LIKE', $val, $type, 'and');
         return $this;
@@ -178,7 +178,7 @@ trait Where
 	// Or Where Not Like Method
     //=========================================================================
     //=========================================================================
-	public function OrWhereNotLike(String $field, Array $val, $type='s')
+	public function OrWhereNotLike(String $field, $val, $type='s')
 	{
         $this->AddCondition($this->wheres, $field, 'NOT LIKE', $val, $type, 'or');
         return $this;

@@ -71,15 +71,24 @@ class Select extends Statement
 		self::AddSQLClause($strsql, $this->FormatWhere());
 
 		//-------------------------------------------------------
-		// Group By / Order By
+		// Group By
 		//-------------------------------------------------------
 		self::AddSQLClause($strsql, $this->FormatGroupBy());
-		self::AddSQLClause($strsql, $this->FormatOrderBy());
+
+		//-------------------------------------------------------
+		// Unions
+		//-------------------------------------------------------
+		self::AddSQLClause($strsql, $this->FormatUnions());
 
 		//-------------------------------------------------------
 		// Having
 		//-------------------------------------------------------
 		self::AddSQLClause($strsql, $this->FormatHaving());
+
+		//-------------------------------------------------------
+		// Order By
+		//-------------------------------------------------------
+		self::AddSQLClause($strsql, $this->FormatOrderBy());
 
 		//-------------------------------------------------------
 		// Limit
@@ -93,11 +102,6 @@ class Select extends Statement
         		$strsql .= $limit . "\n";
     		}
 		}
-
-		//-------------------------------------------------------
-		// Unions
-		//-------------------------------------------------------
-		self::AddSQLClause($strsql, $this->FormatUnions());
 
 		//-------------------------------------------------------
 		// Return SQL

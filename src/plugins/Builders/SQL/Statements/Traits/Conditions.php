@@ -51,7 +51,7 @@ trait Conditions
         else if (is_scalar($field) && is_string($field)) {
             $lower_op = trim(strtolower($op));
             $disallowed_ops = [
-                'between', 'not between'
+                'between', 'not between',
                 'in', 'not in'
             ];
             if (is_array($val) && $val && !in_array($lower_op, $disallowed_ops)) {

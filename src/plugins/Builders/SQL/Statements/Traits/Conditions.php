@@ -37,7 +37,7 @@ trait Conditions
         }
 
         //-----------------------------------------------------------------
-        // Anonymous Function: Nested
+        // Anonymous Function: Nested Conditions
         //-----------------------------------------------------------------
         if ($field instanceof Closure) {
         	$nested = new \phpOpenFW\Builders\SQL\Statements\NestedConditions($this, $this->depth+1);
@@ -46,10 +46,22 @@ trait Conditions
         	$conditions[] = [$andor, "({$nested}\n{$rear_pad})"];
         }
         //-----------------------------------------------------------------
-        // Single Condition
+        // Single / Multiple Unnested Condition
         //-----------------------------------------------------------------
         else if (is_scalar($field) && is_string($field)) {
-            $conditions[] = [$andor, self::Condition($this->db_type, $field, $op, $val, $this->bind_params, $type)];
+            $lower_op = trim(strtolower($op));
+            $disallowed_ops = [
+                'between', 'not between'
+                'in', 'not in'
+            ];
+            if (is_array($val) && $val && !in_array($lower_op, $disallowed_ops)) {
+                foreach ($val as $val2) {
+                    $conditions[] = [$andor, self::Condition($this->db_type, $field, $op, $val2, $this->bind_params, $type)];
+                }
+            }
+            else {
+                $conditions[] = [$andor, self::Condition($this->db_type, $field, $op, $val, $this->bind_params, $type)];
+            }
         }
         //-----------------------------------------------------------------
         // Unknown: Throw Exception

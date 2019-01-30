@@ -292,10 +292,10 @@ trait Where
 	// Where Raw Method
     //=========================================================================
     //=========================================================================
-	public function WhereRaw(String $where_raw, $andor='and')
+	public function WhereRaw(String $where_raw)
 	{
         if ($where_raw) {
-            $this->wheres[] = [$andor, $where_raw];
+            $this->wheres[] = ['and', $where_raw];
         }
         return $this;
 	}
@@ -307,7 +307,9 @@ trait Where
     //=========================================================================
 	public function OrWhereRaw(String $where_raw)
 	{
-        $this->WhereRaw($where_raw, 'or');
+        if ($where_raw) {
+            $this->wheres[] = ['or', $where_raw];
+        }
         return $this;
     }
 

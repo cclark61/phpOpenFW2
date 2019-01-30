@@ -37,6 +37,25 @@ trait Where
     //=========================================================================
 	public function Where($field, $op=null, $val=false, $type='s', $andor='and')
 	{
+    	if ($op && !self::IsValidOperator($op)) {
+        	$invalid_op = true;
+        	if (is_scalar($op) || is_array($op)) {
+            	$invalid_op = false;
+            	if ($type && in_array($type, ['and', 'or'])) {
+                	$andor = $type;
+            	}
+            	if ($val && in_array($val, ['i', 's', 'd', 'b'])) {
+                	$type = $val;
+            	}
+            	$val = $op;
+            	$op = '=';
+        	}
+
+        	if ($invalid_op) {
+            	throw new \Exception('Invalid operator given.');
+            	return;
+        	}
+        }
         $this->AddCondition($this->wheres, $field, $op, $val, $type, $andor);
         return $this;
 	}

@@ -27,7 +27,7 @@ trait Conditions
 	// Add Condition Method
     //=========================================================================
     //=========================================================================
-	protected function AddCondition(&$conditions, $field, $op, $val, $type, $andor='and')
+	protected function AddCondition(&$conditions, $field, $op, $val, $type='s', $andor='and')
 	{
         //-----------------------------------------------------------------
         // Validate Parameters

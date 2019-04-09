@@ -37,7 +37,7 @@ trait Where
     //=========================================================================
 	public function Where($field, $op=null, $val=false, $type='s', $andor='and')
 	{
-    	if ($op && !self::IsValidOperator($op)) {
+    	if ((string)$op !== '' && !self::IsValidOperator($op)) {
         	$invalid_op = true;
         	if (is_scalar($op) || is_array($op)) {
             	$invalid_op = false;

@@ -41,7 +41,7 @@ trait Aux
     //=========================================================================
     public static function IsValidOperator($op)
     {
-        if (!$op || !is_string($op)) {
+        if (!is_scalar($op) || (string)$op === '') {
             return false;
         }
         $op = strtolower($op);

@@ -23,7 +23,7 @@ Released under the MIT License: https://mit-license.org/
 -----------------------------------------------------------------------------------------------------------
 ## Version
 -----------------------------------------------------------------------------------------------------------
-2.1.0rc9
+2.2.0
 
 -----------------------------------------------------------------------------------------------------------
 ## Requirements
@@ -41,6 +41,9 @@ Below is an outline of some of the features offered by phpOpenFW:
 * Database Abstraction Layers
 * Active Record Class
 * SQL Query Builder
+* Cache Abstraction Layer
+* MongoDB Absctraction Layer
+* LDAP Abstraction Layer
 * XML Element Class (abstract)
 * HTML Helpers
 * Form Engine

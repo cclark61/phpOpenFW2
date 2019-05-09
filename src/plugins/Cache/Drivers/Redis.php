@@ -37,12 +37,4 @@ class Redis
         $this->cache_obj->connect($this->server, $this->port); 
     }
 
-	//**********************************************************************************
-	// Get Multiple Method
-	//**********************************************************************************
-	public function getMulti(Array $keys, Array $args=[])
-	{
-        return $this->cache_obj->mGet($keys);
-	}
-
 }

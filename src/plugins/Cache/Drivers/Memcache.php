@@ -35,20 +35,20 @@ class Memcache extends Core
         parent::__construct($params);
         $this->cache_obj = new \Memcached();
         if (is_array($this->server)) {
-            $mc_status = $memcache->addServer($this->server, $this->port);
-        }
-        else {
             foreach ($this->server as $key => $server) {
                 if (!is_array($server)) {
-                    $this->server[$key] = [$server, $this->port, $this->weight]
+                    $this->server[$key] = [$server, $this->port, $this->weight];
                 }
             }
-            $mc_status = $memcache->addServers($this->server, $this->port);
+            $mc_status = $this->cache_obj->addServers($this->server, $this->port);
+        }
+        else {
+            $mc_status = $this->cache_obj->addServer($this->server, $this->port);
         }
         if (!$mc_status) {
             throw new \Exception('An error occurred adding the server(s).');
         }
-        $this->cache_obj->setOption(Memcached::OPT_PREFIX_KEY, $this->_namespace);
+        $this->cache_obj->setOption(\Memcached::OPT_PREFIX_KEY, $this->_namespace);
     }
 
 	//**********************************************************************************
@@ -67,27 +67,4 @@ class Memcache extends Core
         return $this->cache_obj->getOptions($keys);
 	}
 
-	//**********************************************************************************
-	// Set Multiple Method
-	//**********************************************************************************
-	public function setMulti(Array $values, $ttl=0, Array $args=[])
-	{
-        return $this->cache_obj->setMulti($values, $ttl);
-	}
-
-	//**********************************************************************************
-	// Get Multiple Method
-	//**********************************************************************************
-	public function getMulti(Array $keys, Array $args=[])
-	{
-        return $this->cache_obj->getMulti($keys);
-	}
-
-	//**********************************************************************************
-	// Delete Multiple Method
-	//**********************************************************************************
-	public function deleteMulti(Array $keys, Array $args=[])
-	{
-        return $this->cache_obj->deleteMulti($keys);
-	}
 }

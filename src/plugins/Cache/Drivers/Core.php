@@ -26,6 +26,7 @@ abstract class Core
 	//**********************************************************************************
 	protected $cache_type = false;
     protected $_namespace = false;
+    protected $cache_key_stub = '';
 	protected $server = '127.0.0.1';
 	protected $port = false;
 	protected $weight = 1;
@@ -51,6 +52,9 @@ abstract class Core
         }
         if (isset($params['weight'])) {
             $this->weight = $params['weight'];
+        }
+        if (isset($params['stub']) && $params['stub']) {
+            $this->cache_key_stub = $params['stub'];
         }
     }
 
@@ -106,7 +110,7 @@ abstract class Core
 	public function set($key, $data, $ttl=0, Array $args=[])
 	{
     	$cache_key = $this->makeCacheKey($key);
-    	if ($cache_key) {
+    	if (\phpOpenFW\Cache\Cache::IsValidKey($cache_key)) {
             return $this->cache_obj->set($cache_key, $data, $ttl);
         }
         return false;
@@ -119,10 +123,8 @@ abstract class Core
 	{
         $vals_set = 0;
         foreach ($values as $val_key => $val_val) {
-            if (\phpOpenFW\Cache\Cache::IsValidKey($val_key)) {
-                if ($this->set($val_key, $val_val, $ttl)) {
-                    $vals_set++;
-                }
+            if ($this->set($val_key, $val_val, $ttl)) {
+                $vals_set++;
             }
         }
         return $vals_set;
@@ -133,8 +135,9 @@ abstract class Core
 	//**********************************************************************************
 	public function get($key, Array $args=[])
 	{
-        if (\phpOpenFW\Cache\Cache::IsValidKey($key)) {
-            return $this->cache_obj->get($key);
+    	$cache_key = $this->makeCacheKey($key);
+        if (\phpOpenFW\Cache\Cache::IsValidKey($cache_key)) {
+            return $this->cache_obj->get($cache_key);
         }
         return false;
 	}
@@ -146,9 +149,7 @@ abstract class Core
 	{
         $ret_vals = [];
         foreach ($keys as $key) {
-            if (\phpOpenFW\Cache\Cache::IsValidKey($key)) {
-                $ret_vals[$key] = $this->get($key, $args);
-            }
+            $ret_vals[$key] = $this->get($key, $args);
         }
         return $ret_vals;
 	}
@@ -158,8 +159,9 @@ abstract class Core
 	//**********************************************************************************
 	public function delete($key, Array $args=[])
 	{
-        if (\phpOpenFW\Cache\Cache::IsValidKey($key)) {
-            return $this->cache_obj->delete($key);
+    	$cache_key = $this->makeCacheKey($key);
+        if (\phpOpenFW\Cache\Cache::IsValidKey($cache_key)) {
+            return $this->cache_obj->delete($cache_key);
         }
         return false;
 	}
@@ -171,10 +173,8 @@ abstract class Core
 	{
         $vals_deleted = 0;
         foreach ($vals_deleted as $val_key => $val_val) {
-            if (\phpOpenFW\Cache\Cache::IsValidKey($val_key)) {
-                if ($this->delete($val_key)) {
-                    $vals_deleted++;
-                }
+            if ($this->delete($val_key)) {
+                $vals_deleted++;
             }
         }
         return $vals_deleted;
@@ -220,6 +220,9 @@ abstract class Core
         //-----------------------------------------------------------------
         // Hash and return Cache Key
         //-----------------------------------------------------------------
+        if ($this->cache_key_stub) {
+            $cache_key = $this->cache_key_stub . ':' . $cache_key;
+        }
         $hashed_cache_key = md5($cache_key);
         if ($this->cache_type == 'redis') {
             $hashed_cache_key = $this->_namespace . ':' . $hashed_cache_key;

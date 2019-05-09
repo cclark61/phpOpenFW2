@@ -137,10 +137,27 @@ class Cache
     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 	//**********************************************************************************
+	// Register Caches Method
+	//**********************************************************************************
+	public static function RegisterCaches(Array $caches)
+	{
+        foreach ($caches as $handle => $cache) {
+            self::RegisterCache($handle, $cache);
+        }
+    }
+
+	//**********************************************************************************
 	// Register Cache Method
 	//**********************************************************************************
-	public static function RegisterCache(Array $params)
+	public static function RegisterCache($handle, Array $params)
 	{
+        //==============================================================================
+        // No Data Source Parameters?
+        //==============================================================================
+        if (!$handle) {
+            throw new \Exception('Invalid cache handle passed.');
+        }
+
         //==============================================================================
         // No Data Source Parameters?
         //==============================================================================
@@ -155,7 +172,7 @@ class Cache
             throw new \Exception('Cache data source type not set.');
         }
         $params['type'] = strtolower(trim($params['type']));
-        if (!in_array($params['type'])) {
+        if (!in_array($params['type'], static::$cache_types)) {
             throw new \Exception('Invalid cache data source type.');
         }
 
@@ -197,6 +214,7 @@ class Cache
 
         }
         $GLOBALS['POFW_Caches'][$handle]['driver_obj'] = $cache_driver;
+        return true;
     }
 
 	//**********************************************************************************

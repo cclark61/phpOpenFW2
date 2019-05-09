@@ -24,7 +24,8 @@ class Memcache extends Core
 	//**********************************************************************************
 	// Class Members
 	//**********************************************************************************
-	protected static $port = 11211;
+	protected $cache_type = 'memcache';
+	protected $port = 11211;
 
 	//**********************************************************************************
 	// Constructor Method
@@ -44,6 +45,10 @@ class Memcache extends Core
             }
             $mc_status = $memcache->addServers($this->server, $this->port);
         }
+        if (!$mc_status) {
+            throw new \Exception('An error occurred adding the server(s).');
+        }
+        $this->cache_obj->setOption(Memcached::OPT_PREFIX_KEY, $this->_namespace);
     }
 
 	//**********************************************************************************

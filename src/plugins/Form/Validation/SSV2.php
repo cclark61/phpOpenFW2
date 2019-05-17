@@ -74,7 +74,9 @@ class SSV2
         //------------------------------------------------------------------
 		$this->validation_types = [
 		    'is_empty',
+		    'is_empty_or_zero',
             'is_not_empty',
+            'is_not_empty_or_zero',
             'is_numeric',
             'is_not_numeric',
             'is_date',
@@ -335,9 +337,17 @@ class SSV2
 			case 'is_not_empty':
 				$vr = ($var_val1 != '');
 				break;
-				
+
+			case 'is_not_empty_or_zero':
+				$vr = ($var_val1 != '' && (string)$var_val1 != '0');
+				break;
+
 			case 'is_empty':
 				$vr = ($var_val1 == '');
+				break;
+
+			case 'is_empty_or_zero':
+				$vr = ($var_val1 == '' || (string)$var_val1 != '0');
 				break;
 
 			case 'is_numeric':

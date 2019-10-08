@@ -43,7 +43,10 @@ trait Conditions
         	$nested = new \phpOpenFW\Builders\SQL\Statements\NestedConditions($this, $this->depth+1);
         	$field($nested);
         	$rear_pad = str_repeat(' ', 2 + ($this->depth * 2));
-        	$conditions[] = [$andor, "({$nested}\n{$rear_pad})"];
+        	$nested = (string)$nested;
+        	if ($nested) {
+            	$conditions[] = [$andor, "({$nested}\n{$rear_pad})"];
+            }
         }
         //-----------------------------------------------------------------
         // Single / Multiple Unnested Condition

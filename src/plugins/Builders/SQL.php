@@ -29,7 +29,7 @@ class SQL
     //=========================================================================
     public static function Select($table, $data_source=false)
     {
-		return new SQL\Statements\Select($table, $data_source);
+		return new SQL\Select($table, $data_source);
 	}
 
     //=========================================================================
@@ -39,7 +39,7 @@ class SQL
     //=========================================================================
     public static function Insert($table, $data_source=false)
     {
-		return new SQL\Statements\Insert($table, $data_source);
+		return new SQL\Insert($table, $data_source);
 	}
 
     //=========================================================================
@@ -49,7 +49,7 @@ class SQL
     //=========================================================================
     public static function Update($table, $data_source=false)
     {
-		return new SQL\Statements\Update($table, $data_source);
+		return new SQL\Update($table, $data_source);
 	}
 
     //=========================================================================
@@ -59,7 +59,7 @@ class SQL
     //=========================================================================
     public static function Delete($table, $data_source=false)
     {
-		return new SQL\Statements\Delete($table, $data_source);
+		return new SQL\Delete($table, $data_source);
 	}
 
 }

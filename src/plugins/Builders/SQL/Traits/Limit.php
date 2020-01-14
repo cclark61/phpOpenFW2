@@ -2,7 +2,7 @@
 //**************************************************************************************
 //**************************************************************************************
 /**
- * SQL Order By Trait
+ * SQL Limit Trait
  *
  * @package		phpOpenFW
  * @author 		Christian J. Clark
@@ -12,40 +12,41 @@
 //**************************************************************************************
 //**************************************************************************************
 
-namespace phpOpenFW\Builders\SQL\Statements\Traits;
+namespace phpOpenFW\Builders\SQL\Traits;
 
 //**************************************************************************************
 /**
- * SQL Order By Trait
+ * SQL Limit Trait
  */
 //**************************************************************************************
-trait OrderBy
+trait Limit
 {
     //=========================================================================
 	// Trait Memebers
     //=========================================================================
-	protected $order_by = [];
+	protected $limit = false;
+	protected $offset = false;
 
     //=========================================================================
     //=========================================================================
-	// Add Order By Method
+	// Limit Clause Method
     //=========================================================================
     //=========================================================================
-	public function OrderBy($order_by)
+	public function Limit($limit, $offset=false)
 	{
-    	self::AddItemCSC($this->order_by, $order_by);
-    	return $this;
-	}
-
-    //=========================================================================
-    //=========================================================================
-	// Raw Order By Clause Method
-    //=========================================================================
-    //=========================================================================
-	public function OrderByRaw($order_by)
-	{
-        self::AddItem($this->order_by, $order_by);
-    	return $this;
+		if (is_null($limit)) {
+			$this->limit = false;
+		}
+		else if ($limit != '' && (int)$limit) {
+    		$this->limit = (int)$limit;
+		}
+		if (is_null($offset)) {
+			$this->offset = false;
+		}
+		else if ($offset != '' && (int)$offset) {
+    		$this->offset = (int)$offset;
+		}
+		return $this;
 	}
 
     //##################################################################################
@@ -58,12 +59,43 @@ trait OrderBy
 
     //=========================================================================
     //=========================================================================
-    // Format Order By Method
+	// Format Limit Clause Method
     //=========================================================================
     //=========================================================================
-    protected function FormatOrderBy()
-    {
-        return self::FormatCSC('ORDER BY', $this->order_by);
+	protected function FormatLimit()
+	{
+    	$ret_val = '';
+
+		//-------------------------------------------------------
+        // MySQL Limit / Offset
+		//-------------------------------------------------------
+    	if ($this->db_type == 'mysql' || $this->db_type == 'pgsql') {
+    		if ($this->limit) {
+    			$ret_val = 'LIMIT ' . $this->limit;
+    		}
+    		if ($this->offset) {
+    			$ret_val .= ' OFFSET ' . $this->offset;
+    		}
+        }
+		//-------------------------------------------------------
+        // Oracle
+		//-------------------------------------------------------
+        else if ($this->db_type == 'oracle') {
+    		if ($this->offset) {
+    			$ret_val = "OFFSET {$this->offset} ROWS";
+    		}
+    		if ($this->limit) {
+    			$ret_val .= " FETCH NEXT {$this->limit} ROWS ONLY";
+    		}            
+        }
+		//-------------------------------------------------------
+        // SQL Server
+		//-------------------------------------------------------
+        else if ($this->db_type == 'sqlsrv') {
+            $ret_val = 'SELECT TOP ' . $this->limit;
+        }
+
+		return $ret_val;
 	}
 
 }

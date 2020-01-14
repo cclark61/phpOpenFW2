@@ -2,7 +2,7 @@
 //**************************************************************************************
 //**************************************************************************************
 /**
- * SQL Update Statement Class
+ * SQL Delete Statement Class
  *
  * @package		phpOpenFW
  * @author 		Christian J. Clark
@@ -12,25 +12,24 @@
 //**************************************************************************************
 //**************************************************************************************
 
-namespace phpOpenFW\Builders\SQL\Statements;
+namespace phpOpenFW\Builders\SQL;
 
 //**************************************************************************************
 /**
- * SQL Update Class
+ * SQL Delete Class
  */
 //**************************************************************************************
-class Update extends Statement
+class Delete extends Statement
 {
     //=========================================================================
     // Traits
     //=========================================================================
     use Traits\Where;
-    use Traits\Values;
 
     //=========================================================================
 	// Class Memebers
     //=========================================================================
-    protected $sql_type = 'update';
+    protected $sql_type = 'delete';
 
     //=========================================================================
     //=========================================================================
@@ -42,31 +41,15 @@ class Update extends Statement
 		//----------------------------------------------------------------
         // Get Formatted Where Clause
 		//----------------------------------------------------------------
-        // Require a where clause to prevent updating all table rows
+        // Require a where clause to prevent deleting all table rows
 		//----------------------------------------------------------------
-        $where = $this->FormatWhere();
+		$where = $this->FormatWhere();
 		if (!$where) {
-            trigger_error("SQL Update statement must have at least one qualifying condition.");
+            trigger_error("SQL Delete statement must have at least one qualifying condition.");
             return '';
         }
 
-		//----------------------------------------------------------------
-        // Format Values
-		//----------------------------------------------------------------
-        $set = $this->FormatValues();
-
-        //-------------------------------------------------------
-        // Are there values?
-        //-------------------------------------------------------
-        if (empty($set)) {
-	    	trigger_error("No update values could be found.");
-	    	return '';
-	    }
-
-		//----------------------------------------------------------------
-        // Start SQL Update Statement
-		//----------------------------------------------------------------
-		return "UPDATE {$this->table} SET {$set} \n{$where}";
+        return "DELETE FROM {$this->table} \n{$where}";
 	}
 
 }

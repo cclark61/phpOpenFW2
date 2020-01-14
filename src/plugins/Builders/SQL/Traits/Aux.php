@@ -2,7 +2,7 @@
 //**************************************************************************************
 //**************************************************************************************
 /**
- * SQL Nested Conditions Class
+ * Auxillary / Helper Trait
  *
  * @package		phpOpenFW
  * @author 		Christian J. Clark
@@ -12,49 +12,60 @@
 //**************************************************************************************
 //**************************************************************************************
 
-namespace phpOpenFW\Builders\SQL\Conditions;
+namespace phpOpenFW\Builders\SQL\Traits;
 
 //**************************************************************************************
 /**
- * SQL Nested Conditions Class
+ * Aux Trait
  */
 //**************************************************************************************
-class Nested extends \phpOpenFW\Builders\SQL\Core
+trait Aux
 {
     //==================================================================================
-    // Traits
     //==================================================================================
-    use \phpOpenFW\Builders\SQL\Traits\Where;
-
-    //==================================================================================
-	// Class Memebers
-    //==================================================================================
-	protected $parent_query;
-
+    // Is Database Type Valid?
     //==================================================================================
     //==================================================================================
-    // Constructor Method
-    //==================================================================================
-    //==================================================================================
-    public function __construct($parent_query, $depth)
+    protected static function DbTypeIsValid(String $db_type)
     {
-        if (gettype($parent_query) != 'object') {
-            throw new \Exception('Parent query must be passed to nested conditions object.');
+        if (!in_array($db_type, ['mysql', 'pgsql', 'oracle', 'sqlsrv'])) {
+            return false;
         }
-        $this->parent_query = $parent_query;
-        $this->db_type = $parent_query->GetDbType();
-        $this->depth = $depth + 1;
-        $this->bind_params = &$this->parent_query->GetBindParams();
+        return true;
     }
 
     //==================================================================================
     //==================================================================================
-    // To String Method
+    // Is Valid Operator
     //==================================================================================
     //==================================================================================
-    public function __toString()
+    protected static function IsValidOperator($op)
     {
-		return $this->FormatConditions($this->wheres);
-	}
+        if (!is_scalar($op) || (string)$op === '') {
+            return false;
+        }
+        $op = strtolower($op);
+        $ops = [
+            '=', 
+            '!=', 
+            '<>', 
+            '<', 
+            '<=', 
+            '>', 
+            '>=', 
+            'in', 
+            'not in', 
+            'like', 
+            'not like', 
+            'between', 
+            'not between',
+            'is null',
+            'is not null'
+        ];
+        if (!in_array($op, $ops)) {
+            return false;
+        }
+        return true;
+    }
 
 }

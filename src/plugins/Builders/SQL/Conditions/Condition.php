@@ -95,9 +95,9 @@ class Condition extends \phpOpenFW\Builders\SQL\Core
         // Nested Conditions?
         //------------------------------------------------------------------------------
         if ($this->field instanceof Closure) {
-        	$nested = new Nested($this->parent_query, $this->depth+1);
+        	$nested = new Nested($this->parent_query, $this->depth - 1);
         	($this->field)($nested);
-        	$rear_pad = str_repeat(' ', 2 + ($this->depth * 2));
+        	$rear_pad = str_repeat(' ', $this->depth * 2);
         	$nested = (string)$nested;
         	if ($nested) {
             	return "({$nested}\n{$rear_pad})";

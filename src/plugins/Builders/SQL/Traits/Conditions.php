@@ -71,7 +71,7 @@ trait Conditions
 	protected function FormatConditions($conditions)
 	{
         $clause = '';
-        $front_pad = str_repeat(' ', 2 + ($this->depth * 2));
+        $front_pad = str_repeat(' ', ($this->depth * 2) + 2);
         foreach ($conditions as $condition) {
             if (is_array($condition)) {
                 $str_condition = (string)$condition[1];

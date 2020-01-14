@@ -14,6 +14,7 @@
 
 namespace phpOpenFW\Builders\SQL\Traits;
 use \Closure;
+use \phpOpenFW\Builders\SQL\Conditions\Condition;
 
 //**************************************************************************************
 /**
@@ -127,11 +128,11 @@ trait Join
         // Advanced Join Clause
         //-----------------------------------------------------------------
     	if ($field1 instanceof Closure) {
-        	$nested = new \phpOpenFW\Builders\SQL\Conditions\Nested($this, $this->depth+1);
-        	$field1($nested);
         	$this->from[] = [
         	    'join', 
-        	    "{$join_phrase} {$table} ON ({$nested}\n  )"
+        	    $join_phrase,
+        	    $table,
+        	    Condition::Instance($this, $this->depth, $field1, false, false, false)
             ];
         	return true;
         }

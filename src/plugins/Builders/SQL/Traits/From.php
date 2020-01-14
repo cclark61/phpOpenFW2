@@ -67,7 +67,19 @@ trait From
         foreach ($this->from as $from) {
             if (is_array($from)) {
                 if ($from[0] == 'join') {
-                    $clause .= "\n  " . $from[1];
+                    if (count($from) > 2) {
+                        $str_condition = (string)$from[3];
+                    	if ($str_condition) {
+                        	$rear_pad = str_repeat(' ', $this->depth * 2);
+                        	$clause .= "\n  {$from[1]} {$from[2]} ON {$str_condition}{$rear_pad}";
+                        }
+                    }
+                    else {
+                        $clause .= "\n  " . $from[1];
+                    }
+                }
+                else {
+                    throw new \Exception('Invalid from clause item.');
                 }
             }
             else {

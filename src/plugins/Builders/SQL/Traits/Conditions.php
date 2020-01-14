@@ -74,15 +74,21 @@ trait Conditions
         $front_pad = str_repeat(' ', 2 + ($this->depth * 2));
         foreach ($conditions as $condition) {
             if (is_array($condition)) {
-                if ($clause) {
-                    $clause .= "\n{$front_pad}{$condition[0]} {$condition[1]}";
-                }
-                else {
-                    $clause .= "\n{$front_pad}{$condition[1]}";
+                $str_condition = (string)$condition[1];
+                if ($str_condition) {
+                    if ($clause) {
+                        $clause .= "\n{$front_pad}{$condition[0]} {$str_condition}";
+                    }
+                    else {
+                        $clause .= "\n{$front_pad}{$str_condition}";
+                    }
                 }
             }
             else {
-                $clause .= "\n{$front_pad}{$condition}";
+                $str_condition = (string)$condition;
+                if ($str_condition) {
+                    $clause .= "\n{$front_pad}{$str_condition}";
+                }
             }
         }
         return $clause;

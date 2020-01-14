@@ -40,7 +40,7 @@ trait Conditions
         // Anonymous Function: Nested Conditions
         //-----------------------------------------------------------------
         if ($field instanceof Closure) {
-        	$nested = new \phpOpenFW\Builders\SQL\NestedConditions($this, $this->depth+1);
+        	$nested = new \phpOpenFW\Builders\SQL\Conditions\Nested($this, $this->depth+1);
         	$field($nested);
         	$rear_pad = str_repeat(' ', 2 + ($this->depth * 2));
         	$nested = (string)$nested;

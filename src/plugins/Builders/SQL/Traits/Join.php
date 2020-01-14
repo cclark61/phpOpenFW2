@@ -127,7 +127,7 @@ trait Join
         // Advanced Join Clause
         //-----------------------------------------------------------------
     	if ($field1 instanceof Closure) {
-        	$nested = new \phpOpenFW\Builders\SQL\NestedConditions($this, $this->depth+1);
+        	$nested = new \phpOpenFW\Builders\SQL\Conditions\Nested($this, $this->depth+1);
         	$field1($nested);
         	$this->from[] = [
         	    'join', 

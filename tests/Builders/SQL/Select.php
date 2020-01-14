@@ -72,6 +72,14 @@ class Select
             ->Where('first_name', '=', 'Bob', 'd');
 
             //---------------------------------------------------------------
+            // Short Query #3
+            //---------------------------------------------------------------
+            $query3 = SQL::Select('contacts')
+            ->SetDbType($db_type)
+            ->Select('id')
+            ->Where('id', '>=', '50', 'i');
+
+            //---------------------------------------------------------------
             // Create / Start SQL Select Statement
             //---------------------------------------------------------------
             $query = SQL::Select('contacts a')
@@ -104,6 +112,7 @@ class Select
                     ['test4_2', '>=', '4_2', 'd'],
                 ])
                 */
+                ->WhereIn('test_id', $query3)
                 ->Where(function ($query) use ($test_value) {
                     $query->WhereColumn('test5', 'test6')
                     ->OrWhereColumn('test7', 'test8')

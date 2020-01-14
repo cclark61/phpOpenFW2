@@ -95,7 +95,7 @@ class Condition extends \phpOpenFW\Builders\SQL\Core
         // Nested Conditions?
         //------------------------------------------------------------------------------
         if ($this->field instanceof Closure) {
-        	$nested = new Nested($this->parent_query, $this->depth - 1);
+        	$nested = new Nested($this, $this->depth - 1);
         	($this->field)($nested);
         	$rear_pad = str_repeat(' ', $this->depth * 2);
         	$nested = (string)$nested;
@@ -107,12 +107,16 @@ class Condition extends \phpOpenFW\Builders\SQL\Core
         //------------------------------------------------------------------------------
         // Sub-query Condition?
         //------------------------------------------------------------------------------
-        if (gettype($this->field) == '\phpOpenFW\Builders\SQL\Select') {
-            $sql = $this->field->GetSQL();
+        else if (gettype($this->val) == 'object' && get_class($this->val) == 'phpOpenFW\Builders\SQL\Select') {
+            $this->val->SetDepth($this->depth + 1);
+            $this->val->SetParentQuery($this);
+            $sql = $this->val->GetSQL();
+            $this->bind_params = $this->val->GetBindParams();
             if ($sql) {
-                $sub_qry_params = $this->field->GetBindParams();
-                $this->MergeBindParams($sub_qry_params);
-                return $sql;
+                //$sub_qry_params = $this->field->GetBindParams();
+                //$this->MergeBindParams($sub_qry_params);
+                $rear_pad = str_repeat(' ', $this->depth * 2);
+                return "(\n{$sql}\n{$rear_pad})";
             }
         }
         //------------------------------------------------------------------------------
@@ -237,7 +241,7 @@ class Condition extends \phpOpenFW\Builders\SQL\Core
         //------------------------------------------------------------------------------
         // Add Bind Parameter
         //------------------------------------------------------------------------------
-        $place_holder = self::AddBindParam($this->db_type, $this->bind_params, $this->val, $this->type);
+        $place_holder = $this->AddBindParam($this->val, $this->type);
 
         //------------------------------------------------------------------------------
         // Create and Return Condition
@@ -264,7 +268,7 @@ class Condition extends \phpOpenFW\Builders\SQL\Core
         //------------------------------------------------------------------------------
         // Add Bind Parameters
         //------------------------------------------------------------------------------
-        $place_holders = self::AddBindParams($this->db_type, $this->bind_params, $this->val, $this->type);
+        $place_holders = $this->AddBindParams($this->val, $this->type);
 
         //------------------------------------------------------------------------------
         // Create and Return Condition
@@ -297,8 +301,8 @@ class Condition extends \phpOpenFW\Builders\SQL\Core
         //------------------------------------------------------------------------------
         // Add Bind Parameters
         //------------------------------------------------------------------------------
-        $place_holder1 = self::AddBindParam($this->db_type, $this->bind_params, $this->val[0], $this->type);
-        $place_holder2 = self::AddBindParam($this->db_type, $this->bind_params, $this->val[1], $this->type);
+        $place_holder1 = $this->AddBindParam($this->val[0], $this->type);
+        $place_holder2 = $this->AddBindParam($this->val[1], $this->type);
 
         //------------------------------------------------------------------------------
         // Create and Return Condition

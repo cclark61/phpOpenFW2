@@ -60,6 +60,16 @@ class Select extends Statement
     public function GetSQL()
     {
 		//-------------------------------------------------------
+        // Set / Reset Bind Parameters
+		//-------------------------------------------------------
+        if ($this->parent_query) {
+            $this->bind_params = $this->parent_query->GetBindParams();
+        }
+        else {
+            $this->bind_params = [];
+        }
+
+		//-------------------------------------------------------
         // Start SQL
 		//-------------------------------------------------------
         $strsql = '';

@@ -110,7 +110,7 @@ trait Values
                     $place_holders .= 'NULL';
                 }
                 else {
-                    $place_holders .= self::AddBindParam($this->db_type, $this->bind_params, $set_field[1], $set_field[2]);
+                    $place_holders .= $this->AddBindParam($set_field[1], $set_field[2]);
                 }
             }
             return [$fields, $place_holders];
@@ -127,7 +127,7 @@ trait Values
                     $place_holder = 'NULL';
                 }
                 else {
-                    $place_holder = self::AddBindParam($this->db_type, $this->bind_params, $set_field[1], $set_field[2]);
+                    $place_holder = $this->AddBindParam($set_field[1], $set_field[2]);
                 }
                 $set .= "{$set_field[0]} = {$place_holder}";
             }

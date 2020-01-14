@@ -37,24 +37,15 @@ trait Where
     //=========================================================================
 	public function Where($field, $op=null, $val=false, $type='s', $andor='and')
 	{
-    	if ((string)$op !== '' && !self::IsValidOperator($op)) {
-        	$invalid_op = true;
-        	if (is_scalar($op) || is_array($op)) {
-            	$invalid_op = false;
-            	if ($type && in_array($type, ['and', 'or'])) {
-                	$andor = $type;
-            	}
-            	if ($val && in_array($val, ['i', 's', 'd', 'b'])) {
-                	$type = $val;
-            	}
-            	$val = $op;
-            	$op = '=';
+    	if (!self::IsValidOperator($op)) {
+            if (self::IsValidAndOr($type)) {
+            	$andor = $type;
         	}
-
-        	if ($invalid_op) {
-            	throw new \Exception('Invalid operator given.');
-            	return;
+        	if (self::IsValidParamType($val)) {
+            	$type = $val;
         	}
+            $val = $op;
+            $op = '=';
         }
         $this->AddCondition($this->wheres, $field, $op, $val, $type, $andor);
         return $this;
@@ -120,7 +111,7 @@ trait Where
 	// Where In Method
     //=========================================================================
     //=========================================================================
-	public function WhereIn(String $field, Array $val, $type='s')
+	public function WhereIn(String $field, $val, $type='s')
 	{
         $this->AddCondition($this->wheres, $field, 'IN', $val, $type, 'and');
         return $this;
@@ -131,7 +122,7 @@ trait Where
 	// Or Where In Method
     //=========================================================================
     //=========================================================================
-	public function OrWhereIn(String $field, Array $val, $type='s')
+	public function OrWhereIn(String $field, $val, $type='s')
 	{
         $this->AddCondition($this->wheres, $field, 'IN', $val, $type, 'or');
         return $this;

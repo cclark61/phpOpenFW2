@@ -33,6 +33,7 @@ abstract class Core
 	protected $db_type = 'mysql';
 	protected $bind_params = [];
 	protected $depth = 0;
+	protected $parent_query = false;
 
     //==================================================================================
     //==================================================================================
@@ -73,6 +74,37 @@ abstract class Core
 
     //==================================================================================
     //==================================================================================
+    // Set Depth Method
+    //==================================================================================
+    //==================================================================================
+    public function SetDepth(Int $depth)
+    {
+		$this->depth = $depth;
+	}
+
+    //==================================================================================
+    //==================================================================================
+    // Set Parent Query Method (Mainly used for Unions and Sub-queries)
+    //==================================================================================
+    //==================================================================================
+    public function SetParentQuery($query)
+    {
+        $allowed_obj_types = [
+            'phpOpenFW\Builders\SQL\Select',
+            'phpOpenFW\Builders\SQL\Conditions\Condition',
+            'phpOpenFW\Builders\SQL\Conditions\Nested'
+        ];
+        if (gettype($query) == 'object') {
+            if (in_array(get_class($query), $allowed_obj_types)) {
+                $this->parent_query = $query;
+                return true;
+            }
+        }
+		throw new \Exception('Invalid Parent Type.');
+	}
+
+    //==================================================================================
+    //==================================================================================
     // Merge Bind Parameters Method
     //==================================================================================
     //==================================================================================
@@ -109,12 +141,11 @@ abstract class Core
         //-----------------------------------------------------------------
 		else if ($this->db_type == 'oracle') {
     		foreach ($new_params as $new_param) {
-        		$new_index = ':p' . $start_index;
+        		$new_index = 'p' . $start_index;
         		$this->bind_params[$new_index] = $new_param;
         		$start_index++;
     		}
 		}
-
         //-----------------------------------------------------------------
         // Everything else. (PostgreSQL, SQL Server, etc.)
         //-----------------------------------------------------------------
@@ -128,12 +159,12 @@ abstract class Core
     // Add a Bind Parameter
     //==================================================================================
     //==================================================================================
-    protected static function AddBindParam(String $db_type, Array &$params, $value, $type='s')
+    protected function AddBindParam($value, $type='s')
     {
         //-----------------------------------------------------------------
         // Is Database Type Valid?
         //-----------------------------------------------------------------
-        if (!self::DbTypeIsValid($db_type)) {
+        if (!self::DbTypeIsValid($this->db_type)) {
             throw new \Exception('Invalid database type.');
         }
 
@@ -149,18 +180,18 @@ abstract class Core
         //-----------------------------------------------------------------
         // (i.e. How do we add the bind parameter?)
         //-----------------------------------------------------------------
-        switch ($db_type) {
+        switch ($this->db_type) {
 
             //-----------------------------------------------------------------
             // MySQL
             //-----------------------------------------------------------------
             case 'mysql':
             case 'mysqli':
-                if (count($params) == 0) {
-                    $params[] = '';
+                if (count($this->bind_params) == 0) {
+                    $this->bind_params[] = '';
                 }
-                $params[0] .= $type;
-                $params[] = $value;
+                $this->bind_params[0] .= $type;
+                $this->bind_params[] = $value;
                 return '?';
                 break;
 
@@ -168,12 +199,12 @@ abstract class Core
             // PgSQL
             //-----------------------------------------------------------------
             case 'pgsql':
-                $index = count($params);
+                $index = count($this->bind_params);
                 $ph = '$' . $index;
-                if (isset($params[$index])) {
+                if (isset($this->bind_params[$index])) {
                     throw new \Exception('An error occurred trying to add the PostgreSQL bind parameter. Parameter index already in use.');
                 }
-                $params[$index] = $value;
+                $this->bind_params[$index] = $value;
                 return $ph;
                 break;
 
@@ -181,12 +212,12 @@ abstract class Core
             // Oracle
             //-----------------------------------------------------------------
             case 'oracle':
-                $index = count($params);
+                $index = count($this->bind_params);
                 $ph = 'p' . $index;
-                if (isset($params[$ph])) {
+                if (isset($this->bind_params[$ph])) {
                     throw new \Exception('An error occurred trying to add the Oracle bind parameter. Parameter index already in use.');
                 }
-                $params[$ph] = $value;
+                $this->bind_params[$ph] = $value;
                 return ':' . $ph;
                 break;
 
@@ -194,7 +225,7 @@ abstract class Core
             // Default
             //-----------------------------------------------------------------
             default:
-                $params[] = $value;
+                $this->bind_params[] = $value;
                 return '?';
                 break;
 
@@ -206,11 +237,11 @@ abstract class Core
     // Add a Bind Parameters
     //==================================================================================
     //==================================================================================
-    protected static function AddBindParams(String $db_type, Array &$params, Array $values, $type='s')
+    protected function AddBindParams(Array $values, $type='s')
     {
         $place_holders = '';
         foreach ($values as $value) {
-            $tmp_ph = self::AddBindParam($db_type, $params, $value, $type);
+            $tmp_ph = $this->AddBindParam($value, $type);
             $place_holders .= ($place_holders) ? (', ' . $tmp_ph) : ($tmp_ph);
         }
         return $place_holders;

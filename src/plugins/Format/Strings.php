@@ -23,10 +23,10 @@ class Strings
 {
 	//==================================================================================
 	//==================================================================================
-	// Replace the last occurrence of a string in another string
+	// Replace the last occurrence of a string
 	//==================================================================================
 	//==================================================================================
-	public static function str_ireplace_last($search, $replace, $subject)
+	public static function str_replace_last($search, $replace, $subject)
 	{
     	if ((string)$search == '') {
         	trigger_error('Invalid search string.');
@@ -37,4 +37,22 @@ class Strings
         }
         return $search;
     }
+
+	//==================================================================================
+	//==================================================================================
+	// Replace the last occurrence of a string (Case-insensitive)
+	//==================================================================================
+	//==================================================================================
+	public static function str_ireplace_last($search, $replace, $subject)
+	{
+    	if ((string)$search == '') {
+        	trigger_error('Invalid search string.');
+    	}
+        $pos = strripos($subject, $search);
+        if ($pos !== false) {
+            $search = substr_replace($subject, $replace, $pos, strlen($search));
+        }
+        return $search;
+    }
+
 }

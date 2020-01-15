@@ -31,17 +31,24 @@ trait Conditions
 	protected function AddCondition(&$conditions, $field, $op, $val, $type='s', $andor='and')
 	{
         //-----------------------------------------------------------------
+        // Get Lowercase Operator
+        //-----------------------------------------------------------------
+    	$lower_op = trim(strtolower($op));
+
+        //-----------------------------------------------------------------
         // Validate Parameters
         //-----------------------------------------------------------------
         if (!$field) {
-            throw new \Exception('Invalid first parameter. First parameter must be an object or a string indicating the field for the condition.');
+            $no_field_allowed = ['exists', 'not exists'];
+            if (!in_array($lower_op, $no_field_allowed)) {
+                throw new \Exception('Invalid first parameter. First parameter must be an object or a string indicating the field for the condition.');
+            }
         }
 
         //-----------------------------------------------------------------
         // Single / Multiple Unnested Conditions
         //-----------------------------------------------------------------
         if (is_scalar($field) && is_string($field)) {
-            $lower_op = trim(strtolower($op));
             $multi_value_ops = [
                 'between', 'not between',
                 'in', 'not in'

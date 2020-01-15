@@ -55,21 +55,21 @@ class Select
             //---------------------------------------------------------------
             // Test Values
             //---------------------------------------------------------------
-            $test_value = 27;
+            $test_value = 2;
 
             //---------------------------------------------------------------
             // Short Query #1
             //---------------------------------------------------------------
             $query1 = SQL::Select('contacts')
             ->SetDbType($db_type)
-            ->Where('last_name', '=', 'Clark', 'd');
+            ->Where('last_name', '=', '12', 'd');
 
             //---------------------------------------------------------------
             // Short Query #2
             //---------------------------------------------------------------
             $query2 = SQL::Select('contacts')
             ->SetDbType($db_type)
-            ->Where('first_name', '=', 'Bob', 'd');
+            ->Where('first_name', '=', '13', 'd');
 
             //---------------------------------------------------------------
             // Short Query #3
@@ -77,7 +77,7 @@ class Select
             $query3 = SQL::Select('contacts')
             ->SetDbType($db_type)
             ->Select('id')
-            ->Where('id', '>=', '50', 'i');
+            ->Where('id', '>=', '4', 'i');
 
             //---------------------------------------------------------------
             // Create / Start SQL Select Statement
@@ -91,11 +91,11 @@ class Select
                 ->LeftJoin('join_table b', 'a.worker_id', '=', 'b.id')
                 ->InnerJoin('join_table c', function ($join) {
                     $join->On('test_col1', 'test_col2')
-                    ->Where('test1', '=', 1);
+                    ->Where('test1', '=', 0);
                 })
                 ->OuterJoin('join_table c', function ($join) use ($test_value) {
                     $join->On('test_col1', 'test_col2')
-                    ->Where('test2', '=', 2)
+                    ->Where('test2', '=', 1)
                     ->Where('test3', '!=', $test_value);
                 })
                 //->From('test_table')
@@ -105,7 +105,7 @@ class Select
                 ->GroupBy('worker_id')
                 //->GroupBy('test1, test2')
                 ->OrderBy(['child_id', 'id desc'])
-                ->Where('test4', '>=', 4, 'i')
+                ->Where('test4', '>=', 3, 'i')
                 /*
                 ->Where([
                     ['test4_1', '>=', '4_1', 'd'],
@@ -116,20 +116,20 @@ class Select
                 ->Where(function ($query) use ($test_value) {
                     $query->WhereColumn('test5', 'test6')
                     ->OrWhereColumn('test7', 'test8')
-                    ->OrWhere('test9', '=', 9)
-                    ->Where('test10', '!=', $test_value + 10)
+                    ->OrWhere('test9', '=', 5)
+                    ->Where('test10', '!=', 3 + 3) // 6
                     ->Where(function ($query) use ($test_value) {
-                        $query->WhereNotBetween('test11', [23, 26], 'i')
-                        ->WhereIn('test12', [11, 12, 13], 'i')
+                        $query->WhereNotBetween('test11', [7, 8], 'i')
+                        ->WhereIn('test12', [9, 10, 11], 'i')
                         ->WhereNull('test13');
                     });
                 })
                 ->WhereRaw("raw_field = 'test'")
-                ->Having('id', '>', 0)
+                ->Having('id', '>', 14)
                 ->HavingRaw('test_id = 10')
                 ->Having(function ($query) use ($test_value) {
-                    $query->WhereNotBetween('test11', [23, 26], 'i')
-                    ->WhereIn('test12', [11, 12, 13], 'i')
+                    $query->WhereNotBetween('test11', [15, 16], 'i')
+                    ->WhereIn('test12', [17, 18, 19], 'i')
                     ->WhereNull('test13');
                 })
                 ->Limit(50, 2)

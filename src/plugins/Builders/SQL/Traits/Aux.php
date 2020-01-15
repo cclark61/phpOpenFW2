@@ -60,7 +60,9 @@ trait Aux
             'between', 
             'not between',
             'is null',
-            'is not null'
+            'is not null',
+            'exists',
+            'not exists'
         ];
         if (!in_array($op, $ops)) {
             return false;
@@ -93,5 +95,4 @@ trait Aux
         }
         return false;
     }
-
 }

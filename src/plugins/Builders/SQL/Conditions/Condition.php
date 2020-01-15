@@ -45,7 +45,11 @@ class Condition extends \phpOpenFW\Builders\SQL\Core
             throw new \Exception('Parent query must be passed to nested conditions object.');
         }
         if (!$field) {
-            throw new \Exception('Invalid field name given.');
+            $lower_op = trim(strtolower($op));
+            $no_field_allowed = ['exists', 'not exists'];
+            if (!in_array($lower_op, $no_field_allowed)) {
+                throw new \Exception('Invalid field name given.');
+            }
         }
         if (gettype($field) != 'object' && !self::IsValidOperator($op)) {
             throw new \Exception('Invalid operator given.');
@@ -92,7 +96,7 @@ class Condition extends \phpOpenFW\Builders\SQL\Core
     public function GetSQL()
     {
         //------------------------------------------------------------------------------
-        // Nested Conditions?
+        // Nested Conditions
         //------------------------------------------------------------------------------
         if ($this->field instanceof Closure) {
         	$nested = new Nested($this, $this->depth - 1);
@@ -105,22 +109,41 @@ class Condition extends \phpOpenFW\Builders\SQL\Core
             return '';
         }
         //------------------------------------------------------------------------------
-        // Sub-query Condition?
+        // Sub-query Condition
         //------------------------------------------------------------------------------
         else if (gettype($this->val) == 'object' && get_class($this->val) == 'phpOpenFW\Builders\SQL\Select') {
-            $this->val->SetDepth($this->depth + 1);
             $this->val->SetParentQuery($this);
             $sql = $this->val->GetSQL();
             $this->bind_params = $this->val->GetBindParams();
             if ($sql) {
-                //$sub_qry_params = $this->field->GetBindParams();
-                //$this->MergeBindParams($sub_qry_params);
-                $rear_pad = str_repeat(' ', $this->depth * 2);
-                return "(\n{$sql}\n{$rear_pad})";
+
+                //----------------------------------------------------------------------
+                // Adjust indentation to be correct for current depth
+                //----------------------------------------------------------------------
+                $front_pad = str_repeat(' ', ($this->depth * 2) + 2);
+                $front_pad2 = str_repeat(' ', (($this->depth - 1) * 2) + 2);
+                $sql = str_ireplace("\n", "\n{$front_pad}", $sql);
+                $sql = \phpOpenFW\Format\Strings::str_ireplace_last("\n{$front_pad}", "\n{$front_pad2}", $sql);
+
+                //----------------------------------------------------------------------
+                // Build Sub-query String
+                //----------------------------------------------------------------------
+                $ret_str = '';
+                if ($this->field) {
+                    $ret_str .= $this->field;
+                }
+                if ($this->op) {
+                    $ret_str .= ' ' . $this->op;
+                }
+                if ($ret_str) {
+                    $ret_str .= ' ';
+                }
+                $ret_str .= "(\n{$front_pad}{$sql})";
+                return $ret_str;
             }
         }
         //------------------------------------------------------------------------------
-        // Single Scalar Condition
+        // Single / Scalar Conditions
         //------------------------------------------------------------------------------
         else {
 

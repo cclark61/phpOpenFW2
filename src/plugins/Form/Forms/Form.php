@@ -4,10 +4,10 @@
 /**
 * A form class to construct (usually) table-based XHTML forms
 *
-* @package		phpOpenFW
-* @author 		Christian J. Clark
+* @package	phpOpenFW
+* @author 	Christian J. Clark
 * @copyright	Copyright (c) Christian J. Clark
-* @license		https://mit-license.org
+* @license	https://mit-license.org
 **/
 //**************************************************************************************
 //**************************************************************************************
@@ -15,6 +15,7 @@
 namespace phpOpenFW\Form\Forms;
 use \phpOpenFW\XML\Format;
 use \phpOpenFW\XML\GenElement;
+use \phpOpenFW\XML\Element\hidden;
 
 //**************************************************************************************
 /**
@@ -30,12 +31,12 @@ class Form extends \phpOpenFW\XML\Element
 	* @var string The label of the form being created
 	**/
 	protected $form_label;
-	
+
 	/**
 	* @var string The action of the current page
 	**/
 	protected $page_action;
-	
+
 	/**
 	* @var string The text for the submit button
 	**/
@@ -45,12 +46,12 @@ class Form extends \phpOpenFW\XML\Element
 	* @var array An array of elements in the form
 	**/
 	protected $form_elements;
-	
+
 	/**
 	* @var array An array of hidden elements in the form
 	**/
 	protected $hidden_elements;
-	
+
 	/**
 	* @var integer number of columns in the form
 	**/
@@ -58,22 +59,22 @@ class Form extends \phpOpenFW\XML\Element
 
 	/**
 	* @var bool Flag: true = put "alt" class in row element, false = don't
-	**/	
+	**/
 	protected $alt_rows;
 
 	/**
 	* @var array An Array of Headers to be used at the top of the form table
-	**/	
+	**/
 	protected $headers;
 
 	/**
 	* @var array An Array, in the form of "Key" => "Value", of Button Cell Attributes
-	**/	
+	**/
 	protected $button_cell_attrs;
-	
+
 	/**
 	* @var array An Array, in the form of "Key" => "Value", of Row Attributes
-	**/	
+	**/
 	protected $row_attrs;
 
 
@@ -106,7 +107,7 @@ class Form extends \phpOpenFW\XML\Element
 		//--------------------------------------------------------
 		$this->xsl_template = PHPOPENFW_TEMPLATES_PATH . '/form.xsl';
 	}
-	
+
 	/**
 	* Form render function
 	**/
@@ -124,14 +125,14 @@ class Form extends \phpOpenFW\XML\Element
 		// Data Output Buffer
 		//--------------------------------------------------------
 		ob_start();
-		
+
 		//--------------------------------------------------------
 		// Form Label
 		//--------------------------------------------------------
 		if (isset($this->form_label)) {
 			 print new GenElement('form_label', $this->form_label);
 		}
-		
+
 		//--------------------------------------------------------
 		// Headers
 		//--------------------------------------------------------
@@ -140,12 +141,12 @@ class Form extends \phpOpenFW\XML\Element
 			if (isset($this->headers[$x])) { $headers_arr[] = $this->headers[$x]; }
 		}
 		print Format::array2xml('headers', $headers_arr);
-		
+
 		//--------------------------------------------------------
 		// Button Cell Attributes
 		//--------------------------------------------------------
 		print Format::array2xml('button_cell_attrs', $this->button_cell_attrs);
-		
+
 		//--------------------------------------------------------
 		// Button(s)
 		//--------------------------------------------------------
@@ -182,7 +183,7 @@ class Form extends \phpOpenFW\XML\Element
 			$hid_elems[] = (!empty($this->xsl_template)) ? ($this->xml_escape(ob_get_clean())) : (ob_get_clean());
 		}
 		print Format::array2xml('hidden_elements', $hid_elems);
-		
+
 		//--------------------------------------------------------
 		// Visible Form Elements
 		//--------------------------------------------------------
@@ -192,14 +193,14 @@ class Form extends \phpOpenFW\XML\Element
 
 			//--------------------------------------------------------
 			// Process the element:
-			// -> object -> render, 
-			// -> text -> print, 
+			// -> object -> render,
+			// -> text -> print,
 			// -> array -> process elements
 			//--------------------------------------------------------
 			ob_start();
 			$this->process_element($element[0]);
 			$tmp_element = ob_get_clean();
-			
+
 			if ($element[2] == 'cell') {
 
 				//--------------------------------------------------------
@@ -222,7 +223,7 @@ class Form extends \phpOpenFW\XML\Element
 				foreach ($element[3] as $fe_attr_key => $fe_attr_val) { $fe_attrs[$fe_attr_key] = $fe_attr_val; }
 				$fe_content = (!empty($this->xsl_template)) ? ($this->xml_escape($tmp_element)) : ($tmp_element);
 				print new GenElement('form_element', $fe_content, $fe_attrs);
-				
+
 				//--------------------------------------------------------
 				// End ROW
 				//--------------------------------------------------------
@@ -244,7 +245,7 @@ class Form extends \phpOpenFW\XML\Element
 		//--------------------------------------------------------
 		if (!$row_end && $row_begin && count($this->form_elements) > 0) {
 			print new GenElement('row', ob_get_clean(), $row_attrs);
-		}		
+		}
 
 		print new GenElement('elements', ob_get_clean());
 		print new GenElement('data', ob_get_clean());
@@ -271,7 +272,7 @@ class Form extends \phpOpenFW\XML\Element
 	**/
 	//*************************************************************************
 	public function set_button($button) { $this->button = $button; }
-	
+
 	//*************************************************************************
 	/**
 	* Turn off the submit button from showing
@@ -325,7 +326,7 @@ class Form extends \phpOpenFW\XML\Element
 		}
 		return true;
 	}
-	
+
 	//*************************************************************************
 	/**
 	* Add a field to the form
@@ -349,7 +350,7 @@ class Form extends \phpOpenFW\XML\Element
 	{
 		array_push($this->hidden_elements, $hidden_element);
 	}
-	
+
 	//*************************************************************************
 	/**
 	* Add a text/html/markup to the form
@@ -390,19 +391,19 @@ class Form extends \phpOpenFW\XML\Element
 			case 'object':
 				$element->render();
 				break;
-				
+
 			case 'array':
 				foreach ($element as $sub_element) {
 					$this->process_element($sub_element);
 				}
 				break;
-				
+
 			default:
 				print "$element\n";
 				break;
 		}
 	}
-	
+
 	//*************************************************************************
 	/**
 	* Start a fieldset in the form
@@ -423,7 +424,7 @@ class Form extends \phpOpenFW\XML\Element
 		$fieldset = new GenElement('fieldset', $fs_content, $fs_attrs);
 		array_push($this->form_elements, array($fieldset->render(1), 0, 'fieldset'));
 	}
-	
+
 	//*************************************************************************
 	/**
 	* End a fieldset in the form
@@ -435,36 +436,35 @@ class Form extends \phpOpenFW\XML\Element
 		$fieldset = new GenElement('fieldset', '', $fs_attrs);
 		array_push($this->form_elements, array($fieldset->render(1), 0, 'fieldset'));
 	}
-	
+
 	//*************************************************************************
 	/**
 	* Set Form Label
 	* @param string Form Label
 	**/
 	//*************************************************************************
-	public function label($label) { $this->form_label = $label; }	
-
+	public function label($label) { $this->form_label = $label; }
 
 	//*************************************************************************
 	/**
 	* Set alternating row class "alt"
 	**/
-	//*************************************************************************	
+	//*************************************************************************
 	public function set_alt_rows() { $this->alt_rows = true; }
 
 	//*************************************************************************
 	/**
 	* Turn off xsl transformation
 	**/
-	//*************************************************************************	
+	//*************************************************************************
 	public function no_xsl() { $this->xsl_template = ''; }
-	
+
 	//*************************************************************************
 	/**
-	* Create and use a hidden unique form key 
+	* Create and use a hidden unique form key
 	* @param string Key Name
 	**/
-	//*************************************************************************	
+	//*************************************************************************
 	public function use_key($key='form_key')
 	{
 		$stamp = date('U');

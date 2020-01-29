@@ -15,7 +15,7 @@
 namespace phpOpenFW\Form\Forms;
 use \phpOpenFW\XML\Format;
 use \phpOpenFW\XML\GenElement;
-use \phpOpenFW\XML\Element\hidden;
+use \phpOpenFW\Form\Elements\hidden;
 
 //**************************************************************************************
 /**

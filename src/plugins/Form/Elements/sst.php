@@ -28,7 +28,7 @@ class sst extends SelectFormElement
 	private $opt_key;
 	private $opt_val;
 	private $opt_group;
-	
+
 	//*************************************************************************
 	// Constructor Function
 	//*************************************************************************
@@ -78,9 +78,9 @@ class sst extends SelectFormElement
 			// Selected Value
 			//-----------------------------------------
 			if (isset($this->select_value)) {
-                if (is_array($this->select_value) && isset($this->select_value[$bv[0]])) {
-	                $o_attrs['selected'] = 'selected';
-                }
+                		if (is_array($this->select_value) && isset($this->select_value[$bv[0]])) {
+	                		$o_attrs['selected'] = 'selected';
+                		}
 				else {
 					settype($bv[0], 'string');
 					if ($this->select_value === $bv[0]) {
@@ -104,7 +104,7 @@ class sst extends SelectFormElement
 
 			$o->render();
 		}
-		
+
 		//============================================
 		// Options
 		//============================================
@@ -122,22 +122,23 @@ class sst extends SelectFormElement
 			if ($this->opt_group && isset($row[$this->opt_group]) && $row[$this->opt_group] !== $opt_group) {
 				$opt_group = $row[$this->opt_group];
 				print new GenElement('optgroup', '', array('label' => $row[$this->opt_group]));
-			} 
-			
+			}
+
 			//-----------------------------------------
 			// Selected Value
 			//-----------------------------------------
 			if (isset($this->select_value)) {
 				settype($row[$this->opt_key], 'string');
 				if ($this->select_value === $row[$this->opt_key]) { $o_attrs['selected'] = 'selected'; }
-			}	
+			}
+
 			//-----------------------------------------
 			// Selected Value
 			//-----------------------------------------
 			if (isset($this->select_value)) {
-                if (is_array($this->select_value) && isset($this->select_value[$row[$this->opt_key]])) {
-	                $o_attrs['selected'] = 'selected';
-                }
+                		if (is_array($this->select_value) && isset($this->select_value[$row[$this->opt_key]])) {
+	                		$o_attrs['selected'] = 'selected';
+                		}
 				else {
 					settype($row[$this->opt_key], 'string');
 					if ($this->select_value === $row[$this->opt_key]) {
@@ -164,10 +165,10 @@ class sst extends SelectFormElement
 			//-----------------------------------------
 			$o->render();
 		}
-		
+
 		$this->inset_val .= ob_get_clean();
-		parent::render($buffer);
-	}	
+		return parent::render($buffer);
+	}
 
 }
 

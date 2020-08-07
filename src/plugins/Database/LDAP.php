@@ -6,7 +6,7 @@
  *
  * @package		phpOpenFW
  * @author 		Christian J. Clark
- * @copyright	Copyright (c) Christian J. Clark
+ * @copyright		Copyright (c) Christian J. Clark
  * @license		https://mit-license.org
  */
 //**************************************************************************************
@@ -26,9 +26,9 @@ class LDAP {
     //*****************************************************************************
     use Traits\DataSource;
 
-	//*****************************************************************************
-	// Class Members
-	//*****************************************************************************
+    //*****************************************************************************
+    // Class Members
+    //*****************************************************************************
     protected $records = false;
     protected $num_recs = false;
     protected $fetch_pos = 0;
@@ -117,7 +117,7 @@ class LDAP {
 
 		return true;
 	}
-	
+
 	//*****************************************************************************
 	//*****************************************************************************
 	/**
@@ -140,15 +140,18 @@ class LDAP {
 	**/
 	//*****************************************************************************
 	//*****************************************************************************
-    public function Bind($user, $pass)
+	public function Bind($user, $pass)
 	{
-        if (!empty($user)) {
-            return ldap_bind($this->handle, $this->user, $this->pass);
+            if (!empty($user)) {
+                return ldap_bind($this->handle, $user, $pass);
+            }
+	    else if (!empty($this->user)) {
+		return ldap_bind($this->handle, $this->user, $this->pass);
+	    }
+            else {
+                return ldap_bind($this->handle);
+            }
         }
-        else {
-            return ldap_bind($this->handle);
-        }
-    }
 
 	//*****************************************************************************
 	//*****************************************************************************
@@ -157,7 +160,7 @@ class LDAP {
 	**/
 	//*****************************************************************************
 	//*****************************************************************************
-    public function Unbind($user, $pass)
+    public function Unbind()
 	{
         return ldap_unbind($this->handle);
     }

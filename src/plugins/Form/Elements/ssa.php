@@ -23,7 +23,7 @@ use \phpOpenFW\XML\GenElement;
 class ssa extends SelectFormElement
 {
 	private $select_vals;	// Values of the select
-	
+
 	//*************************************************************************
 	// Constructor Function
 	//*************************************************************************
@@ -47,7 +47,7 @@ class ssa extends SelectFormElement
 		if (!is_array($this->select_value)) {
 			settype($this->select_value, 'string');
 		}
-	
+
 		//============================================
 		// Added "Blank" Options
 		//============================================
@@ -62,9 +62,9 @@ class ssa extends SelectFormElement
 			// Selected Value
 			//-----------------------------------------
 			if (isset($this->select_value)) {
-                if (is_array($this->select_value) && isset($this->select_value[$bv[0]])) {
-	                $o_attrs['selected'] = 'selected';
-                }
+                		if (is_array($this->select_value) && isset($this->select_value[$bv[0]])) {
+	                		$o_attrs['selected'] = 'selected';
+                		}
 				else {
 					settype($bv[0], 'string');
 					if ($this->select_value === $bv[0]) {
@@ -103,22 +103,22 @@ class ssa extends SelectFormElement
 			//-----------------------------------------
 			// Option Group
 			//-----------------------------------------
-			if (is_array($value)) { 
+			if (is_array($value)) {
 				$tmp_val_arr = $value;
-				$value = (isset($tmp_val_arr[0])) ? ($tmp_val_arr[0]) : (''); 
+				$value = (isset($tmp_val_arr[0])) ? ($tmp_val_arr[0]) : ('');
 				if (isset($tmp_val_arr[1]) && $tmp_val_arr[1] !== $opt_group) {
 					$opt_group = $tmp_val_arr[1];
 					print new GenElement('optgroup', '', array('label' => $tmp_val_arr[1]));
-				} 
+				}
 			}
 
 			//-----------------------------------------
 			// Selected Value
 			//-----------------------------------------
 			if (isset($this->select_value)) {
-                if (is_array($this->select_value) && isset($this->select_value[$key])) {
-	                $o_attrs['selected'] = 'selected';
-                }
+                		if (is_array($this->select_value) && isset($this->select_value[$key])) {
+	                		$o_attrs['selected'] = 'selected';
+                		}
 				else {
 					settype($key, 'string');
 					if ($this->select_value === $key) {
@@ -145,10 +145,10 @@ class ssa extends SelectFormElement
 			//-----------------------------------------
 			$o->render();
 		}
-		
+
 		$this->inset_val .= ob_get_clean();
-		parent::render($buffer);
-	}	
+		return parent::render($buffer);
+	}
 
 }
 

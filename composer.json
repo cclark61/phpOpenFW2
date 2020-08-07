@@ -1,14 +1,14 @@
 {
-    "name": "phpopenfw/phpOpenFW2",
-    "version": "2.2.0",
-    "require": {},
-	"require-dev": {},
-	"repositories": [],
-    "dist": {
-        "url": "https://github.com/phpopenfw/phpOpenFW2.git",
-        "type": "zip"
-    },
-    "autoload": {
+	"name": "phpopenfw/phpOpenFW2",
+	"version": "2.2.2",
+	"require": {},
+		"require-dev": {},
+		"repositories": [],
+	"dist": {
+		"url": "https://github.com/phpopenfw/phpOpenFW2.git",
+		"type": "zip"
+	},
+	"autoload": {
 		"psr-4": {
 			"phpOpenFW\\": "/src/plugins",
 			"phpOpenFW\\Test\\": "tests"

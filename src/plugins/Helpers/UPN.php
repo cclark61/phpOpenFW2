@@ -37,19 +37,25 @@ class UPN
         // Determine Subject from Handler
         //------------------------------------------------------------------------------
         $subject = &self::GetSubject($handler, $in_subject);
-        if ($subject === false) {
-            throw new \Exception('Invalid subject.');
-        }
+
+        //------------------------------------------------------------------------------
+        // Get Path Parts
+        //------------------------------------------------------------------------------
+        $path_parts = self::GetPathParts($path);
 
         //------------------------------------------------------------------------------
         // Get Value
         //------------------------------------------------------------------------------
-        $path_parts = explode('/', $path);
         if ($path_parts) {
-            $tmp_subject = &$subject;
+            $tmp_subject = $subject;
             foreach ($path_parts as $key => $pp) {
-                if ($pp == '' && $key) {
-                    continue;
+                if ($pp == '') {
+                    if (!$key) {
+                        continue;
+                    }
+                    else {
+                        return null;
+                    }
                 }
 	            if (isset($tmp_subject[$pp])) {
 		            $tmp_subject = $tmp_subject[$pp];
@@ -83,17 +89,15 @@ class UPN
         // Determine Subject from Handler
         //------------------------------------------------------------------------------
         $subject = &self::GetSubject($handler, $in_subject);
-        if ($subject === false) {
-            throw new \Exception('Invalid subject.');
-        }
+
+        //------------------------------------------------------------------------------
+        // Get Path Parts
+        //------------------------------------------------------------------------------
+        $path_parts = self::GetPathParts($path);
 
         //------------------------------------------------------------------------------
         // Set Value
         //------------------------------------------------------------------------------
-        $path_parts = explode('/', $path);
-        if ($path_parts && $path_parts[0] == '') {
-            $path_parts = array_slice($path_parts, 1);
-        }
         if ($path_parts) {
             return self::_Set($subject, $path_parts, $value);
         }
@@ -117,7 +121,7 @@ class UPN
         // Is Path Valid?
         //------------------------------------------------------------------------------
         if (!$path) {
-            throw new \Exception('Empty UPN path (1).');
+            throw new \Exception('Empty UPN path .');
         }
 
         //------------------------------------------------------------------------------
@@ -125,14 +129,14 @@ class UPN
         //------------------------------------------------------------------------------
         $upn_parts = explode(':/', $path);
         if (count($upn_parts) < 2) {
-            throw new \Exception('Invalid UPN path (2).');
+            throw new \Exception('Invalid UPN path (1).');
         }
 
         //------------------------------------------------------------------------------
         // Validate Handler
         //------------------------------------------------------------------------------
         if (!self::ValidateHandler($upn_parts[0])) {
-            throw new \Exception('Invalid UPN Handler (3).');
+            throw new \Exception('Invalid UPN handler.');
         }
 
         //------------------------------------------------------------------------------
@@ -197,9 +201,10 @@ class UPN
         switch ($handler) {
 
             case 'config':
-                if (isset($_SESSION['config'])) {
-                    return $_SESSION['config'];
+                if (!isset($_SESSION['config'])) {
+                    $_SESSION['config'] = [];
                 }
+                return $_SESSION['config'];
                 break;
 
             case 'array':
@@ -207,7 +212,7 @@ class UPN
                     return $in_subject;
                 }
                 else {
-                    throw new \Exception('Invalid subject array.');
+                    throw new \Exception('Invalid subject (array).');
                 }
                 break;
 
@@ -236,6 +241,48 @@ class UPN
                 break;
 
         }
+    }
+
+    //==================================================================================
+    //==================================================================================
+    // Get Path Parts
+    //==================================================================================
+    //==================================================================================
+    public static function GetPathParts($path)
+    {
+        //------------------------------------------------------------------------------
+        // Validate Path Type
+        //------------------------------------------------------------------------------
+        if (!$path || !is_string($path)) {
+            throw new \Exception('Invalid UPN path.');
+        }
+
+        //------------------------------------------------------------------------------
+        // Explode path from string to array
+        //------------------------------------------------------------------------------
+        $path_parts = explode('/', $path);
+
+        //------------------------------------------------------------------------------
+        // Is first element empty? (Caused by leading '/') Remove it.
+        //------------------------------------------------------------------------------
+        if ($path_parts && $path_parts[0] == '') {
+            $path_parts = array_slice($path_parts, 1);
+        }
+
+        //------------------------------------------------------------------------------
+        // Is last element empty? (Caused by trailing '/') Remove it.
+        //------------------------------------------------------------------------------
+        if ($path_parts) {
+            $last_pos = count($path_parts) - 1;
+            if ($path_parts[$last_pos] == '') {
+    	        array_pop($path_parts);
+            }
+        }
+
+        //------------------------------------------------------------------------------
+        // Return Path Parts
+        //------------------------------------------------------------------------------
+        return $path_parts;
     }
 
     //==================================================================================

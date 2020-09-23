@@ -72,17 +72,17 @@ script. Also, the pass-through for the CSS, images, and Javascript is important 
 
 #### Example:
 
-RewriteEngine On
-RewriteRule ^([^/\.]+).html$ index.php?page=$1 [L]
-RewriteRule ^(themes|css|img|javascript) - [L]
-RewriteRule  .*favicon\.ico$ - [L]
-RewriteRule ^.*$ index.php [L,qsa]
+* RewriteEngine On
+* RewriteRule ^([^/\.]+).html$ index.php?page=$1 [L]
+* RewriteRule ^(themes|css|img|javascript) - [L]
+* RewriteRule  .*favicon\.ico$ - [L]
+* RewriteRule ^.*$ index.php [L,qsa]
 
 **If you are using Virtual Document Roots with Apache your rules will most likely need to look something like this:**
 
-RewriteEngine On
-RewriteBase /
-RewriteRule ^([^/\.]+).html$ index.php?page=$1 [L]
-RewriteRule ^(themes|css|img|javascript) - [L]
-RewriteRule ^.*favicon\.ico$ - [L]
-RewriteRule ^.*$ index.php [L,qsa]
+* RewriteEngine On
+* RewriteBase /
+* RewriteRule ^([^/\.]+).html$ index.php?page=$1 [L]
+* RewriteRule ^(themes|css|img|javascript) - [L]
+* RewriteRule ^.*favicon\.ico$ - [L]
+* RewriteRule ^.*$ index.php [L,qsa]

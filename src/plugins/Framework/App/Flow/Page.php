@@ -4,7 +4,7 @@
 /**
  * A class to construct the page framework
  *
- * @package		phpOpenFW2
+ * @package		phpOpenFW
  * @author 		Christian J. Clark
  * @copyright	Copyright (c) Christian J. Clark
  * @license		https://mit-license.org

@@ -95,7 +95,7 @@ trait DataSource
         $this->source = (!isset($data_src_data['source'])) ? ('') : ($data_src_data['source']);
         $this->user = (!isset($data_src_data['user'])) ? ('') : ($data_src_data['user']);
         $this->pass = (!isset($data_src_data['pass'])) ? ('') : ($data_src_data['pass']);
-        $this->persistent = (!isset($data_src_data['persistent'])) ? (true) : ($data_src_data['pass']);
+        $this->persistent = (!isset($data_src_data['persistent'])) ? (true) : ($data_src_data['persistent']);
     }
 
 	//*****************************************************************************

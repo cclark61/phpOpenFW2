@@ -35,7 +35,7 @@ class Image
 	*/
 	//*****************************************************************************
 	//*****************************************************************************
-	public static function img_resize_save($curr_file, $save_file, $max_width, $max_height, $out_format="jpg")
+	public static function img_resize_save($curr_file, $save_file, $max_width, $max_height, $out_format="jpg", $quality=-1)
 	{
 		$ret_code = 0;
 		$out_format = strtolower($out_format);
@@ -132,7 +132,7 @@ class Image
 								$save_status = false;
 								switch ($out_format) {
 									case "png":
-										$save_status = imagepng($thumb, $save_file);
+										$save_status = imagepng($thumb, $save_file, $quality);
 										break;
 	
 									case "gif":
@@ -140,7 +140,7 @@ class Image
 										break;
 	
 									default:
-										$save_status = imagejpeg($thumb, $save_file);
+										$save_status = imagejpeg($thumb, $save_file, $quality);
 										break;
 								}
 								if (!$save_status) { $ret_code = 6; }

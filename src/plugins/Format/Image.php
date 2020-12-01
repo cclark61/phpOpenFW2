@@ -171,6 +171,7 @@ class Image
                 break;
 
             case "image/webp":
+                $rotate = false;
                 $source = imagecreatefromwebp($curr_file);
                 break;
 

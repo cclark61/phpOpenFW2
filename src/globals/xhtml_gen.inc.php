@@ -4,10 +4,10 @@
 /**
  * XHTML Generator Plugin
  *
- * @package		phpOpenFW
- * @author 		Christian J. Clark
- * @copyright	Copyright (c) Christian J. Clark
- * @license		https://mit-license.org
+ * @package        phpOpenFW
+ * @author         Christian J. Clark
+ * @copyright    Copyright (c) Christian J. Clark
+ * @license        https://mit-license.org
  **/
 //**************************************************************************************
 //**************************************************************************************
@@ -66,19 +66,19 @@ if (!function_exists('hr')) { function hr($attrs=false) { return \phpOpenFW\XML\
 //*****************************************************************************
 //*****************************************************************************
 if (!function_exists('ul')) {
-	function ul($lis, $attrs=false)
-	{
-		if ($attrs !== false && !is_array($attrs)) {
-			trigger_error('Attributes must be an array.');
-			return false;
-		}
+    function ul($lis, $attrs=false)
+    {
+        if ($attrs !== false && !is_array($attrs)) {
+            trigger_error('Attributes must be an array.');
+            return false;
+        }
 
-		$inset = '';
-		if (!is_array($lis)) { $inset = $lis; }
-		else { foreach ($lis as $val) { $inset .= $val; } }
+        $inset = '';
+        if (!is_array($lis)) { $inset = $lis; }
+        else { foreach ($lis as $val) { $inset .= $val; } }
 
-		return \phpOpenFW\XML\Format::xhe('ul', $inset, $attrs);
-	}
+        return \phpOpenFW\XML\Format::xhe('ul', $inset, $attrs);
+    }
 }
 
 //*****************************************************************************
@@ -89,19 +89,19 @@ if (!function_exists('ul')) {
 //*****************************************************************************
 //*****************************************************************************
 if (!function_exists('ol')) {
-	function ol($lis, $attrs=false)
-	{
-		if ($attrs !== false && !is_array($attrs)) {
-			trigger_error('Attributes must be an array.');
-			return false;
-		}
+    function ol($lis, $attrs=false)
+    {
+        if ($attrs !== false && !is_array($attrs)) {
+            trigger_error('Attributes must be an array.');
+            return false;
+        }
 
-		$inset = '';
-		if (!is_array($lis)) { $inset = $lis; }
-		else { foreach ($lis as $val) { $inset .= $val; } }
+        $inset = '';
+        if (!is_array($lis)) { $inset = $lis; }
+        else { foreach ($lis as $val) { $inset .= $val; } }
 
-		return \phpOpenFW\XML\Format::xhe('ol', $inset, $attrs);
-	}
+        return \phpOpenFW\XML\Format::xhe('ol', $inset, $attrs);
+    }
 }
 
 //*****************************************************************************
@@ -112,19 +112,19 @@ if (!function_exists('ol')) {
 //*****************************************************************************
 //*****************************************************************************
 if (!function_exists('select')) {
-	function select($opts, $attrs=false)
-	{
-		if ($attrs !== false && !is_array($attrs)) {
-			trigger_error('Attributes must be an array.');
-			return false;
-		}
+    function select($opts, $attrs=false)
+    {
+        if ($attrs !== false && !is_array($attrs)) {
+            trigger_error('Attributes must be an array.');
+            return false;
+        }
 
-		$inset = '';
-		if (!is_array($opts)) { $inset = $opts; }
-		else { foreach ($opts as $val) { $inset .= $val; } }
+        $inset = '';
+        if (!is_array($opts)) { $inset = $opts; }
+        else { foreach ($opts as $val) { $inset .= $val; } }
 
-		return \phpOpenFW\XML\Format::xhe('select', $inset, $attrs);
-	}
+        return \phpOpenFW\XML\Format::xhe('select', $inset, $attrs);
+    }
 }
 
 //*****************************************************************************
@@ -138,16 +138,16 @@ if (!function_exists('select')) {
 //*****************************************************************************
 //*****************************************************************************
 if (!function_exists('anchor')) {
-	function anchor($href, $content, $attrs=false)
-	{
-		if (!is_array($attrs)) { $attrs = array(); }
-		$attrs['href'] = $href;
-		$element = new GenElement('a', $content, $attrs);
-		
-		ob_start();
-		$element->render();
-		return ob_get_clean();
-	}
+    function anchor($href, $content, $attrs=false)
+    {
+        if (!is_array($attrs)) { $attrs = array(); }
+        $attrs['href'] = $href;
+        $element = new GenElement('a', $content, $attrs);
+        
+        ob_start();
+        $element->render();
+        return ob_get_clean();
+    }
 }
 
 //*****************************************************************************
@@ -161,15 +161,15 @@ if (!function_exists('anchor')) {
 //*****************************************************************************
 //*****************************************************************************
 if (!function_exists('image')) {
-	function image($src, $alt=false, $attrs=false)
-	{
-		if (!is_array($attrs)) { $attrs = array(); }
-		$attrs['src'] = $src;
-		if ($alt) { $attrs['alt'] = $alt; }
-		$element = new GenElement('img', false, $attrs);
-		
-		ob_start();
-		$element->render();
-		return ob_get_clean();
-	}
+    function image($src, $alt=false, $attrs=false)
+    {
+        if (!is_array($attrs)) { $attrs = array(); }
+        $attrs['src'] = $src;
+        if ($alt) { $attrs['alt'] = $alt; }
+        $element = new GenElement('img', false, $attrs);
+        
+        ob_start();
+        $element->render();
+        return ob_get_clean();
+    }
 }

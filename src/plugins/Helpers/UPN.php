@@ -4,10 +4,10 @@
 /**
  * Universal Path Notation (UPN) Plugin
  *
- * @package		phpOpenFW
- * @author 		Christian J. Clark
- * @copyright	Copyright (c) Christian J. Clark
- * @license		https://mit-license.org
+ * @package        phpOpenFW
+ * @author         Christian J. Clark
+ * @copyright    Copyright (c) Christian J. Clark
+ * @license        https://mit-license.org
  **/
 //**************************************************************************************
 //**************************************************************************************
@@ -65,12 +65,12 @@ class UPN
                         return null;
                     }
                 }
-	            if (isset($tmp_subject[$pp])) {
-		            $tmp_subject = $tmp_subject[$pp];
-	            }
-	            else {
-		            return null;
-	            }
+                if (isset($tmp_subject[$pp])) {
+                    $tmp_subject = $tmp_subject[$pp];
+                }
+                else {
+                    return null;
+                }
             }
             return $tmp_subject;
         }
@@ -291,7 +291,7 @@ class UPN
         if ($path_parts) {
             $last_pos = count($path_parts) - 1;
             if ($path_parts[$last_pos] == '') {
-    	        array_pop($path_parts);
+                array_pop($path_parts);
             }
         }
 
@@ -320,8 +320,8 @@ class UPN
                 }
                 return self::_Set($subject[$pp], $path_parts, $value);
             }
-		}
-		return false;
+        }
+        return false;
     }
 
     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -358,40 +358,40 @@ class UPN
             // Set Data Element
             //----------------------------------------------------
             if ($mode == 'set') {
-	            if ($path_parts) {
-		            $recurse = function($subject, $path_parts, $value) use (&$recurse)
-		            {
-			            $pp = array_shift($path_parts);
-			            if (!$path_parts) {
-				            $subject[$pp] = $value;
-			            }
-			            else {
-				            if (!isset($subject[$pp])) { $subject[$pp] = []; }
-				            $subject[$pp] = $recurse($subject[$pp], $path_parts, $value);
-						}
-						return $subject;
-		            };
-					$subject = $recurse($subject, $path_parts, $value);
-		            return true;
-		        }
+                if ($path_parts) {
+                    $recurse = function($subject, $path_parts, $value) use (&$recurse)
+                    {
+                        $pp = array_shift($path_parts);
+                        if (!$path_parts) {
+                            $subject[$pp] = $value;
+                        }
+                        else {
+                            if (!isset($subject[$pp])) { $subject[$pp] = []; }
+                            $subject[$pp] = $recurse($subject[$pp], $path_parts, $value);
+                        }
+                        return $subject;
+                    };
+                    $subject = $recurse($subject, $path_parts, $value);
+                    return true;
+                }
                 return false;
             }
             //----------------------------------------------------
             // Get Data Element
             //----------------------------------------------------
             else {
-	            if ($path_parts) {
-		            $tmp_subject = &$subject;
-		            foreach ($path_parts as $pp) {
-			            if (isset($tmp_subject[$pp])) {
-				            $tmp_subject = $tmp_subject[$pp];
-			            }
-			            else {
-				            return null;
-			            }
-		            }
-		            return $tmp_subject;
-	            }
+                if ($path_parts) {
+                    $tmp_subject = &$subject;
+                    foreach ($path_parts as $pp) {
+                        if (isset($tmp_subject[$pp])) {
+                            $tmp_subject = $tmp_subject[$pp];
+                        }
+                        else {
+                            return null;
+                        }
+                    }
+                    return $tmp_subject;
+                }
                 return null;
             }
         }
@@ -498,11 +498,11 @@ class UPN
         //----------------------------------------------------
         $path_parts = explode('/', $upn_parts[1]);
         if ($path_parts[0] == '') {
-	        array_shift($path_parts);
+            array_shift($path_parts);
         }
         $last_pos = count($path_parts) - 1;
         if ($path_parts[$last_pos] == '') {
-	        array_pop($path_parts);
+            array_pop($path_parts);
         }
 
         //----------------------------------------------------

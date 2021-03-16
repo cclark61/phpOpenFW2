@@ -4,10 +4,10 @@
 /**
  * SQL Builder Class
  *
- * @package		phpOpenFW
- * @author 		Christian J. Clark
- * @copyright	Copyright (c) Christian J. Clark
- * @license		https://mit-license.org
+ * @package        phpOpenFW
+ * @author         Christian J. Clark
+ * @copyright    Copyright (c) Christian J. Clark
+ * @license        https://mit-license.org
  **/
 //**************************************************************************************
 //**************************************************************************************
@@ -29,8 +29,8 @@ class SQL
     //=========================================================================
     public static function Select($table, $data_source=false)
     {
-		return new SQL\Select($table, $data_source);
-	}
+        return new SQL\Select($table, $data_source);
+    }
 
     //=========================================================================
     //=========================================================================
@@ -39,8 +39,8 @@ class SQL
     //=========================================================================
     public static function Insert($table, $data_source=false)
     {
-		return new SQL\Insert($table, $data_source);
-	}
+        return new SQL\Insert($table, $data_source);
+    }
 
     //=========================================================================
     //=========================================================================
@@ -49,8 +49,8 @@ class SQL
     //=========================================================================
     public static function Update($table, $data_source=false)
     {
-		return new SQL\Update($table, $data_source);
-	}
+        return new SQL\Update($table, $data_source);
+    }
 
     //=========================================================================
     //=========================================================================
@@ -59,7 +59,7 @@ class SQL
     //=========================================================================
     public static function Delete($table, $data_source=false)
     {
-		return new SQL\Delete($table, $data_source);
-	}
+        return new SQL\Delete($table, $data_source);
+    }
 
 }

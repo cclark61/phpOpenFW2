@@ -4,10 +4,10 @@
 /**
  * Lite Framework Class
  *
- * @package		phpOpenFW
- * @author 		Christian J. Clark
- * @copyright	Copyright (c) Christian J. Clark
- * @license		https://mit-license.org
+ * @package        phpOpenFW
+ * @author         Christian J. Clark
+ * @copyright    Copyright (c) Christian J. Clark
+ * @license        https://mit-license.org
  */
 //**************************************************************************************
 //**************************************************************************************
@@ -22,18 +22,18 @@ namespace phpOpenFW\Framework;
 class LiteFW
 {
 
-	//*************************************************************************
-	/**
-	* Run Method
-	**/
-	//*************************************************************************
-	public static function Run($file_path=false)
-	{
-		//============================================================
-		// Bootstrap the Core
-		//============================================================
-		\phpOpenFW\Framework\Core::Bootstrap($file_path);
+    //*************************************************************************
+    /**
+    * Run Method
+    **/
+    //*************************************************************************
+    public static function Run($file_path=false)
+    {
+        //============================================================
+        // Bootstrap the Core
+        //============================================================
+        \phpOpenFW\Framework\Core::Bootstrap($file_path);
 
-	}
+    }
 
 }

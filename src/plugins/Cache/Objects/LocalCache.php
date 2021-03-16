@@ -4,10 +4,10 @@
 /**
  * Local Data Cache Object
  *
- * @package		phpOpenFW
- * @author 		Christian J. Clark
- * @copyright	Copyright (c) Christian J. Clark
- * @license		https://mit-license.org
+ * @package        phpOpenFW
+ * @author         Christian J. Clark
+ * @copyright    Copyright (c) Christian J. Clark
+ * @license        https://mit-license.org
  **/
 //**************************************************************************************
 //**************************************************************************************
@@ -22,14 +22,14 @@ namespace phpOpenFW\Cache\Objects;
 class LocalCache extends Core
 {
 
-	//*************************************************************************
-	// Constructor Function
-	//*************************************************************************
+    //*************************************************************************
+    // Constructor Function
+    //*************************************************************************
     public function __construct()
     {
         $this->container = array();
         $this->scope = 'local';
-		$this->existed = false;
+        $this->existed = false;
     }
 
 }

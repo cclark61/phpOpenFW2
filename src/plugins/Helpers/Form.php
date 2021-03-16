@@ -4,10 +4,10 @@
 /**
  * Form Helper Object
  *
- * @package		phpOpenFW
- * @author 		Christian J. Clark
- * @copyright	Copyright (c) Christian J. Clark
- * @license		https://mit-license.org
+ * @package        phpOpenFW
+ * @author         Christian J. Clark
+ * @copyright    Copyright (c) Christian J. Clark
+ * @license        https://mit-license.org
  **/
 //**************************************************************************************
 //**************************************************************************************
@@ -21,19 +21,19 @@ namespace phpOpenFW\Helpers;
 //**************************************************************************************
 class Form
 {
-	//=============================================================================
-	//=============================================================================
-	// Check and Clear Form Key Function
-	//=============================================================================
-	//=============================================================================
-	public static function check_and_clear_form_key($obj, $mod_var_index, $form_key)
-	{
-		$do_trans = false;
-		$form_key_sess = $obj->get_mod_var($mod_var_index);
-		if (isset($form_key) && $form_key_sess && $form_key && $form_key == $form_key_sess) {
-			$do_trans = true;
-			$obj->clear_mod_var($mod_var_index);
-		}
-		return $do_trans;
-	}
+    //=============================================================================
+    //=============================================================================
+    // Check and Clear Form Key Function
+    //=============================================================================
+    //=============================================================================
+    public static function check_and_clear_form_key($obj, $mod_var_index, $form_key)
+    {
+        $do_trans = false;
+        $form_key_sess = $obj->get_mod_var($mod_var_index);
+        if (isset($form_key) && $form_key_sess && $form_key && $form_key == $form_key_sess) {
+            $do_trans = true;
+            $obj->clear_mod_var($mod_var_index);
+        }
+        return $do_trans;
+    }
 }

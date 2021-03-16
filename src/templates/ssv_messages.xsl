@@ -14,12 +14,12 @@
 <!-- My Team Template -->
 <!--**************************************************-->
 <xsl:template match="failed_checks">
-	<div class="ssv_messages">
-		<h3>The following errors occurred while processing your request:</h3>
-		<xsl:for-each select="./*">
-			<p>- <xsl:value-of select="." disable-output-escaping="yes" /></p>
-		</xsl:for-each>
-	</div>
+    <div class="ssv_messages">
+        <h3>The following errors occurred while processing your request:</h3>
+        <xsl:for-each select="./*">
+            <p>- <xsl:value-of select="." disable-output-escaping="yes" /></p>
+        </xsl:for-each>
+    </div>
 </xsl:template>
 
 

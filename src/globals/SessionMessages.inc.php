@@ -4,10 +4,10 @@
 /**
  * Session Messages Functions Plugin
  *
- * @package		phpOpenFW
- * @author 		Christian J. Clark
- * @copyright	Copyright (c) Christian J. Clark
- * @license		https://mit-license.org
+ * @package        phpOpenFW
+ * @author         Christian J. Clark
+ * @copyright    Copyright (c) Christian J. Clark
+ * @license        https://mit-license.org
  **/
 //**************************************************************************************
 //**************************************************************************************
@@ -18,23 +18,23 @@
 //====================================================================
 //====================================================================
 if (!function_exists('add_bottom_message')) {
-	function add_bottom_message($msg) { \phpOpenFW\Session\Messages::AddBottomMessage($msg); }
+    function add_bottom_message($msg) { \phpOpenFW\Session\Messages::AddBottomMessage($msg); }
 }
 if (!function_exists('add_page_message')) {
-	function add_page_message($msg) { \phpOpenFW\Session\Messages::AddPageMessage($msg); }
+    function add_page_message($msg) { \phpOpenFW\Session\Messages::AddPageMessage($msg); }
 }
 if (!function_exists('add_action_message')) {
-	function add_action_message($msg) { \phpOpenFW\Session\Messages::AddActionMessage($msg); }
+    function add_action_message($msg) { \phpOpenFW\Session\Messages::AddActionMessage($msg); }
 }
 if (!function_exists('add_warn_message')) {
-	function add_warn_message($msg) { \phpOpenFW\Session\Messages::AddWarnMessage($msg); }
+    function add_warn_message($msg) { \phpOpenFW\Session\Messages::AddWarnMessage($msg); }
 }
 if (!function_exists('add_error_message')) {
-	function add_error_message($msg) { \phpOpenFW\Session\Messages::AddErrorMessage($msg); }
+    function add_error_message($msg) { \phpOpenFW\Session\Messages::AddErrorMessage($msg); }
 }
 if (!function_exists('add_gen_message')) {
-	function add_gen_message($msg) { \phpOpenFW\Session\Messages::AddGenMessage($msg); }
+    function add_gen_message($msg) { \phpOpenFW\Session\Messages::AddGenMessage($msg); }
 }
 if (!function_exists('add_timer_message')) {
-	function add_timer_message($msg) { \phpOpenFW\Session\Messages::AddTimerMessage($msg); }
+    function add_timer_message($msg) { \phpOpenFW\Session\Messages::AddTimerMessage($msg); }
 }

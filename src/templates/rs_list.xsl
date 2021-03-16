@@ -16,8 +16,8 @@
 <!--********************************************************************-->
 <!--********************************************************************-->
 <xsl:template match="table_group">
-	<xsl:for-each select="//table_group/table">
-    	<xsl:call-template name="rs_list" />
+    <xsl:for-each select="//table_group/table">
+        <xsl:call-template name="rs_list" />
     </xsl:for-each>
 </xsl:template>
 
@@ -27,7 +27,7 @@
 <!--********************************************************************-->
 <!--********************************************************************-->
 <xsl:template match="table">
-	<xsl:call-template name="rs_list" />
+    <xsl:call-template name="rs_list" />
 </xsl:template>
 
 <!--********************************************************************-->
@@ -39,14 +39,14 @@
     <xsl:if test="./label">
         <xsl:value-of select="string('&lt;fieldset&gt;')" disable-output-escaping="yes" />
         <legend>
-        	<xsl:choose>
-        		<xsl:when test="./label/*">
-					<xsl:copy-of select="label/*"/>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:value-of select="./label/." disable-output-escaping="yes" />
-				</xsl:otherwise>
-			</xsl:choose>
+            <xsl:choose>
+                <xsl:when test="./label/*">
+                    <xsl:copy-of select="label/*"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="./label/." disable-output-escaping="yes" />
+                </xsl:otherwise>
+            </xsl:choose>
         </legend>
     </xsl:if>
     <table cellspacing="0">
@@ -56,12 +56,12 @@
             </xsl:attribute>
         </xsl:for-each>
         <xsl:if test="./header">
-			<thead>
+            <thead>
             <xsl:for-each select="./header/row">
                 <tr>
                 <xsl:for-each select="cell">
                     <th>
-                    	<xsl:for-each select="@*">
+                        <xsl:for-each select="@*">
                             <xsl:attribute name="{name()}">
                                 <xsl:value-of select="."/>
                             </xsl:attribute>
@@ -71,10 +71,10 @@
                 </xsl:for-each>
                 </tr>
             </xsl:for-each>
-		</thead>
+        </thead>
         </xsl:if>
         <xsl:if test="./content">
-			<tbody>
+            <tbody>
             <xsl:for-each select="./content/row">
                 <tr>
                     <xsl:for-each select="@*">
@@ -101,7 +101,7 @@
                 </xsl:for-each>
                 </tr>
             </xsl:for-each>
-		</tbody>
+        </tbody>
         </xsl:if>
     </table>
     <xsl:if test="./label">

@@ -4,10 +4,10 @@
 /**
  * Load Global App Logic Functions / Classes Plugin
  *
- * @package		phpOpenFW
- * @author 		Christian J. Clark
- * @copyright	Copyright (c) Christian J. Clark
- * @license		https://mit-license.org
+ * @package        phpOpenFW
+ * @author         Christian J. Clark
+ * @copyright    Copyright (c) Christian J. Clark
+ * @license        https://mit-license.org
  **/
 //**************************************************************************************
 //**************************************************************************************
@@ -16,7 +16,7 @@
 // Check for Excluded Classes / Functions Array
 //=============================================================================
 if (!isset($excluded)) {
-	$excluded = [];
+    $excluded = [];
 }
 
 //=============================================================================
@@ -27,5 +27,5 @@ if (!isset($excluded)) {
 // Class Aliases
 //=============================================================================
 if (!in_array('module_list', $excluded)) {
-	class_alias('\phpOpenFW\Framework\App\Security\ModuleList', '\module_list');
+    class_alias('\phpOpenFW\Framework\App\Security\ModuleList', '\module_list');
 }

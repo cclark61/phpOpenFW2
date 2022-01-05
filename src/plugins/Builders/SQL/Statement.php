@@ -4,7 +4,7 @@
 /**
  * SQL Statement Class
  *
- * @package         phpOpenFW
+ * @package         phpopenfw/phpopenfw2
  * @author          Christian J. Clark
  * @copyright       Copyright (c) Christian J. Clark
  * @license         https://mit-license.org

@@ -4,7 +4,7 @@
 /**
  * Load Global XML Functions / Classes Plugin
  *
- * @package         phpOpenFW
+ * @package         phpopenfw/phpopenfw2
  * @author          Christian J. Clark
  * @copyright       Copyright (c) Christian J. Clark
  * @website         https://phpopenfw.org

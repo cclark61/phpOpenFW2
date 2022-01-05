@@ -4,7 +4,7 @@
 /**
  * Application 2 Framework Class
  *
- * @package         phpOpenFW
+ * @package         phpopenfw/phpopenfw2
  * @author          Christian J. Clark
  * @copyright       Copyright (c) Christian J. Clark
  * @website         https://phpopenfw.org

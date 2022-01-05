@@ -4,7 +4,7 @@
 /**
  * A class to construct the page framework (App2)
  *
- * @package         phpOpenFW
+ * @package         phpopenfw/phpopenfw2
  * @author          Christian J. Clark
  * @copyright       Copyright (c) Christian J. Clark
  * @website         https://phpopenfw.org

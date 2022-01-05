@@ -5,7 +5,7 @@
  * Data Transaction / Microsoft SQL Server Plugin
  * A Microsoft SQL Server plugin to the (DataTrans) class
  *
- * @package         phpOpenFW
+ * @package         phpopenfw/phpopenfw2
  * @author          Christian J. Clark
  * @copyright       Copyright (c) Christian J. Clark
  * @website         https://phpopenfw.org

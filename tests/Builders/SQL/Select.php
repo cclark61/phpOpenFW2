@@ -4,10 +4,11 @@
 /**
  * Select Statement Test Class
  *
- * @package        phpOpenFW
- * @author         Christian J. Clark
- * @copyright      Copyright (c) Christian J. Clark
- * @license        https://mit-license.org
+ * @package         phpopenfw/phpopenfw2
+ * @author          Christian J. Clark
+ * @copyright       Copyright (c) Christian J. Clark
+ * @website         https://phpopenfw.org
+ * @license         https://mit-license.org
  **/
 //**************************************************************************************
 //**************************************************************************************

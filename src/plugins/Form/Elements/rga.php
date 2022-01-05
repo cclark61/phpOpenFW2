@@ -4,10 +4,11 @@
 /**
  * A class for constructing a Radio Group from Array (RGA)
  *
- * @package        phpOpenFW
- * @author         Christian J. Clark
- * @copyright    Copyright (c) Christian J. Clark
- * @license        https://mit-license.org
+ * @package         phpOpenFW
+ * @author          Christian J. Clark
+ * @copyright       Copyright (c) Christian J. Clark
+ * @website         https://phpopenfw.org
+ * @license         https://mit-license.org
  **/
 //**************************************************************************************
 //**************************************************************************************

@@ -1,6 +1,6 @@
 {
     "name": "phpopenfw/phpOpenFW2",
-    "version": "2.2.4",
+    "version": "2.2.5",
     "require": {
         "php": ">=5.6.0"
     },

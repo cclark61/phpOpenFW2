@@ -5,11 +5,12 @@
  * Data Transaction / Oracle Plugin
  * A Oracle plugin to the (DataTrans) class
  *
- * @package        phpOpenFW
- * @author         Christian J. Clark
- * @copyright    Copyright (c) Christian J. Clark
- * @license        https://mit-license.org
- * @access        private
+ * @package         phpOpenFW
+ * @author          Christian J. Clark
+ * @copyright       Copyright (c) Christian J. Clark
+ * @website         https://phpopenfw.org
+ * @license         https://mit-license.org
+ * @access          private
  */
 //**************************************************************************************
 //**************************************************************************************

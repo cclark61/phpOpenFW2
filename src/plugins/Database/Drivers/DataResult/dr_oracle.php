@@ -5,11 +5,12 @@
  * Data Result / Oracle Plugin
  * A Oracle plugin to the (data_result) class
  *
- * @package        phpOpenFW
- * @author         Christian J. Clark
- * @copyright    Copyright (c) Christian J. Clark
- * @license        https://mit-license.org
- * @access        private
+ * @package         phpOpenFW
+ * @author          Christian J. Clark
+ * @copyright       Copyright (c) Christian J. Clark
+ * @website         https://phpopenfw.org
+ * @license         https://mit-license.org
+ * @access          private
  */
 //**************************************************************************************
 //**************************************************************************************

@@ -4,10 +4,15 @@
 /**
  * Creates a generic xml element with content
  *
- * @package        phpOpenFW
  * @param string Element Name (ie. "div", "data", "p", etc.) Can be XML or XHTML
  * @param string Content inside of element
  * @param array An array, in the form of [key] => [value], of attributes
+ *
+ * @package         phpOpenFW
+ * @author          Christian J. Clark
+ * @copyright       Copyright (c) Christian J. Clark
+ * @website         https://phpopenfw.org
+ * @license         https://mit-license.org
  **/
 //**************************************************************************************
 //**************************************************************************************

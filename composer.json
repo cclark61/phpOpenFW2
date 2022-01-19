@@ -1,15 +1,11 @@
 {
-    "name": "phpopenfw/phpOpenFW2",
+    "name": "phpopenfw/phpopenfw2",
     "version": "2.2.5",
     "require": {
         "php": ">=5.6.0"
     },
     "require-dev": {},
     "repositories": [],
-    "dist": {
-        "url": "https://github.com/phpopenfw/phpOpenFW2.git",
-        "type": "zip"
-    },
     "autoload": {
         "psr-4": {
             "phpOpenFW\\": "/src/plugins",

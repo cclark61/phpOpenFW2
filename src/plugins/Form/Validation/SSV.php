@@ -262,6 +262,9 @@ class SSV
 
                 case 'is_date':
                     $regex = '/^\d{1,2}\/\d{1,2}\/\d{4}$/';
+                    if (is_null($var_val1)) {
+                        $var_val1 = '';
+                    }
                     $vr = preg_match($regex, $var_val1);
                     if (strlen($var_val1) > 10) { $vr = false; }
                     break;

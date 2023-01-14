@@ -101,7 +101,7 @@ class Login
     //*************************************************************************
     private function fail_login($msg)
     {
-        if (isset($_SESSION['failed_login_function']) && function_exists($_SESSION['failed_login_function'])) {
+        if (isset($_SESSION['failed_login_function']) && is_callable($_SESSION['failed_login_function'])) {
             $fail_ret_val = call_user_func($_SESSION['failed_login_function']);
         }
         else if (function_exists('failed_login')) {

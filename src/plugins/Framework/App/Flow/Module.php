@@ -460,7 +460,7 @@ class Module extends Page
     public function get_mod_var($var_name)
     {
         $mod_index = 'mod-' . $this->mod;
-        if (isset($_SESSION[$mod_index][$var_name]) && !empty($_SESSION[$mod_index])) {
+        if (isset($_SESSION[$mod_index]) && is_array($_SESSION[$mod_index]) && isset($_SESSION[$mod_index][$var_name])) {
             return $_SESSION[$mod_index][$var_name];
         }
         else {

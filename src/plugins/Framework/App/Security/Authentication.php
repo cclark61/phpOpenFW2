@@ -200,6 +200,17 @@ class Authentication
             }
 
             //-----------------------------------------------------
+            // Check Password
+            //-----------------------------------------------------
+            if ($user_info[0]['password'] == $this->pass) {
+                $this->status = true;
+            }
+            else {
+                $this->status = false;
+                return false;
+            }
+
+            //-----------------------------------------------------
             // Set Session Vars
             //-----------------------------------------------------
             $_SESSION['userid'] = $this->user;
@@ -207,8 +218,7 @@ class Authentication
             $_SESSION['first_name'] = (isset($user_info[0][$_SESSION['auth_fname_field']])) ? ($user_info[0][$_SESSION['auth_fname_field']]) : ('');
             $_SESSION['last_name'] = (isset($user_info[0][$_SESSION['auth_lname_field']])) ? ($user_info[0][$_SESSION['auth_lname_field']]) : ('');
             $_SESSION['name'] = $_SESSION['first_name'] . ' ' . $_SESSION['last_name'];
-            
-            $this->status = true;
+
         }
         //***********************************************************
         // Custom Login

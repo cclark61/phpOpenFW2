@@ -25,44 +25,49 @@ use phpOpenFW\Database\DataTrans;
 class Authentication
 {
 
-    //***********************************************************************    
+    //***********************************************************************
     // Class variables
     //***********************************************************************
     /**
     * @var bool status of the current authentication process
     **/
     private $status;
-    
+
     /**
     * @var string data source (from main config file) to use for authentication
     **/
     private $data_src;
-    
+
     /**
     * @var string data source type (pulled from data source)
     **/
     private $data_type;
-    
+
     /**
     * @var string table or directory where users are stored (pulled from data source)
     **/
     private $user_table;
-    
+
     /**
     * @var string userid to use in authentication
     **/
     private $user;
-    
+
     /**
     * @var string userid field in, $user_table, to use for authentication
     **/
     private $user_field;
-    
+
     /**
     * @var string password to use in authentication
     **/
     private $pass;
-    
+
+    /**
+    * @var string
+    **/
+    private $auth_pass_security;
+
     /**
     * @var string Add to where clause
     **/
@@ -101,8 +106,8 @@ class Authentication
             // Password Security
             //-----------------------------------------------------
             $valid_pass_sec_types = array(
-                'clear' => 'clear', 
-                'md5' => 'md5', 
+                'clear' => 'clear',
+                'md5' => 'md5',
                 'sha1' => 'sha1'
             );
             $this->auth_pass_security = (isset($_SESSION['auth_pass_security'])) ? (strtolower($_SESSION['auth_pass_security'])) : ('clear');
@@ -119,15 +124,15 @@ class Authentication
                     case 'md5':
                         $this->pass = md5($_POST['pass']);
                         break;
-    
+
                     case 'sha1':
                         $this->pass = sha1($_POST['pass']);
                         break;
-    
+
                     case 'sha256':
                         $this->pass = hash('sha256', $_POST['pass']);
                         break;
-    
+
                     default:
                         $this->pass = $_POST['pass'];
                         break;
@@ -258,7 +263,7 @@ class Authentication
             }
         }
     }
-    
+
     /**
     * Return the status of the authentication (true or false)
     * @return bool status of the authentication (true or false)

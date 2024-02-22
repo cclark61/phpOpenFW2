@@ -128,7 +128,7 @@ class LDAP {
     //*****************************************************************************
     public function Close()
     {
-        if (!$this->persistent && $this->handle && !$this->data_result) {
+        if (!$this->persistent && $this->handle) {
             return ldap_close($this->handle);
         }
         return false;

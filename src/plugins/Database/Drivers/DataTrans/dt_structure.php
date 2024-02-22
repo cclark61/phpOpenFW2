@@ -37,6 +37,11 @@ abstract class dt_structure {
     * @var string Data source type (mysql, mysqli, pgsql, oracle, mssql, db2, sqlsrv, sqlite)
     **/
     protected $data_type;
+
+    /**
+    * @var bool Print the queries run through this transaction (Yes or No)
+    **/
+    protected $print_query;
     
     /**
     * @var string Server address to use when connecting to the data source

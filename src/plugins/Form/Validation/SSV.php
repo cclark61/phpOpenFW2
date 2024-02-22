@@ -53,6 +53,11 @@ class SSV
     private $failed_checks;
 
     /**
+     * @var int Number of Failed Validations
+     **/
+    private $num_failed_checks;
+
+    /**
      * @var array Validations to perform
      **/
     private $validations;
@@ -73,7 +78,12 @@ class SSV
     private $xsl;
     
     /**
-     * @var string POST Sub Arrays to check
+     * @var string Default Transformation XSL Stylesheet
+     **/
+    private $xsl_default;
+
+    /**
+     * @var array POST Sub Arrays to check
      **/
     private $post_sub_arrays;
     

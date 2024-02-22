@@ -226,7 +226,7 @@ class SQL
     // Format Limit Clause Method
     //*************************************************************************
     //*************************************************************************
-    public static function Limit($limit, &$params, $args=false)
+    public static function Limit($limit, &$params=false, $args=false)
     {
         if (!$limit) { return false; }
 

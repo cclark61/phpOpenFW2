@@ -24,7 +24,7 @@ namespace phpOpenFW\Database\Drivers\DataResult;
 //**************************************************************************************
 abstract class dr_structure {
 
-    //************************************************************************    
+    //************************************************************************
     // Class variables
     //************************************************************************
     /**
@@ -38,12 +38,12 @@ abstract class dr_structure {
     protected $data_type;
 
     /**
-    * @var string Display Data Type 
+    * @var string Display Data Type
     **/
     protected $disp_dt;
 
     /**
-    * @var resource Internal Result Handle or Object 
+    * @var resource Internal Result Handle or Object
     **/
     protected $resource;
 
@@ -51,6 +51,11 @@ abstract class dr_structure {
     * @var resource Internal Connection Handle. Not required and not necessary for most drivers.
     **/
     protected $handle;
+
+    /**
+    * @var resource Internal Statement Handle.
+    **/
+    protected $stmt;
 
     /**
     * @var array The records returned from the result set
@@ -71,6 +76,11 @@ abstract class dr_structure {
     * @var int The number of fields in the record set.
     **/
     protected $num_fields;
+
+    /**
+    * @var array Instance options
+    **/
+    protected $inst_opts;
 
     /**
     * @var int Internal Flags / Counters
@@ -145,8 +155,6 @@ abstract class dr_structure {
         $this->num_fields = false;
         $this->records = array();
         $this->records_set = false;
-        $this->afftected_rows = false;
-        $this->opts = array();
         $this->flags = array();
         $this->reset_flags();
 
@@ -188,6 +196,13 @@ abstract class dr_structure {
     **/
     //*************************************************************************
     protected function set_num_rows() { $this->num_recs = false; }
+
+    //*************************************************************************
+    /**
+    * Set the Number of Fields in the current result set
+    **/
+    //*************************************************************************
+    abstract protected function set_num_fields();
 
     //*************************************************************************
     /**
@@ -272,8 +287,15 @@ abstract class dr_structure {
     public function reset_flags()
     {
         $this->flags['fetch_row'] = 0;
-        $this->flags['fetch_all_rows'] = 0;    
+        $this->flags['fetch_all_rows'] = 0;
     }
+
+    //*************************************************************************
+    /**
+    * Fetch all rows in a result
+    **/
+    //*************************************************************************
+    abstract public function fetch_row();
 
     //*************************************************************************
     /**
@@ -330,4 +352,3 @@ abstract class dr_structure {
     }
 
 }
-

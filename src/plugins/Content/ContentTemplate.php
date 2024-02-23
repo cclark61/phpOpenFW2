@@ -32,6 +32,7 @@ class ContentTemplate
     protected $root_node;
     protected $template;
     protected $data;
+    protected $show_data_only;
 
     //*************************************************************************
     // Constructor Function
@@ -55,9 +56,9 @@ class ContentTemplate
     public function __toString()
     {
         ob_start();
-        $this->render();    
+        $this->render();
         return ob_get_clean();
-    }       
+    }
 
     //*************************************************************************
     // Display Error Function
@@ -159,4 +160,3 @@ class ContentTemplate
         return false;
     }
 }
-

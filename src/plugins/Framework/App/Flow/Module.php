@@ -26,17 +26,17 @@ use phpOpenFW\XML\Transform;
 class Module extends Page
 {
 
-    //************************************************************************    
+    //************************************************************************
     // Class variables
     //************************************************************************
 
     // Module Page specific variables
-    
+
     /**
     * @var string Current module
     **/
     private $mod;
-    
+
     /**
     * @var array Module arguments of the current page
     **/
@@ -46,25 +46,25 @@ class Module extends Page
     * @var array Module URL parameters that exist past the last known controller
     **/
     private $mod_params;
-    
+
     /**
     * @var string Action of the current page
     **/
     private $action;
-    
+
     /**
     * @var string Html path of the current module
     **/
     private $mod_url;
-    
+
     /**
     * @var string Html path of the current page
     **/
     private $page_url;
-    
+
     // Navigation variables
     /**
-    * @var string Navigation array set by nav class
+    * @var array Navigation array set by nav class
     **/
     private $curr_array;
 
@@ -259,7 +259,7 @@ class Module extends Page
         else if (isset($_GET['action'])) { $this->action = $_GET['action']; }
         else { $this->action = '-1'; }
     }
-    
+
     /**
     * Module destructor function
     **/
@@ -269,7 +269,7 @@ class Module extends Page
     //************************************************************************************
     //************************************************************************************
     public function __destruct() { parent::render(); }
-    
+
     /**
     * Module render function
     **/
@@ -290,7 +290,7 @@ class Module extends Page
         //============================================================
         $this->content_constructor();
     }
-    
+
     /**
     * Module content constructor function (* Note: This is not a class constructor function)
     **/
@@ -352,7 +352,7 @@ class Module extends Page
         //============================================================
         $local_inc = $this->local_file_path . 'local.inc.php';
         if (file_exists($local_inc)) { include($local_inc); }
-        
+
         if (isset($mod_title)) {
             $tmp2 = new GenElement('section_title');
             $tmp2->display_tree();
@@ -378,13 +378,13 @@ class Module extends Page
             //--------------------------------------------------------
             extract($_GET, EXTR_PREFIX_SAME, "GET_");
             extract($_POST, EXTR_PREFIX_SAME, "POST_");
-            
+
             //--------------------------------------------------------
             // Include local controller
             //--------------------------------------------------------
             ob_start();
             if (!$this->skip_mod_controller) { require_once($this->mod_controller); }
-            
+
             //--------------------------------------------------------
             // Perform an XML Transformation if necessary
             //--------------------------------------------------------
@@ -393,9 +393,9 @@ class Module extends Page
                 ob_start();
                 Transform::XSL($tmp_xml, $this->content_xsl);
             }
-            
+
             $tmp_content = ob_get_clean();
-            
+
             $content_node->add_child(new GenElement('content_data', Format::xml_escape($tmp_content)));
             $this->content_xml[] = $content_node;
         }
@@ -426,7 +426,7 @@ class Module extends Page
     **/
     //***********************************************************************
     public function mod_path() { return $this->local_file_path; }
-    
+
     //***********************************************************************
     /**
     * @return string current page action
@@ -450,7 +450,7 @@ class Module extends Page
             return false;
         }
     }
-    
+
     //***********************************************************************
     /**
     * Returns a variable's value from the current module's session array
@@ -467,7 +467,7 @@ class Module extends Page
             return false;
         }
     }
-    
+
     //***********************************************************************
     /**
     * Print the current module's session array
@@ -494,7 +494,7 @@ class Module extends Page
     /**
     * set the current page action
     * @param string new page action
-    **/    
+    **/
     //***********************************************************************
     public function set_action($new_action) { $this->action = $new_action; }
 
@@ -502,7 +502,7 @@ class Module extends Page
     /**
     * Set the current page url (this function may be unnecessary)
     * @param string page url
-    **/    
+    **/
     //***********************************************************************
     public function set_page_url($new_page_url)    { $this->page_url = $new_page_url; }
 
@@ -510,10 +510,10 @@ class Module extends Page
     /**
     * Set the content XSL stylesheet
     * @param string Full file path of XSL stylesheet
-    **/    
+    **/
     //***********************************************************************
     public function set_content_xsl($xsl_file)
-    { 
+    {
         if (file_exists($xsl_file)) { $this->content_xsl = $xsl_file; }
         else { echo "<strong>set_content_xsl(): Invalid file path!!<br/> \"{$xsl_file}\" does not exist!</strong></br>\n"; }
     }
@@ -564,7 +564,7 @@ class Module extends Page
         }
 
     }
-    
+
     //***********************************************************************
     /**
     * Destroy a current module variable
@@ -573,7 +573,7 @@ class Module extends Page
     public function clear_mod_var($var='')
     {
         $mod_index = 'mod-' . $this->mod;
-        if ($var != '' && isset($_SESSION[$mod_index][$var])) { 
+        if ($var != '' && isset($_SESSION[$mod_index][$var])) {
             unset($_SESSION[$mod_index][$var]);
             return true;
         }
@@ -668,4 +668,3 @@ class Module extends Page
     }
 
 }
-

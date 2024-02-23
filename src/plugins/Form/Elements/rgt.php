@@ -29,7 +29,9 @@ class rgt extends GroupFormElement
     private $name;            // Name of the select
     private $data_src;        // Data Source
     private $strsql;        // SQL string to query
-    
+    private $opt_key;
+    private $opt_val;
+
     //*************************************************************************
     // Constructor Function
     //*************************************************************************
@@ -58,7 +60,7 @@ class rgt extends GroupFormElement
         $data = new DataTrans($this->data_src);
         $data->data_query($this->strsql);
         $result = $data->data_assoc_result();
-        
+
         foreach ($result as $row) {
 
             //-----------------------------------------
@@ -89,7 +91,6 @@ class rgt extends GroupFormElement
             else if ($this->style == 'custom') { print $this->custom_style; }
             print "\n";
         }
-    }    
+    }
 
 }
-

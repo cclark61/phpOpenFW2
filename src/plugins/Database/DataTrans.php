@@ -3,7 +3,7 @@
 //**************************************************************************************
 /**
  * Data Transaction Class
- * A data abstraction class used to handle all database transactions. 
+ * A data abstraction class used to handle all database transactions.
  *
  * @package         phpopenfw/phpopenfw2
  * @author          Christian J. Clark
@@ -24,21 +24,26 @@ namespace phpOpenFW\Database;
 class DataTrans
 {
 
-    //************************************************************************    
+    //************************************************************************
     // Class variables
     //************************************************************************
+    /**
+    * @var string data source name
+    **/
+    private $data_src;
+
     /**
     * @var string data source type (mysql, mysqli, pgsql, oracle, mssql, db2, sqlsrv, sqlite)
     **/
     private $data_type;
-    
+
     /**
     * @var bool Print the queries run through this transaction (Yes or No)
     **/
     private $print_query;
 
     /**
-    * @var Object Internal Data Object 
+    * @var Object Internal Data Object
     **/
     private $data_object;
 
@@ -94,7 +99,7 @@ class DataTrans
         if (!empty($_SESSION[$this->data_src]['charset'])) {
             $this->data_object->set_opt('charset', $_SESSION[$this->data_src]['charset']);
         }
-        
+
         return $this->data_object;
     }
 
@@ -142,11 +147,11 @@ class DataTrans
         //------------------------------------------------------------
         return $query_result;
     }
-    
+
     //*************************************************************************
     /**
     * Return the current record set in the form of an associative array
-    * @return array current record set in the form of an associate array 
+    * @return array current record set in the form of an associate array
     **/
     //*************************************************************************
     // Extract the record set to local variables
@@ -155,12 +160,12 @@ class DataTrans
     {
         return $this->data_object->assoc_result();
     }
-    
+
     /**
     * Return an abbreviated form of the current record set in the form of an associative array
     * @param string field to be used as the 'key' in the associative array
     * @param string field to be used as the 'value' in the associative array
-    * @return array abbreviated form of the current record set in the form of an associative array 
+    * @return array abbreviated form of the current record set in the form of an associative array
     **/
     //*************************************************************************
     // Extract an abbreviated record set to a 'key' => 'value' array
@@ -231,7 +236,7 @@ class DataTrans
     /**
     * Show the current record set in raw format
     **/
-    //*************************************************************************    
+    //*************************************************************************
     public function data_raw_output()
     {
         print "<pre>\n";

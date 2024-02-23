@@ -41,7 +41,7 @@ class SSV
      * @var array Validation Types
      **/
     private $valid_types;
-    
+
     /**
      * @var bool Validation Status
      **/
@@ -51,6 +51,11 @@ class SSV
      * @var array Failed Validations
      **/
     private $failed_checks;
+
+    /**
+     * @var int Number of Failed Validations
+     **/
+    private $num_failed_checks;
 
     /**
      * @var array Validations to perform
@@ -66,23 +71,28 @@ class SSV
      * @var bool Debug Mode (Default: false)
      **/
     private $debug_mode;
-    
+
     /**
      * @var string Transformation XSL Stylesheet
      **/
     private $xsl;
-    
+
     /**
-     * @var string POST Sub Arrays to check
+     * @var string Default Transformation XSL Stylesheet
+     **/
+    private $xsl_default;
+
+    /**
+     * @var array POST Sub Arrays to check
      **/
     private $post_sub_arrays;
-    
+
     //======================================================================================
     //======================================================================================
     // Member Functions
     //======================================================================================
     //======================================================================================
-    
+
     //**************************************************************************************
     //**************************************************************************************
     /**
@@ -119,7 +129,7 @@ class SSV
         $this->valid_types['checkbox_is_checked'] = '';
         $this->valid_types['radio_is_checked'] = '';
     }
-    
+
     //**************************************************************************************
     //**************************************************************************************
     /**
@@ -127,14 +137,14 @@ class SSV
      * @param string Field name (First field if more than one)
      * @param string Validation Type
      * @param string Error Message
-     * @param string Field name 2 (or other parameter) 
+     * @param string Field name 2 (or other parameter)
      **/
     //**************************************************************************************
     //**************************************************************************************
     public function add_check($field_name, $valid_type, $valid_txt='', $field2_name='')
     {
         if (!isset($this->valid_types[$valid_type])) {
-            trigger_error('[Server Side Validation]::add_check() - Invalid validation type!');            
+            trigger_error('[Server Side Validation]::add_check() - Invalid validation type!');
         }
         else if ($field_name == '') {
             trigger_error('[Server Side Validation]::add_check() - Invalid field name (1)!');
@@ -157,7 +167,7 @@ class SSV
         if (empty($fail_message)) { return false; }
         $this->validations[] = array(false, 'fail', Format::xml_escape($fail_message), false);
     }
-    
+
     //**************************************************************************************
     //**************************************************************************************
     /**
@@ -169,7 +179,7 @@ class SSV
     public function check_post_sub_array($sub_array)
     {
         if ($sub_array == '' || is_null($sub_array)) {
-            trigger_error('[Server Side Validation]::check_post_sub_array() - Invalid POST Sub Array!');            
+            trigger_error('[Server Side Validation]::check_post_sub_array() - Invalid POST Sub Array!');
         }
         else {
             $this->post_sub_arrays[] = $sub_array;
@@ -187,14 +197,14 @@ class SSV
     public function validate()
     {
         foreach ($this->validations as $key => $check) {
-            
+
             //==============================================================
             // Set / Reset variable values
             //==============================================================
             $var_val1 = null;
             $var_val2 = null;
             $vr = null;
-            
+
             //==============================================================
             // Pull variable value(s)
             //==============================================================
@@ -210,7 +220,7 @@ class SSV
                     $var_val1 = (isset($_POST[$check[0]]) && $_POST[$check[0]] != '') ? ($_POST[$check[0]]) : (null);
                     $var_val2 = (isset($_POST[$check[3]]) && $_POST[$check[3]] != '') ? ($_POST[$check[3]]) : (null);
                 }
-                
+
                 //-------------------------------------------------------
                 // GET
                 //-------------------------------------------------------
@@ -218,7 +228,7 @@ class SSV
                     $var_val1 = (is_null($var_val1) && isset($_GET[$check[0]]) && $_GET[$check[0]] != '') ? ($_GET[$check[0]]) : (null);
                     $var_val2 = (is_null($var_val2) && isset($_GET[$check[3]]) && $_GET[$check[3]] != '') ? ($_GET[$check[3]]) : (null);
                 }
-                
+
                 //-------------------------------------------------------
                 // Check POST Sub Arrays
                 //-------------------------------------------------------
@@ -230,7 +240,7 @@ class SSV
                     }
                 }
             }
-            
+
             //==============================================================
             // Perform Validation
             //==============================================================
@@ -239,7 +249,7 @@ class SSV
                 case 'is_not_empty':
                     $vr = ($var_val1 != '');
                     break;
-                    
+
                 case 'is_empty':
                     $vr = ($var_val1 == '');
                     break;
@@ -268,7 +278,7 @@ class SSV
                     $vr = preg_match($regex, $var_val1);
                     if (strlen($var_val1) > 10) { $vr = false; }
                     break;
-                
+
                 case 'custom':
                     if ($var_val1) { eval("\$vr = ($var_val1);"); }
                     else if ($var_val2) { eval("\$vr = ($var_val2);"); }
@@ -283,14 +293,13 @@ class SSV
                     $vr = (!is_null($var_val1) && $var_val1 !== false && $var_val1 != '');
                     break;
             }
-            
+
             //==============================================================
             // Result of current validation
             //==============================================================
-            $this->check_status[$key] = $vr;
             if (!$vr) {
                 $this->validation_status = false;
-                $this->num_failed_checks++; 
+                $this->num_failed_checks++;
                 if ($check[2] != '') {
                     $this->fail_messages[$key] = $check[2];
                 }
@@ -299,7 +308,7 @@ class SSV
                 $this->validation_status = true;
             }
         }
-        
+
         if ($this->debug_mode && !$this->validation_status) {
             print "<pre>\n";
             print_r($this->validations);
@@ -320,7 +329,7 @@ class SSV
     //**************************************************************************************
     //**************************************************************************************
     public function status() { return $this->validation_status; }
-    
+
     //**************************************************************************************
     //**************************************************************************************
     /**
@@ -330,7 +339,7 @@ class SSV
     //**************************************************************************************
     //**************************************************************************************
     public function fail_messages() { return $this->fail_messages; }
-    
+
     //**************************************************************************************
     //**************************************************************************************
     /**
@@ -340,7 +349,7 @@ class SSV
     //**************************************************************************************
     //**************************************************************************************
     public function failed_checks() { return $this->num_failed_checks; }
-    
+
     //**************************************************************************************
     //**************************************************************************************
     /**
@@ -350,7 +359,7 @@ class SSV
     //**************************************************************************************
     //**************************************************************************************
     public function debug_mode($tmp_bool) { $this->debug_mode = ($tmp_bool) ? (true) : (false); }
-    
+
     //**************************************************************************************
     //**************************************************************************************
     /**
@@ -364,7 +373,7 @@ class SSV
         $xsl = trim((string)$xsl);
 
         //--------------------------------------------------------
-        // Explicitly use the "default" template that comes 
+        // Explicitly use the "default" template that comes
         // with phpOpenFW
         //--------------------------------------------------------
         if (strtolower($xsl) == 'default') {

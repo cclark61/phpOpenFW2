@@ -128,7 +128,7 @@ class LDAP {
     //*****************************************************************************
     public function Close()
     {
-        if (!$this->persistent && $this->handle && !$this->data_result) {
+        if (!$this->persistent && $this->handle) {
             return ldap_close($this->handle);
         }
         return false;
@@ -226,9 +226,9 @@ class LDAP {
         $this->CheckAndPrintError();
 
         //--------------------------------------------------------------------
-        // Sort?
+        // Sort? (ldap_sort was removed in PHP 8.0)
         //--------------------------------------------------------------------
-        if ($this->resource && isset($sort)) {
+        if ($this->resource && isset($sort) && function_exists('ldap_sort')) {
             foreach ($sort as $eachSortAttribute) {
                 ldap_sort($this->handle, $this->resource, $eachSortAttribute);
             }

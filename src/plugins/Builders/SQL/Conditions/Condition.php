@@ -164,7 +164,7 @@ class Condition extends \phpOpenFW\Builders\SQL\Core
                 case 'not in':
                     return $this->MultipleValueCondition();
                     break;
-    
+
                 //-------------------------------------------------------------
                 // Between / Not Between
                 //-------------------------------------------------------------
@@ -172,21 +172,21 @@ class Condition extends \phpOpenFW\Builders\SQL\Core
                 case 'not between':
                     return $this->BetweenCondition();
                     break;
-    
+
                 //-------------------------------------------------------------
                 // Is Null
                 //-------------------------------------------------------------
                 case 'is null':
                     return $this->IsNullCondition();
                     break;
-    
+
                 //-------------------------------------------------------------
                 // Is Not Null
                 //-------------------------------------------------------------
                 case 'is not null':
                     return $this->IsNotNullCondition();
                     break;
-    
+
                 //-------------------------------------------------------------
                 // Everything else (Single Value Conditions)
                 //-------------------------------------------------------------

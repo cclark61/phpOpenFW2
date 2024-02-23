@@ -45,18 +45,18 @@ class MongoDB extends \phpOpenFW\Cores\StaticCore
             }
             return false;
         }
-        
+
         //*****************************************************************
         // Valid MongoDB File?
         //*****************************************************************
         if (!$mongo_file) { return false; }
-        
+
         //*****************************************************************
         // Output Content Type / Content
         //*****************************************************************
         $stream = true;
         if (!empty($output_header)) {
-            $stream = \phpOpenFW\Content\CDN::output_content_type($mongo_file->getFilename());
+            $stream = \phpOpenFW\Content\CDN::OutputContentType($mongo_file->getFilename());
         }
         if ($stream) {
             print $mongo_file->getBytes();
@@ -69,4 +69,3 @@ class MongoDB extends \phpOpenFW\Cores\StaticCore
     }
 
 }
-
